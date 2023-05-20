@@ -2,19 +2,22 @@ stages:
   - test #Alle Aufgaben die mit Testen zu tun haben
   - build #Alle Aufgaben die mit Bauen der App zu tun haben
 
-flutter_test:
+linting_test:
   stage: test
   script:
-    - echo "This job tests something"
+    - echo "Analyzing Code Style:"
+    - flutter analyze .
   tags:
     - flutter
 
 flutter_build_apk:
   stage: build
   before_script:
+    - echo "Get Dependencies and clean:"
     - flutter packages get
     - flutter clean
   script:
+    - echo "Build APK:"
     - flutter build apk
   artifacts:
     paths:
