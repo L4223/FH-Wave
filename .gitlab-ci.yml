@@ -7,8 +7,6 @@ linting_test:
   script:
     - echo "Analyzing Code Style:"
     - flutter analyze .
-  tags:
-    - flutter
 
 #flutter_build_apk:
 #  stage: build
