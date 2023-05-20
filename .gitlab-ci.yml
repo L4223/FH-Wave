@@ -5,7 +5,6 @@ stages:
 flutter_test:
   stage: test
   script:
-    - flutter --version
     - echo "This job tests something"
   tags:
     - flutter
