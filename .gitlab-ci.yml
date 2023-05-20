@@ -1,11 +1,11 @@
-stages:
-  - test #Alle Aufgaben die mit Testen zu tun haben
-  - build #Alle Aufgaben die mit Bauen der App zu tun haben
-
-linting_test:
-  stage: test
-  script:
-    - echo "Analyzing Code Style:"
+#stages:
+#  - test #Alle Aufgaben die mit Testen zu tun haben
+#  - build #Alle Aufgaben die mit Bauen der App zu tun haben
+#
+#linting_test:
+#  stage: test
+#  script:
+#    - echo "Analyzing Code Style:"
 #    - flutter analyze .
 
 #flutter_build_apk:
