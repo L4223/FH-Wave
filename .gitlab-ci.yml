@@ -48,11 +48,13 @@ stages:
   - test #Alle Aufgaben die mit Testen zu tun haben
   - build #Alle Aufgaben die mit Bauen der App zu tun haben
 
+image: docker:20.10.16
+
 variables:
   DOCKER_TLS_CERTDIR: "/certs"
 
 services:
-  - docker:19.10.16-dind
+  - docker:20.10.16-dind
 
 before_script:
   - docker info
@@ -65,7 +67,7 @@ flutter_test:
     - docker run fh-wave-builder flutter analyze .
   tags:
     - dind
-image: docker:20.10.16
+
 
 
 
