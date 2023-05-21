@@ -1,0 +1,36 @@
+code_quality:
+  stage: test
+  image: "cirrusci/flutter:1.22.5"
+  before_script:
+    - flutter channel stable
+    - flutter upgrade
+    - flutter packages get
+    - flutter clean
+  script:
+    - flutter analyze . > analyzes
+  artifacts:
+    paths:
+      - analyzes
+
+
+
+flutter_build_apk:
+  stage: build
+  image: "cirrusci/flutter:1.22.5"
+  before_script:
+      - apt update && apt install -y curl git unzip xz-utils zip libglu1-mesa openjdk-11-jdk wget
+      - flutter channel stable
+      - flutter upgrade
+      - flutter packages get
+      - flutter clean
+  script:
+    - flutter build apk
+  artifacts:
+    paths:
+        - build/app/outputs/flutter-apk/app-release.apk
+
+
+deploy:
+  stage: deploy
+  script: echo "Define your deployment script!"
+  environment: production
