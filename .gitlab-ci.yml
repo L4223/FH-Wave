@@ -28,8 +28,8 @@ flutter_build_apk:
 #    - flutter packages get
 #    - flutter clean
   script:
-    - docker build -t my-docker-image .
-    - docker run my-docker-image /script/to/run/tests
+    - docker build -t fh-wave-builder .
+    - docker run fh-wave-builder echo "done"
 #    - flutter build apk
   artifacts:
     paths:
