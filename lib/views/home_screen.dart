@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -7,28 +8,30 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       // appBar: null,
-      body: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter/4,
-            colors: [
-              Color.fromRGBO(168, 207, 255,1),
-              Colors.white,
-            ],
-          ),
-        ),
-        child: Center(
-          child: Text(
-            'Hello, Flutter!',
-            style: TextStyle(
-              fontSize: 24,
-              color: Colors.white,
-              fontWeight: FontWeight.bold,
+      body: Stack(children: [
+        // Blue Gradient Background
+        Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter / 4,
+              colors: const [
+                Color.fromRGBO(168, 207, 255, 1),
+                Colors.white,
+              ],
             ),
           ),
         ),
-      ),
+        // fhwave logo
+        Positioned(
+          top: 120,
+          left: 28,
+          child: SvgPicture.asset(
+            'assets/fhwave_logo_weiss.svg',
+            width: 70,
+          ),
+        ),
+      ]),
     );
   }
 }
