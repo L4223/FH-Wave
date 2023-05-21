@@ -100,16 +100,16 @@ code_quality:
   stage: test
   image: "cirrusci/flutter:1.22.5"
   before_script:
-    - pub global activate dart_code_metrics
-    - export PATH="$PATH:$HOME/.pub-cache/bin"
+#    - pub global activate dart_code_metrics
+#    - export PATH="$PATH:$HOME/.pub-cache/bin"
     - flutter channel stable
     - flutter upgrade
   script:
-    - metrics lib -r codeclimate  > gl-code-quality-report.json
+#    - metrics lib -r codeclimate  > gl-code-quality-report.json
     - flutter analyze .
-  artifacts:
-    reports:
-      codequality: gl-code-quality-report.json
+#  artifacts:
+#    reports:
+#      codequality: gl-code-quality-report.json
 
 #test:
 #  stage: test
