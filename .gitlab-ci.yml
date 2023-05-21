@@ -1,6 +1,6 @@
-stages:
-  - test #Alle Aufgaben die mit Testen zu tun haben
-  - build #Alle Aufgaben die mit Bauen der App zu tun haben
+#stages:
+#  - test #Alle Aufgaben die mit Testen zu tun haben
+#  - build #Alle Aufgaben die mit Bauen der App zu tun haben
 
 #
 #variables:
@@ -72,9 +72,10 @@ code_quality:
   stage: test
   image: "cirrusci/flutter:1.22.5"
   before_script:
-    - echo "This job tests something"
     - flutter channel stable
     - flutter upgrade
+    - flutter packages get
+    - flutter clean
   script:
     - flutter analyze . > analyzes
   artifacts:
@@ -87,6 +88,8 @@ flutter_build_apk:
   stage: build
   image: "cirrusci/flutter:1.22.5"
   before_script:
+      - flutter channel stable
+      - flutter upgrade
       - flutter packages get
       - flutter clean
   script:
