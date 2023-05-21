@@ -1,5 +1,5 @@
-import 'package:fh_wave/views/home_screen.dart';
 import 'package:flutter/material.dart';
+import 'views/home_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -16,5 +16,3 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-
-
