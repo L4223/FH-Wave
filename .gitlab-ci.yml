@@ -2,11 +2,13 @@ stages:
   - test #Alle Aufgaben die mit Testen zu tun haben
   - build #Alle Aufgaben die mit Bauen der App zu tun haben
 
+image: docker:23.0.6
+
 variables:
   DOCKER_TLS_CERTDIR: "/certs"
 
 services:
-  - docker:20.10.16-dind
+  - docker:23.0.6-dind
 
 before_script:
   - docker info
@@ -15,25 +17,25 @@ before_script:
 flutter_test:
   stage: test
   script:
-    - echo "This job tests something"
-    - flutter analyze > $(git branch --show-current)
+    - docker run fh-wave-builder echo "This job tests something"
+    - docker run fh-wave-builder flutter analyze > $(git branch --show-current)
     - artifacts:
         paths:
           - workflow/flutter-analyze
   tags:
     - dind
-image: docker:20.10.16
+
 
 
 
 flutter_build_apk:
   stage: build
   before_script:
-    - flutter packages get
-    - flutter clean
+    - docker run fh-wave-builder flutter packages get
+    - docker run fh-wave-builder flutter clean
   script:
     - docker build -t fh-wave-builder .
-    - flutter build apk
+    - docker run fh-wave-builder flutter build apk
   artifacts:
     paths:
       - build/app/android
