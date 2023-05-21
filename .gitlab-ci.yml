@@ -1,0 +1,41 @@
+stages:
+  - test #Alle Aufgaben die mit Testen zu tun haben
+  - build #Alle Aufgaben die mit Bauen der App zu tun haben
+
+
+
+#flutter_test:
+#  stage: test
+#  script:
+#    - echo "This job tests something"
+#    - flutter analyze .
+#  tags:
+#    - flutter
+#image: docker:20.10.16
+
+variables:
+  DOCKER_TLS_CERTDIR: "/certs"
+
+services:
+  - docker:20.10.16-dind
+
+before_script:
+  - docker info
+
+flutter_build_apk:
+  stage: build
+  before_script:
+#    - flutter packages get
+#    - flutter clean
+  script:
+    - docker build -t my-docker-image .
+    - docker run my-docker-image /script/to/run/tests
+#    - flutter build apk
+  artifacts:
+    paths:
+#      - build/app/android
+  tags:
+    - dind
+
+
+
