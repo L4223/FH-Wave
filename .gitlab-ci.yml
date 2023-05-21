@@ -48,25 +48,26 @@ stages:
   - test #Alle Aufgaben die mit Testen zu tun haben
   - build #Alle Aufgaben die mit Bauen der App zu tun haben
 
-
-
-#flutter_test:
-#  stage: test
-#  script:
-#    - echo "This job tests something"
-#    - flutter analyze .
-#  tags:
-#    - flutter
-#image: docker:20.10.16
-
 variables:
   DOCKER_TLS_CERTDIR: "/certs"
 
 services:
-  - docker:20.10.16-dind
+  - docker:19.10.16-dind
 
 before_script:
   - docker info
+
+flutter_test:
+  stage: test
+  script:
+    - docker build -t fh-wave-builder .
+    - docker run fh-wave-builder echo "This job tests something"
+    - docker run fh-wave-builder flutter analyze .
+  tags:
+    - dind
+image: docker:20.10.16
+
+
 
 flutter_build_apk:
   stage: build
