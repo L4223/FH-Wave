@@ -1,7 +1,7 @@
-#stages:
-#  - test #Alle Aufgaben die mit Testen zu tun haben
-#  - build #Alle Aufgaben die mit Bauen der App zu tun haben
-#
+stages:
+  - test #Alle Aufgaben die mit Testen zu tun haben
+  - build #Alle Aufgaben die mit Bauen der App zu tun haben
+
 #
 #variables:
 #  DOCKER_TLS_CERTDIR: "/certs"
