@@ -76,7 +76,7 @@ code_quality:
     - flutter channel stable
     - flutter upgrade
   script:
-    - flutter analyze . > $(git branch --show-current)
+    - flutter analyze . > analyzes
   artifacts:
     paths:
       - workflow/flutter-analyze
