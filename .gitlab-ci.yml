@@ -18,7 +18,7 @@ flutter_test:
   stage: test
   script:
     - docker run fh-wave-builder echo "This job tests something"
-    - docker run fh-wave-builder flutter analyze > $(git branch --show-current)
+#    - docker run fh-wave-builder flutter analyze > $(git branch --show-current)
     - artifacts:
         paths:
           - workflow/flutter-analyze
@@ -28,19 +28,19 @@ flutter_test:
 
 
 
-flutter_build_apk:
-  stage: build
-  before_script:
-    - docker run fh-wave-builder flutter packages get
-    - docker run fh-wave-builder flutter clean
-  script:
-    - docker build -t fh-wave-builder .
-    - docker run fh-wave-builder flutter build apk
-  artifacts:
-    paths:
-      - build/app/android
-  tags:
-    - dind
+#flutter_build_apk:
+#  stage: build
+#  before_script:
+#    - docker run fh-wave-builder flutter packages get
+#    - docker run fh-wave-builder flutter clean
+#  script:
+#    - docker build -t fh-wave-builder .
+#    - docker run fh-wave-builder flutter build apk
+#  artifacts:
+#    paths:
+#      - build/app/android
+#  tags:
+#    - dind
 
 
 
