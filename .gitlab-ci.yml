@@ -68,23 +68,52 @@
 #  tags:
 #    - dind
 
+code_quality:
+  stage: test
+  image: "cirrusci/flutter:1.22.5"
+  before_script:
+    - echo "This job tests something"
+    - flutter channel stable
+    - flutter upgrade
+  script:
+    - flutter analyze . > $(git branch --show-current)
+  artifacts:
+    paths:
+      - workflow/flutter-analyze
 
 
 
-#flutter_build_apk:
-#  stage: build
+flutter_build_apk:
+  stage: build
+  image: "cirrusci/flutter:1.22.5"
+  before_script:
+      - flutter packages get
+      - flutter clean
+  script:
+    - flutter build apk
+  artifacts:
+    paths:
+        - build/app/android
+
+
+#test:
+#  stage: test
+#  image: "cirrusci/flutter:1.22.5"
 #  before_script:
-#  #    - flutter packages get
-#  #    - flutter clean
+#    - pub global activate junitreport
+#    - export PATH="$PATH:$HOME/.pub-cache/bin"
 #  script:
-#    - docker build -t fh-wave-builder .
-#    - docker run fh-wave-builder echo "done"
-#  #    - flutter build apk
+#    - flutter test --machine --coverage | tojunit -o report.xml
+#    - lcov --summary coverage/lcov.info
+#    - genhtml coverage/lcov.info --output=coverage
+#  coverage: '/lines\.*: \d+\.\d+\%/'
 #  artifacts:
+#    name: coverage
 #    paths:
-#  #      - build/app/android
-#  tags:
-#    - dind
+#      - $CI_PROJECT_DIR/coverage
+#    reports:
+#      junit: report.xml
+
 
 
 # This file is a template, and might need editing before it works on your project.
@@ -96,20 +125,7 @@
 # This specific template is located at:
 # https://gitlab.com/gitlab-org/gitlab/-/blob/master/lib/gitlab/ci/templates/Flutter.gitlab-ci.yml
 
-code_quality:
-  stage: test
-  image: "cirrusci/flutter:1.22.5"
-  before_script:
-#    - pub global activate dart_code_metrics
-#    - export PATH="$PATH:$HOME/.pub-cache/bin"
-    - flutter channel stable
-    - flutter upgrade
-  script:
-#    - metrics lib -r codeclimate  > gl-code-quality-report.json
-    - flutter analyze .
-#  artifacts:
-#    reports:
-#      codequality: gl-code-quality-report.json
+
 
 #test:
 #  stage: test
