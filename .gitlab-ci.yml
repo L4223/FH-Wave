@@ -16,6 +16,8 @@ code_quality:
 
 flutter_build_apk:
   stage: build
+  only:
+    - main
   image: "cirrusci/flutter:1.22.5"
   before_script:
       - apt update && apt install -y curl git unzip xz-utils zip libglu1-mesa openjdk-11-jdk wget
@@ -30,7 +32,3 @@ flutter_build_apk:
         - build/app/outputs/flutter-apk/app-release.apk
 
 
-deploy:
-  stage: deploy
-  script: echo "Define your deployment script!"
-  environment: production
