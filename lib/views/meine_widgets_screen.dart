@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'build_widget_button.dart';
 import 'template_screen.dart';
 import '../app_colors.dart';
+import 'add_widgets_screen.dart';
 
 Widget MeineWidgetsScreen(BuildContext context) {
   return Wrap(
@@ -39,8 +40,7 @@ Widget MeineWidgetsScreen(BuildContext context) {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(
-                      builder: (context) => TemplateScreen(title: 'Widgets')),
+                  MaterialPageRoute(builder: (context) => AddWidgetsScreen()),
                 );
               },
               highlightColor: Colors.transparent,
