@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
 
-/// An example for you. When you create new screen, you use this template
-class TemplateScreen extends StatelessWidget {
-  final String title;
-
-  const TemplateScreen({Key? key, required this.title}) : super(key: key);
+class ProfileScreen extends StatelessWidget {
+  const ProfileScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +13,7 @@ class TemplateScreen extends StatelessWidget {
         title: Align(
           alignment: Alignment.centerLeft,
           child: Text(
-            title,
+            'Profile',
             style: TextStyle(
                 color: Colors.black,
                 fontSize: 28.0,
