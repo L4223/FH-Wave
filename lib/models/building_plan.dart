@@ -6,14 +6,25 @@ class Building{
   late String name;
   late String address;
 
-Building(String name, String address){
-
-this.name= name;
-this.address=address;
-
-  }
+Building({required this.name, required this.address});
 
 }
+  List<Building> buildingfList = [
+    Building(name: 'C12', address:'Grenzstraße 3, 24149 Kiel'),
+    Building(name: 'C12', address:'Grenzstraße 3, 24149 Kiel'),
+    Building(name: 'C12', address:'Grenzstraße 3, 24149 Kiel'),
+    Building(name: 'C12', address:'Grenzstraße 3, 24149 Kiel'),
+    Building(name: 'C12', address:'Grenzstraße 3, 24149 Kiel'),
+    Building(name: 'C12', address:'Grenzstraße 3, 24149 Kiel'),
+    Building(name: 'C12', address:'Grenzstraße 3, 24149 Kiel'),
+    Building(name: 'C12', address:'Grenzstraße 3, 24149 Kiel'),
+    Building(name: 'C12', address:'Grenzstraße 3, 24149 Kiel'),
+    Building(name: 'C12', address:'Grenzstraße 3, 24149 Kiel'),
+    Building(name: 'C12', address:'Grenzstraße 3, 24149 Kiel'),
 
-Building building = Building('C12' ,'Grenzstraße 3, 24149 Kiel' );
+
+];
+
+
+
 
