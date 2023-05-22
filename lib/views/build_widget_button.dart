@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import '../app_colors.dart';
 
 Widget buildWidgetButton(
-    BuildContext context, {
-      String? title,
-      Color backgroundColor = AppColors.appBlue,
-      Color textColor = Colors.black,
-      required Widget targetPage,
-      bool isLarge = false,
-    }) {
+  BuildContext context, {
+  String? title,
+  Color backgroundColor = AppColors.appBlue,
+  Color textColor = Colors.black,
+  required Widget targetPage,
+  bool isLarge = false,
+}) {
   final width = isLarge ? 338.0 : 160.0;
   const height = 112.0;
 
