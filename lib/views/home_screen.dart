@@ -1,5 +1,7 @@
+import 'package:fh_wave/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'meine_widgets_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -28,10 +30,7 @@ class HomeScreenState extends State<HomeScreen> {
             gradient: LinearGradient(
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
-              colors: [
-                Color.fromRGBO(168, 207, 255, 1),
-                Color.fromRGBO(250, 250, 250, 0)
-              ],
+              colors: [AppColors.appBlue, Color.fromRGBO(250, 250, 250, 0)],
             ),
           ),
         ),
@@ -42,7 +41,7 @@ class HomeScreenState extends State<HomeScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    SizedBox(height: 100),
+                    SizedBox(height: 80),
                     // fhwave logo
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -87,8 +86,9 @@ class HomeScreenState extends State<HomeScreen> {
                             fontWeight: FontWeight.w500,
                             fontFamily: 'Helvetica Neue')),
                     const SizedBox(
-                      height: 24,
+                      height: 28,
                     ),
+                    // Two buttons in row to switch pages
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -160,12 +160,14 @@ class HomeScreenState extends State<HomeScreen> {
                         ),
                       ],
                     ),
-                    // The widgets will be presented
-                    Visibility(
-                      visible: isLeftButtonSelected,
-                      child: Text("Left button selected!"),
+                    const SizedBox(
+                      height: 28,
                     ),
-                    // The quick links will be presented
+                    // The widgets will be here presented
+                    Visibility(
+                        visible: isLeftButtonSelected,
+                        child: MeineWidgetsScreen(context)),
+                    // The quick links will be here presented
                     Visibility(
                       visible: !isLeftButtonSelected,
                       child: Text("Right button selected!"),
