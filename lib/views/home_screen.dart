@@ -2,6 +2,7 @@ import 'package:fh_wave/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'meine_widgets_screen.dart';
+import 'quicklinks_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -103,7 +104,7 @@ class HomeScreenState extends State<HomeScreen> {
                             decoration: BoxDecoration(
                               color: isLeftButtonSelected
                                   ? Colors.black
-                                  : Colors.white,
+                                  : Colors.transparent,
                               borderRadius: BorderRadius.circular(25.0),
                               border: Border.all(
                                 width: 2.0,
@@ -135,7 +136,7 @@ class HomeScreenState extends State<HomeScreen> {
                           child: Container(
                             decoration: BoxDecoration(
                               color: isLeftButtonSelected
-                                  ? Colors.white
+                                  ? Colors.transparent
                                   : Colors.black,
                               borderRadius: BorderRadius.circular(25.0),
                               border: Border.all(
@@ -170,7 +171,7 @@ class HomeScreenState extends State<HomeScreen> {
                     // The quick links will be here presented
                     Visibility(
                       visible: !isLeftButtonSelected,
-                      child: Text("Right button selected!"),
+                      child: QuicklinksScreen(context),
                     ),
                   ],
                 ))

@@ -28,13 +28,21 @@ Widget MeineWidgetsScreen(BuildContext context) {
           backgroundColor: AppColors.appYellow,
           targetPage: TemplateScreen(title: 'TEMPLATE3'),
           isLarge: true),
+
+      /// Add widgets here. Attention: Just above not after the Center below!
       Center(
         child: ClipOval(
           child: Container(
             color: Colors.black,
             child: IconButton(
               icon: Icon(Icons.add, color: Colors.white),
-              onPressed: () {},
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => TemplateScreen(title: 'Widgets')),
+                );
+              },
               highlightColor: Colors.transparent,
               splashColor: Colors.transparent,
             ),
