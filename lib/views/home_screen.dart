@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'meine_widgets_screen.dart';
 import 'quicklinks_screen.dart';
+import 'profile_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -60,7 +61,13 @@ class HomeScreenState extends State<HomeScreen> {
                               child: IconButton(
                                 icon: Icon(Icons.photo_camera_outlined),
                                 color: Colors.black,
-                                onPressed: () {},
+                                onPressed: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => ProfileScreen()),
+                                  );
+                                },
                                 // To maintain design consistency, please remember to eliminate effects of buttons
                                 highlightColor: Colors.transparent,
                                 splashColor: Colors.transparent,
