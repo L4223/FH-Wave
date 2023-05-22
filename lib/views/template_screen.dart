@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-/// An example for you. When you create new screen, you use this template
 class TemplateScreen extends StatelessWidget {
   final String title;
 
@@ -16,18 +15,20 @@ class TemplateScreen extends StatelessWidget {
         title: Align(
           alignment: Alignment.centerLeft,
           child: Text(
-            title,
+            title,  // Use the title passed in
             style: TextStyle(
                 color: Colors.black,
-                fontSize: 28.0,
+                fontSize: 24.0,
                 fontWeight: FontWeight.w700,
-                fontFamily: 'Helvetica Neue'),
+                fontFamily: 'Helvetica Neue'
+            ),
           ),
         ),
         iconTheme: IconThemeData(color: Colors.black),
       ),
       body: Container(
-          ),
+        // 页面内容
+      ),
     );
   }
 }
