@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-import 'build_widget_button.dart';
-import 'template_screen.dart';
+
 import '../app_colors.dart';
 import 'add_widgets_screen.dart';
+import 'build_widget_button.dart';
+import 'template_screen.dart';
 
-Widget MeineWidgetsScreen(BuildContext context) {
+Widget meineWidgetsScreen(BuildContext context) {
   return Wrap(
     direction: Axis.horizontal,
     spacing: 17,
@@ -14,7 +15,7 @@ Widget MeineWidgetsScreen(BuildContext context) {
         context,
         title: 'TEMPLATE WIDGET',
         backgroundColor: AppColors.appBlue,
-        targetPage: TemplateScreen(
+        targetPage: const TemplateScreen(
           title: 'TEMPLATE1',
         ),
       ),
@@ -22,12 +23,12 @@ Widget MeineWidgetsScreen(BuildContext context) {
         context,
         title: 'TEMPLATE WIDGET',
         backgroundColor: AppColors.appPurple,
-        targetPage: TemplateScreen(title: 'TEMPLATE2'),
+        targetPage: const TemplateScreen(title: 'TEMPLATE2'),
       ),
       buildWidgetButton(context,
           title: 'TEMPLATE WIDGET',
           backgroundColor: AppColors.appYellow,
-          targetPage: TemplateScreen(title: 'TEMPLATE3'),
+          targetPage: const TemplateScreen(title: 'TEMPLATE3'),
           isLarge: true),
 
       /// Add widgets here. Attention: Just above not after the Center below!
@@ -36,11 +37,12 @@ Widget MeineWidgetsScreen(BuildContext context) {
           child: Container(
             color: Colors.black,
             child: IconButton(
-              icon: Icon(Icons.add, color: Colors.white),
+              icon: const Icon(Icons.add, color: Colors.white),
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => AddWidgetsScreen()),
+                  MaterialPageRoute(
+                      builder: (context) => const AddWidgetsScreen()),
                 );
               },
               highlightColor: Colors.transparent,

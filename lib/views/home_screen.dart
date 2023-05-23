@@ -1,9 +1,10 @@
-import 'package:fh_wave/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+
+import '../app_colors.dart';
 import 'meine_widgets_screen.dart';
-import 'quicklinks_screen.dart';
 import 'profile_screen.dart';
+import 'quicklinks_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -15,10 +16,6 @@ class HomeScreen extends StatefulWidget {
 class HomeScreenState extends State<HomeScreen> {
   bool isLeftButtonSelected = true;
   PageController pageController = PageController(initialPage: 0);
-
-  void toggleButtonSelection(bool isLeftSelected) {
-    isLeftButtonSelected = isLeftSelected;
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +40,7 @@ class HomeScreenState extends State<HomeScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    SizedBox(height: 80),
+                    const SizedBox(height: 80),
                     // fhwave logo
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -52,26 +49,26 @@ class HomeScreenState extends State<HomeScreen> {
                           'assets/fhwave_logo_weiss.svg',
                           width: 70,
                         ),
-                        Container(
-                          child: ClipOval(
-                            child: Container(
-                              width: 40.0,
-                              height: 40.0,
-                              color: Colors.white,
-                              child: IconButton(
-                                icon: Icon(Icons.photo_camera_outlined),
-                                color: Colors.black,
-                                onPressed: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => ProfileScreen()),
-                                  );
-                                },
-                                // To maintain design consistency, please remember to eliminate effects of buttons
-                                highlightColor: Colors.transparent,
-                                splashColor: Colors.transparent,
-                              ),
+                        ClipOval(
+                          child: Container(
+                            width: 40.0,
+                            height: 40.0,
+                            color: Colors.white,
+                            child: IconButton(
+                              icon: const Icon(Icons.photo_camera_outlined),
+                              color: Colors.black,
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          const ProfileScreen()),
+                                );
+                              },
+                              // To maintain design consistency, please remember
+                              // to eliminate effects of buttons
+                              highlightColor: Colors.transparent,
+                              splashColor: Colors.transparent,
                             ),
                           ),
                         ),
@@ -80,7 +77,7 @@ class HomeScreenState extends State<HomeScreen> {
                     const SizedBox(
                       height: 52,
                     ),
-                    Text('Moin,\nMustermann!',
+                    const Text('Moin,\nMustermann!',
                         style: TextStyle(
                             fontSize: 36.0,
                             fontWeight: FontWeight.w800,
@@ -88,7 +85,7 @@ class HomeScreenState extends State<HomeScreen> {
                     const SizedBox(
                       height: 4,
                     ),
-                    Text('Bist du voll motiviert?',
+                    const Text('Bist du voll motiviert?',
                         style: TextStyle(
                             fontSize: 20.0,
                             fontWeight: FontWeight.w500,
@@ -105,7 +102,6 @@ class HomeScreenState extends State<HomeScreen> {
                             setState(() {
                               isLeftButtonSelected = true;
                             });
-                            toggleButtonSelection(true);
                           },
                           child: Container(
                             decoration: BoxDecoration(
@@ -138,7 +134,6 @@ class HomeScreenState extends State<HomeScreen> {
                             setState(() {
                               isLeftButtonSelected = false;
                             });
-                            toggleButtonSelection(false);
                           },
                           child: Container(
                             decoration: BoxDecoration(
@@ -174,11 +169,11 @@ class HomeScreenState extends State<HomeScreen> {
                     // The widgets will be here presented
                     Visibility(
                         visible: isLeftButtonSelected,
-                        child: MeineWidgetsScreen(context)),
+                        child: meineWidgetsScreen(context)),
                     // The quick links will be here presented
                     Visibility(
                       visible: !isLeftButtonSelected,
-                      child: QuicklinksScreen(context),
+                      child: quicklinksScreen(context),
                     ),
                   ],
                 ))

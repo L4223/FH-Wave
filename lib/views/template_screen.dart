@@ -17,17 +17,16 @@ class TemplateScreen extends StatelessWidget {
           alignment: Alignment.centerLeft,
           child: Text(
             title,
-            style: TextStyle(
+            style: const TextStyle(
                 color: Colors.black,
                 fontSize: 28.0,
                 fontWeight: FontWeight.w700,
                 fontFamily: 'Helvetica Neue'),
           ),
         ),
-        iconTheme: IconThemeData(color: Colors.black),
+        iconTheme: const IconThemeData(color: Colors.black),
       ),
-      body: Container(
-          ),
+      body: Container(),
     );
   }
 }

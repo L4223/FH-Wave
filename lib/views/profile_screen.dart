@@ -10,7 +10,7 @@ class ProfileScreen extends StatelessWidget {
         backgroundColor: Colors.transparent,
         shadowColor: Colors.transparent,
         toolbarHeight: 100,
-        title: Align(
+        title: const Align(
           alignment: Alignment.centerLeft,
           child: Text(
             'Profile',
@@ -21,10 +21,9 @@ class ProfileScreen extends StatelessWidget {
                 fontFamily: 'Helvetica Neue'),
           ),
         ),
-        iconTheme: IconThemeData(color: Colors.black),
+        iconTheme: const IconThemeData(color: Colors.black),
       ),
-      body: Container(
-          ),
+      body: Container(),
     );
   }
 }
