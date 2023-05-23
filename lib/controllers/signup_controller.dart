@@ -1,28 +1,27 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:fh_wave/models/user_model.dart';
+
+import '../models/user_model.dart';
 
 class SignUpController {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
 
   Future<void> signUp(BuildContext context, UserModel user) async {
     try {
-      UserCredential userCredential =
-      await _firebaseAuth.createUserWithEmailAndPassword(
-
+      var userCredential = await _firebaseAuth.createUserWithEmailAndPassword(
         email: user.email,
         password: user.password,
-
       );
 
-      User? firebaseUser = userCredential.user;
+      var firebaseUser = userCredential.user;
       if (firebaseUser != null) {
         await firebaseUser.sendEmailVerification();
         showDialog(
           context: context,
           builder: (context) => AlertDialog(
             title: const Text('Sign Up Successful'),
-            content: const Text('Please check your email to verify your account.'),
+            content:
+                const Text('Please check your email to verify your account.'),
             actions: [
               TextButton(
                 onPressed: () {

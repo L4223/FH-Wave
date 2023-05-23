@@ -1,10 +1,10 @@
-import 'package:fh_wave/views/home_screen.dart';
-import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'firebase_options.dart';
+import 'package:flutter/material.dart';
 
-import 'package:fh_wave/views/signup_screen.dart';
-import 'package:fh_wave/views/login_screen.dart';
+import 'firebase_options.dart';
+import 'views/home_screen.dart';
+import 'views/login_screen.dart';
+import 'views/signup_screen.dart';
 
 
 
@@ -37,8 +37,8 @@ class MyApp extends StatelessWidget {
       ),
       initialRoute: '/',
       routes: {
-        '/': (context) => SignUpScreen(),
-        '/login': (context) => LoginScreen(),
+        '/': (context) => const SignUpScreen(),
+        '/login': (context) => const LoginScreen(),
         '/home': (context) => const HomeScreen(),
         '/signup': (context) => const SignUpScreen(),
 

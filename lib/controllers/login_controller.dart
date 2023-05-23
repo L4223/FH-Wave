@@ -1,19 +1,18 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:fh_wave/models/user_model.dart';
+import '../models/user_model.dart';
 
 class LoginController {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
 
   Future<void> login(BuildContext context, UserModel user) async {
     try {
-      UserCredential userCredential =
-      await _firebaseAuth.signInWithEmailAndPassword(
+      var userCredential = await _firebaseAuth.signInWithEmailAndPassword(
         email: user.email,
         password: user.password,
       );
 
-      User? firebaseUser = userCredential.user;
+      var firebaseUser = userCredential.user;
       if (firebaseUser != null && firebaseUser.emailVerified) {
         Navigator.pushNamed(context, '/home');
       } else {

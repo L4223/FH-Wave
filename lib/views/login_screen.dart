@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:fh_wave/controllers/login_controller.dart';
-import 'package:fh_wave/models/user_model.dart';
+
+import '../controllers/login_controller.dart';
+import '../models/user_model.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
 
   @override
-  _LoginScreenState createState() => _LoginScreenState();
+  LoginScreenState createState() => LoginScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class LoginScreenState extends State<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
   final LoginController _loginController = LoginController();
   final UserModel _user = UserModel();
@@ -39,7 +40,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   _user.email = value!;
                 },
               ),
-              SizedBox(height: 20.0),
+              const SizedBox(height: 20.0),
               TextFormField(
                 decoration: const InputDecoration(labelText: 'Password'),
                 obscureText: true,
@@ -53,7 +54,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   _user.password = value!;
                 },
               ),
-              SizedBox(height: 20.0),
+              const SizedBox(height: 20.0),
               ElevatedButton(
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
@@ -63,12 +64,12 @@ class _LoginScreenState extends State<LoginScreen> {
                 },
                 child: const Text('Log In'),
               ),
-              SizedBox(height: 20.0),
+              const SizedBox(height: 20.0),
               GestureDetector(
                 onTap: () {
                   Navigator.pushNamed(context, '/signup');
                 },
-                child: Text(
+                child: const Text(
                   'Don\'t have an account? Sign Up',
                   style: TextStyle(
                     color: Colors.blue,

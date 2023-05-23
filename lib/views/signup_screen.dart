@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:fh_wave/controllers/signup_controller.dart';
-import 'package:fh_wave/models/user_model.dart';
+
+import '../controllers/signup_controller.dart';
+import '../models/user_model.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({Key? key}) : super(key: key);
 
   @override
-  _SignUpScreenState createState() => _SignUpScreenState();
+  SignUpScreenState createState() => SignUpScreenState();
 }
 
-class _SignUpScreenState extends State<SignUpScreen> {
+class SignUpScreenState extends State<SignUpScreen> {
   final _formKey = GlobalKey<FormState>();
   final SignUpController _signUpController = SignUpController();
   final UserModel _user = UserModel();
@@ -39,7 +40,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   _user.name = value!;
                 },
               ),
-              SizedBox(height: 20.0),
+              const SizedBox(height: 20.0),
               TextFormField(
                 decoration: const InputDecoration(labelText: 'Email'),
                 validator: (value) {
@@ -52,7 +53,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   _user.email = value!;
                 },
               ),
-              SizedBox(height: 20.0),
+              const SizedBox(height: 20.0),
               TextFormField(
                 decoration: const InputDecoration(labelText: 'Password'),
                 obscureText: true,
@@ -66,7 +67,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   _user.password = value!;
                 },
               ),
-              SizedBox(height: 20.0),
+              const SizedBox(height: 20.0),
               ElevatedButton(
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
@@ -76,12 +77,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 },
                 child: const Text('Sign Up'),
               ),
-              SizedBox(height: 20.0),
+              const SizedBox(height: 20.0),
               GestureDetector(
                 onTap: () {
                   Navigator.pushNamed(context, '/login');
                 },
-                child: Text(
+                child: const Text(
                   'Already have an account? Log In',
                   style: TextStyle(
                     color: Colors.blue,
