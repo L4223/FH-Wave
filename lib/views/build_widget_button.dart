@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../app_colors.dart';
 
+/// Hier sollte man für Widgets weiter entwickeln
 Widget buildWidgetButton(
   BuildContext context, {
   String? title,
@@ -9,7 +10,7 @@ Widget buildWidgetButton(
   required Widget targetPage,
   bool isLarge = false,
 }) {
-  final width = isLarge ? 338.0 : 160.0;
+  final width = isLarge ? 338.0 : 158.0;
   const height = 112.0;
 
   void navigateToTargetPage() {

@@ -11,6 +11,7 @@ Widget meineWidgetsScreen(BuildContext context) {
     spacing: 17,
     runSpacing: 17,
     children: [
+      /// Hier sind nur Beispiele, biite modifizieren oder ersetzen
       buildWidgetButton(
         context,
         title: 'TEMPLATE WIDGET',
@@ -31,7 +32,8 @@ Widget meineWidgetsScreen(BuildContext context) {
           targetPage: const TemplateScreen(title: 'TEMPLATE3'),
           isLarge: true),
 
-      /// Add widgets here. Attention: Just above not after the Center below!
+      /// Widgets hier hinzufügen.
+      /// Achtung! Nur oben, nicht nach dem Center unten!
       Center(
         child: ClipOval(
           child: Container(

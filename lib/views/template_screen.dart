@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 
-/// An example for you. When you create new screen, you use this template
+/// Hier ist nur eine Template für Screens, die ohne ausgefallenen Dekorationen
 class TemplateScreen extends StatelessWidget {
   final String title;
 
+  /// Man kann title für das Screen bei Verwendung dieses Screens eingeben
   const TemplateScreen({Key? key, required this.title}) : super(key: key);
 
   @override

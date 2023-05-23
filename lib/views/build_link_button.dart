@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+///  A quick link button. When you create new screen, you use this template
 Widget buildLinkButton(
   BuildContext context, {
   required String title,

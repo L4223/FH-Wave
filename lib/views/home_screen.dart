@@ -22,7 +22,7 @@ class HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       // appBar: null,
       body: Stack(children: [
-        // Blue Gradient Background
+        // Blauer Hintergrund mit Farbverlauf
         Container(
           height: MediaQuery.of(context).size.height * 3 / 5,
           decoration: const BoxDecoration(
@@ -41,15 +41,16 @@ class HomeScreenState extends State<HomeScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const SizedBox(height: 80),
-                    // fhwave logo
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
+                        // fhwave logo
                         SvgPicture.asset(
                           'assets/fhwave_logo_weiss.svg',
                           width: 70,
                         ),
                         ClipOval(
+                          // Profil-Button
                           child: Container(
                             width: 40.0,
                             height: 40.0,
@@ -65,8 +66,10 @@ class HomeScreenState extends State<HomeScreen> {
                                           const ProfileScreen()),
                                 );
                               },
-                              // To maintain design consistency, please remember
-                              // to eliminate effects of buttons
+
+                              /// Um die Konsistenz des Designs zu halten,
+                              /// sollten Sie daran denken, die Dekorationen
+                              /// von Button zu eliminieren
                               highlightColor: Colors.transparent,
                               splashColor: Colors.transparent,
                             ),
@@ -93,7 +96,7 @@ class HomeScreenState extends State<HomeScreen> {
                     const SizedBox(
                       height: 28,
                     ),
-                    // Two buttons in row to switch pages
+                    // Zwei Buttons in einer Reihe zum Wechseln der Seiten
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -166,11 +169,11 @@ class HomeScreenState extends State<HomeScreen> {
                     const SizedBox(
                       height: 28,
                     ),
-                    // The widgets will be here presented
+                    // Die Widgets werden hier dargestellt
                     Visibility(
                         visible: isLeftButtonSelected,
                         child: meineWidgetsScreen(context)),
-                    // The quick links will be here presented
+                    // Die Quicklinks werden hier dargestellt
                     Visibility(
                       visible: !isLeftButtonSelected,
                       child: quicklinksScreen(context),

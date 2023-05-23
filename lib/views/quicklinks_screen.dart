@@ -10,7 +10,7 @@ Widget quicklinksScreen(BuildContext context) {
           targetPage: const TemplateScreen(title: 'TEMPLATE'),
           title: 'TEMPLATE'),
 
-      /// Add quick links here
+      /// Quicklinks hier weiter hinzufügen
     ],
   );
 }

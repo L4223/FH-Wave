@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+/// Hier kann man für AddWidgetsScreen weiter entwickeln
 class AddWidgetsScreen extends StatelessWidget {
   const AddWidgetsScreen({Key? key}) : super(key: key);
 
