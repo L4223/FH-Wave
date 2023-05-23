@@ -1,80 +1,85 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:fh_wave/controllers/login_controller.dart';
 import 'package:fh_wave/models/user_model.dart';
 
-class LoginController {
-  final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
+class LoginScreen extends StatefulWidget {
+  const LoginScreen({Key? key}) : super(key: key);
 
-  Future<void> login(BuildContext context, UserModel user) async {
-    try {
-      UserCredential userCredential =
-      await _firebaseAuth.signInWithEmailAndPassword(
-        email: user.email,
-        password: user.password,
-      );
+  @override
+  _LoginScreenState createState() => _LoginScreenState();
+}
 
-      User? firebaseUser = userCredential.user;
-      if (firebaseUser != null && firebaseUser.emailVerified) {
-        Navigator.pushNamed(context, '/home');
-      } else {
-        showDialog(
-          context: context,
-          builder: (context) => AlertDialog(
-            title: const Text('Email Verification'),
-            content: const Text('Please verify your email before logging in.'),
-            actions: [
-              TextButton(
-                onPressed: () => Navigator.pop(context),
-                child: const Text('OK'),
+class _LoginScreenState extends State<LoginScreen> {
+  final _formKey = GlobalKey<FormState>();
+  final LoginController _loginController = LoginController();
+  final UserModel _user = UserModel();
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Log In'),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(20.0),
+        child: Form(
+          key: _formKey,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              TextFormField(
+                decoration: const InputDecoration(labelText: 'Email'),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter your email';
+                  }
+                  return null;
+                },
+                onSaved: (value) {
+                  _user.email = value!;
+                },
+              ),
+              SizedBox(height: 20.0),
+              TextFormField(
+                decoration: const InputDecoration(labelText: 'Password'),
+                obscureText: true,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter your password';
+                  }
+                  return null;
+                },
+                onSaved: (value) {
+                  _user.password = value!;
+                },
+              ),
+              SizedBox(height: 20.0),
+              ElevatedButton(
+                onPressed: () {
+                  if (_formKey.currentState!.validate()) {
+                    _formKey.currentState!.save();
+                    _loginController.login(context, _user);
+                  }
+                },
+                child: const Text('Log In'),
+              ),
+              SizedBox(height: 20.0),
+              GestureDetector(
+                onTap: () {
+                  Navigator.pushNamed(context, '/signup');
+                },
+                child: Text(
+                  'Don\'t have an account? Sign Up',
+                  style: TextStyle(
+                    color: Colors.blue,
+                    decoration: TextDecoration.underline,
+                  ),
+                ),
               ),
             ],
           ),
-        );
-      }
-    } on FirebaseAuthException catch (e) {
-      if (e.code == 'user-not-found') {
-        showDialog(
-          context: context,
-          builder: (context) => AlertDialog(
-            title: const Text('Log In Error'),
-            content: const Text('No user found for that email.'),
-            actions: [
-              TextButton(
-                onPressed: () => Navigator.pop(context),
-                child: const Text('OK'),
-              ),
-            ],
-          ),
-        );
-      } else if (e.code == 'wrong-password') {
-        showDialog(
-          context: context,
-          builder: (context) => AlertDialog(
-            title: const Text('Log In Error'),
-            content: const Text('Wrong password provided.'),
-            actions: [
-              TextButton(
-                onPressed: () => Navigator.pop(context),
-                child: const Text('OK'),
-              ),
-            ],
-          ),
-        );
-      }
-    } catch (e) {
-      showDialog(
-        context: context,
-        builder: (context) => AlertDialog(
-          title: const Text('Log In Error'),
-          content: Text('An error occurred: $e'),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.pop(context),
-              child: const Text('OK'),
-            ),
-          ],
         ),
-      );
-    }
+      ),
+    );
   }
 }
