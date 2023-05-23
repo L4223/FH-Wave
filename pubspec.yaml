@@ -68,6 +68,18 @@ flutter:
   assets:
     - assets/fhwave_logo_weiss.svg
     - assets/fhwave_logo.svg
+    - fonts/Roboto-Black.ttf
+    - fonts/Roboto-BlackItalic.ttf
+    - fonts/Roboto-Bold.ttf
+    - fonts/Roboto-BoldItalic.ttf
+    - fonts/Roboto-Medium.ttf
+    - fonts/Roboto-MediumItalic.ttf
+    - fonts/Roboto-Regular.ttf
+    - fonts/Roboto-Italic.ttf
+    - fonts/Roboto-Light.ttf
+    - fonts/Roboto-LightItalic.ttf
+    - fonts/Roboto-Thin.ttf
+    - fonts/Roboto-ThinItalic.ttf
 
   fonts:
     - family: Roboto
