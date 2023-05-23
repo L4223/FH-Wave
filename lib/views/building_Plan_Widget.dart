@@ -1,52 +1,63 @@
 import 'package:flutter/material.dart';
-import '../models/building_plan.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
-
+import 'package:geolocator/geolocator.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 void main() => runApp(const MyApp());
 
 class MyApp extends StatefulWidget {
-  const MyApp({super.key});
+  const MyApp({Key? key}) : super(key: key);
 
   @override
   State<MyApp> createState() => _MyAppState();
 }
 
 class _MyAppState extends State<MyApp> {
-  late GoogleMapController mapController;
+  late Position _currentPosition;
 
-  final LatLng _center = const LatLng(45.521563, -122.677433);
+  @override
+  void initState() {
+    super.initState();
+    requestLocationPermission();
+  }
 
-  void _onMapCreated(GoogleMapController controller) {
-    mapController = controller;
+  void requestLocationPermission() async {
+    final permissionStatus = await Permission.location.request();
+    if (permissionStatus.isGranted) {
+      getCurrentLocation();
+    } else {
+      // Berechtigung wurde nicht gewährt, behandeln Sie den Fall entsprechend
+    }
+  }
+
+  void getCurrentLocation() async {
+    final position = await Geolocator.getCurrentPosition();
+    setState(() {
+      _currentPosition = position;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme: ThemeData(
-        useMaterial3: true,
-        colorSchemeSeed: Colors.green[700],
-      ),
       home: Scaffold(
         appBar: AppBar(
-          title: const Text('Maps Sample App'),
-          elevation: 2,
+          title: const Text('Geolocator App'),
         ),
-        body: GoogleMap(
-          onMapCreated: _onMapCreated,
-          initialCameraPosition: CameraPosition(
-            target: _center,
-            zoom: 11.0,
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              if (_currentPosition != null)
+                Text('Latitude: ${_currentPosition.latitude}\n'
+                    'Longitude: ${_currentPosition.longitude}')
+              else
+                Text('Berechtigung zur Standortbestimmung fehlt.'),
+            ],
           ),
         ),
       ),
     );
   }
 }
-
-
-
-
 
 
