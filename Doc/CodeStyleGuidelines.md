@@ -3,11 +3,13 @@
 ## Grundregeln
 
 - ##### Codesprache ist Englisch!
+- ##### Kommentare und Commits werden auf deutsch geschrieben!
 - ##### Eindeutige sprechende Namen!
 - ##### Kommentiere so viel wie nötig, so wenig wie möglich!
 - ##### try-catch-Blöcke müssen benutzt werden
 - ##### Commit-Nachrichten müssen eindeutig sein
 - ##### Design Pattern wird eingehalten!
+- ##### *flutter analyze .* und *dart format .* **VOR** dem merge-request ausführen
 
 
 <br>Generell sollen alle **DO** und **DON'T** von den [Dart Style Guide] umgesetzt werden.<br>
@@ -93,7 +95,7 @@ Id id;
 ## Dokumentation
 
 ### Kommentare
-- Kommentiere auf Sprache?
+- Kommentiere auf deutsch
 - Kommentiere in vollen Sätzen
 - Benutze keine Block-Kommentare
 - Benutze /// um ein Kommentar für die Dokumentation zu schreiben. Diese können später automatisch in die Dokumentation. 
@@ -139,8 +141,7 @@ Falls gewisse Namensgebungen, Formatierungen, Syntax auffallen, die man lassen o
 ## Design Pattern
 
 ## MVC
-[MVC Guide]
-[Model-View-Controller (MVC)]: https://medium.com/p/1fabe2069b01
+[Model-View-Controller (MVC)]
 
 ## Benennung
 
@@ -162,6 +163,8 @@ Try Catch muss eingesetzt werden.
 
 ## GIT-Guide
 
+Commit Sprache ist deutsch.
+
 Branch Namen werden in drei Bereiche geteilt und mit Unterstrichen getrennt. Es wird als **UpperCamelCase** geschrieben. <br>
 Struktur: <br>
 Feature_Funktion_Name <br>
@@ -171,6 +174,19 @@ Von den Features wird nur in den Develop-Branch gemergt, der Develop-Branch ist 
 Es kann immer vom Develop-Branch gemergt werden, um seinen eigene Branch zu aktualisieren.
 
 Jeder Commit muss mit einem eindeutigen Namen versehen sein.
+
+Commit Anfangs-Kürzel:
+
+Docu_ *um Dokumentation zu ändern*
+Env_ *um etwas an dem Entwicklungsvorgang zu ändern*  
+Feature_ *ein neues Feature hinzufügen*
+UpdateFeature_ *ein Feature updaten*
+Fix_ *einen Fix zu machen, unschöne Stellen ändern*
+BugFix_ *einen Fehler beheben*
+UI_ *Aussehen wird angepasst*
+Backend_ *Backend, Datenbank wird angepasst*
+Firebase_ *LogIn Dateien oder ähnliches wird angepasst*
+
 
 
 Beispiel:
@@ -197,8 +213,9 @@ Beispiel:
 * //Master
 ``` 
 
-## Definition of Done
+
 
 
 
 [Dart Style	Guide]: https://dart.dev/guides/language/effective-dart
+[Model-View-Controller (MVC)]: https://medium.com/p/1fabe2069b01
