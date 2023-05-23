@@ -33,7 +33,6 @@ Building({required this.name, required this.address});
     Building(name: 'C04', address:'Luisenstrasse 25, 24149 Kiel'), //ergänzen
     Building(name: 'C18', address:'Zulassungsstelle FH Kiel, 24149 Kiel'),
 
-
 ];
 
 
