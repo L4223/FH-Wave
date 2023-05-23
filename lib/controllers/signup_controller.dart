@@ -2,29 +2,33 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fh_wave/models/user_model.dart';
 
-class LoginController {
+class SignUpController {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
 
-  Future<void> login(BuildContext context, UserModel user) async {
+  Future<void> signUp(BuildContext context, UserModel user) async {
     try {
       UserCredential userCredential =
-      await _firebaseAuth.signInWithEmailAndPassword(
+      await _firebaseAuth.createUserWithEmailAndPassword(
+
         email: user.email,
         password: user.password,
+
       );
 
       User? firebaseUser = userCredential.user;
-      if (firebaseUser != null && firebaseUser.emailVerified) {
-        Navigator.pushNamed(context, '/home');
-      } else {
+      if (firebaseUser != null) {
+        await firebaseUser.sendEmailVerification();
         showDialog(
           context: context,
           builder: (context) => AlertDialog(
-            title: const Text('Email Verification'),
-            content: const Text('Please verify your email before logging in.'),
+            title: const Text('Sign Up Successful'),
+            content: const Text('Please check your email to verify your account.'),
             actions: [
               TextButton(
-                onPressed: () => Navigator.pop(context),
+                onPressed: () {
+                  Navigator.pop(context);
+                  Navigator.pushNamed(context, '/login');
+                },
                 child: const Text('OK'),
               ),
             ],
@@ -32,12 +36,12 @@ class LoginController {
         );
       }
     } on FirebaseAuthException catch (e) {
-      if (e.code == 'user-not-found') {
+      if (e.code == 'weak-password') {
         showDialog(
           context: context,
           builder: (context) => AlertDialog(
-            title: const Text('Log In Error'),
-            content: const Text('No user found for that email.'),
+            title: const Text('Sign Up Error'),
+            content: const Text('The password provided is too weak.'),
             actions: [
               TextButton(
                 onPressed: () => Navigator.pop(context),
@@ -46,12 +50,12 @@ class LoginController {
             ],
           ),
         );
-      } else if (e.code == 'wrong-password') {
+      } else if (e.code == 'email-already-in-use') {
         showDialog(
           context: context,
           builder: (context) => AlertDialog(
-            title: const Text('Log In Error'),
-            content: const Text('Wrong password provided.'),
+            title: const Text('Sign Up Error'),
+            content: const Text('The account already exists for that email.'),
             actions: [
               TextButton(
                 onPressed: () => Navigator.pop(context),
@@ -65,7 +69,7 @@ class LoginController {
       showDialog(
         context: context,
         builder: (context) => AlertDialog(
-          title: const Text('Log In Error'),
+          title: const Text('Sign Up Error'),
           content: Text('An error occurred: $e'),
           actions: [
             TextButton(
