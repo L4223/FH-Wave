@@ -2,34 +2,31 @@ import 'package:flutter/material.dart';
 
 import '../app_colors.dart';
 import 'add_widgets_screen.dart';
-import 'build_widget_button.dart';
 import 'template_screen.dart';
+import 'widgets/widget_button.dart';
 
 Widget meineWidgetsScreen(BuildContext context) {
   return Wrap(
     direction: Axis.horizontal,
-    spacing: 17,
-    runSpacing: 17,
+    alignment: WrapAlignment.center,
+    spacing: 12,
+    runSpacing: 12,
     children: [
       /// Hier sind nur Beispiele, biite modifizieren oder ersetzen
-      buildWidgetButton(
-        context,
+      WidgetButton(
         title: 'TEMPLATE WIDGET',
         backgroundColor: AppColors.appBlue,
-        targetPage: const TemplateScreen(
-          title: 'TEMPLATE1',
-        ),
+        targetPage: TemplateScreen(),
       ),
-      buildWidgetButton(
-        context,
+      WidgetButton(
         title: 'TEMPLATE WIDGET',
         backgroundColor: AppColors.appPurple,
-        targetPage: const TemplateScreen(title: 'TEMPLATE2'),
+        targetPage: TemplateScreen(),
       ),
-      buildWidgetButton(context,
+      WidgetButton(
           title: 'TEMPLATE WIDGET',
           backgroundColor: AppColors.appYellow,
-          targetPage: const TemplateScreen(title: 'TEMPLATE3'),
+          targetPage: TemplateScreen(),
           isLarge: true),
 
       /// Widgets hier hinzufügen.
@@ -43,8 +40,7 @@ Widget meineWidgetsScreen(BuildContext context) {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(
-                      builder: (context) => const AddWidgetsScreen()),
+                  MaterialPageRoute(builder: (context) => AddWidgetsScreen()),
                 );
               },
               highlightColor: Colors.transparent,

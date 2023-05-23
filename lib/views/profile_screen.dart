@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import '../controllers/profile_screen_controller.dart';
 
 /// Hier kann man für ProfileScreen weiter entwickeln
 class ProfileScreen extends StatelessWidget {
-  const ProfileScreen({Key? key}) : super(key: key);
+  ProfileScreen({Key? key}) : super(key: key);
+  final ProfileScreenController _controller = ProfileScreenController();
 
   @override
   Widget build(BuildContext context) {
@@ -11,20 +13,23 @@ class ProfileScreen extends StatelessWidget {
         backgroundColor: Colors.transparent,
         shadowColor: Colors.transparent,
         toolbarHeight: 100,
-        title: const Align(
+        title: Align(
           alignment: Alignment.centerLeft,
           child: Text(
-            'Profile',
+            _controller.title,
             style: TextStyle(
-                color: Colors.black,
-                fontSize: 28.0,
-                fontWeight: FontWeight.w700,
-                fontFamily: 'Helvetica Neue'),
+                color: _controller.color,
+                fontSize: _controller.fontSize,
+                fontWeight: _controller.fontWeight),
           ),
         ),
         iconTheme: const IconThemeData(color: Colors.black),
       ),
-      body: Container(),
+      body:
+
+          /// Hier schreibst du deine Code
+          /// und bitte vergisst du noch MVC-Design-Pattern
+          Container(),
     );
   }
 }

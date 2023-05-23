@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import '../app_colors.dart';
+import '../controllers/home_screen_controller.dart';
 import 'meine_widgets_screen.dart';
 import 'profile_screen.dart';
-import 'quicklinks_screen.dart';
+import 'quick_links_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -14,11 +15,14 @@ class HomeScreen extends StatefulWidget {
 }
 
 class HomeScreenState extends State<HomeScreen> {
+  final HomeScreenController _controller = HomeScreenController();
   bool isLeftButtonSelected = true;
   PageController pageController = PageController(initialPage: 0);
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final width = screenWidth * 0.41;
     return Scaffold(
       // appBar: null,
       body: Stack(children: [
@@ -55,6 +59,9 @@ class HomeScreenState extends State<HomeScreen> {
                             width: 40.0,
                             height: 40.0,
                             color: Colors.white,
+
+                            /// Hier IconButton muss später durch Image ersetzt
+                            /// werden, danch packen wir _controller.image ein
                             child: IconButton(
                               icon: const Icon(Icons.photo_camera_outlined),
                               color: Colors.black,
@@ -62,8 +69,7 @@ class HomeScreenState extends State<HomeScreen> {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) =>
-                                          const ProfileScreen()),
+                                      builder: (context) => ProfileScreen()),
                                 );
                               },
 
@@ -80,19 +86,20 @@ class HomeScreenState extends State<HomeScreen> {
                     const SizedBox(
                       height: 52,
                     ),
-                    const Text('Moin,\nMustermann!',
+                     Text(
+                        '${_controller.greeting}, \n${_controller.name}!',
                         style: TextStyle(
                             fontSize: 36.0,
                             fontWeight: FontWeight.w800,
-                            fontFamily: 'Helvetica Neue')),
+                            color: _controller.fontColor)),
                     const SizedBox(
                       height: 4,
                     ),
-                    const Text('Bist du voll motiviert?',
-                        style: TextStyle(
-                            fontSize: 20.0,
-                            fontWeight: FontWeight.w500,
-                            fontFamily: 'Helvetica Neue')),
+                     Text(_controller.motivatingWords,
+                        style: const TextStyle(
+                          fontSize: 20.0,
+                          fontWeight: FontWeight.w600,
+                        )),
                     const SizedBox(
                       height: 28,
                     ),
@@ -116,18 +123,18 @@ class HomeScreenState extends State<HomeScreen> {
                                 width: 2.0,
                               ),
                             ),
-                            width: 162.0,
+                            width: width,
                             height: 50.0,
                             child: Center(
                               child: Text(
                                 'Meine Widgets',
                                 style: TextStyle(
-                                    color: isLeftButtonSelected
-                                        ? Colors.white
-                                        : Colors.black,
-                                    fontSize: 16.0,
-                                    fontWeight: FontWeight.w700,
-                                    fontFamily: 'Helvetica Neue'),
+                                  color: isLeftButtonSelected
+                                      ? Colors.white
+                                      : Colors.black,
+                                  fontSize: 16.0,
+                                  fontWeight: FontWeight.w700,
+                                ),
                               ),
                             ),
                           ),
@@ -148,18 +155,18 @@ class HomeScreenState extends State<HomeScreen> {
                                 width: 2.0,
                               ),
                             ),
-                            width: 162.0,
+                            width: width,
                             height: 50.0,
                             child: Center(
                               child: Text(
                                 'Quicklinks',
                                 style: TextStyle(
-                                    color: isLeftButtonSelected
-                                        ? Colors.black
-                                        : Colors.white,
-                                    fontSize: 16.0,
-                                    fontWeight: FontWeight.w700,
-                                    fontFamily: 'Helvetica Neue'),
+                                  color: isLeftButtonSelected
+                                      ? Colors.black
+                                      : Colors.white,
+                                  fontSize: 16.0,
+                                  fontWeight: FontWeight.w700,
+                                ),
                               ),
                             ),
                           ),
@@ -176,7 +183,7 @@ class HomeScreenState extends State<HomeScreen> {
                     // Die Quicklinks werden hier dargestellt
                     Visibility(
                       visible: !isLeftButtonSelected,
-                      child: quicklinksScreen(context),
+                      child: quickLinksScreen(context),
                     ),
                   ],
                 ))

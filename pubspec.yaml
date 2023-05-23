@@ -69,6 +69,9 @@ flutter:
     - assets/fhwave_logo_weiss.svg
     - assets/fhwave_logo.svg
 
+  fonts:
+    - family: Roboto
+
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
 
