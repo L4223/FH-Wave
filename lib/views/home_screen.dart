@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../Widgets/dark_mode_button.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -6,11 +7,12 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: backgroundColor,
       appBar: AppBar(
         title: const Text("Home"),
       ),
-      body: const Center(
-        child: Icon(Icons.home),
+      body: Center(
+        child: DarkModeButton(),
       ),
     );
   }
