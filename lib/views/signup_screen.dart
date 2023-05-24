@@ -37,7 +37,7 @@ class SignUpScreenState extends State<SignUpScreen> {
                   return null;
                 },
                 onSaved: (value) {
-                  _user.name = value!;
+                  _user.username = value!;
                 },
               ),
               const SizedBox(height: 20.0),
@@ -72,7 +72,8 @@ class SignUpScreenState extends State<SignUpScreen> {
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
                     _formKey.currentState!.save();
-                    _signUpController.signUp(context, _user);
+                    _signUpController.signUp(
+                        context, _user.username, _user.email, _user.password);
                   }
                 },
                 child: const Text('Sign Up'),

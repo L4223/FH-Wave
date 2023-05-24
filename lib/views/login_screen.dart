@@ -12,6 +12,7 @@ class LoginScreen extends StatefulWidget {
 
 class LoginScreenState extends State<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
+
   final LoginController _loginController = LoginController();
   final UserModel _user = UserModel();
 
@@ -59,7 +60,8 @@ class LoginScreenState extends State<LoginScreen> {
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
                     _formKey.currentState!.save();
-                    _loginController.login(context, _user);
+                    _loginController.login(
+                        context, _user.email, _user.password);
                   }
                 },
                 child: const Text('Log In'),

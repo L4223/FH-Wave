@@ -4,18 +4,25 @@ import 'package:flutter/material.dart';
 import '../models/user_model.dart';
 
 class SignUpController {
-  final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  UserModel? currentUser;
 
-  Future<void> signUp(BuildContext context, UserModel user) async {
+  Future<void> signUp(BuildContext context, String username, String email,
+      String password) async {
     try {
-      var userCredential = await _firebaseAuth.createUserWithEmailAndPassword(
-        email: user.email,
-        password: user.password,
+      var userCredential = await _auth.createUserWithEmailAndPassword(
+        email: email,
+        password: password,
       );
 
-      var firebaseUser = userCredential.user;
-      if (firebaseUser != null) {
-        await firebaseUser.sendEmailVerification();
+      var user = userCredential.user;
+      if (user != null) {
+        await user.sendEmailVerification();
+        currentUser = UserModel(
+            uid: user.uid,
+            email: user.email!,
+            username: user.displayName ?? '');
+        // ignore: use_build_context_synchronously
         showDialog(
           context: context,
           builder: (context) => AlertDialog(

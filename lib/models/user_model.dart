@@ -1,7 +1,13 @@
 class UserModel {
-  String name;
+  String uid;
   String email;
+  String username;
   String password;
 
-  UserModel({this.name = '', this.email = '', this.password = ''});
+  UserModel({
+    this.username = '',
+    this.email = '',
+    this.uid = '',
+    this.password = '',
+  });
 }
