@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../controllers/signup_controller.dart';
-import '../models/user_model.dart';
+import '../controllers/user_controller.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({Key? key}) : super(key: key);
@@ -12,8 +11,12 @@ class SignUpScreen extends StatefulWidget {
 
 class SignUpScreenState extends State<SignUpScreen> {
   final _formKey = GlobalKey<FormState>();
-  final SignUpController _signUpController = SignUpController();
-  final UserModel _user = UserModel();
+  final UserController _signUpController = UserController();
+  String nameController = '';
+  String emailController = '';
+  String passwordController = '';
+
+  //final UserModel _user = UserModel();
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +40,7 @@ class SignUpScreenState extends State<SignUpScreen> {
                   return null;
                 },
                 onSaved: (value) {
-                  _user.username = value!;
+                  nameController = value!;
                 },
               ),
               const SizedBox(height: 20.0),
@@ -50,7 +53,7 @@ class SignUpScreenState extends State<SignUpScreen> {
                   return null;
                 },
                 onSaved: (value) {
-                  _user.email = value!;
+                  emailController = value!;
                 },
               ),
               const SizedBox(height: 20.0),
@@ -64,7 +67,7 @@ class SignUpScreenState extends State<SignUpScreen> {
                   return null;
                 },
                 onSaved: (value) {
-                  _user.password = value!;
+                  passwordController = value!;
                 },
               ),
               const SizedBox(height: 20.0),
@@ -72,8 +75,8 @@ class SignUpScreenState extends State<SignUpScreen> {
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
                     _formKey.currentState!.save();
-                    _signUpController.signUp(
-                        context, _user.username, _user.email, _user.password);
+                    _signUpController.signUp(context, nameController,
+                        emailController, passwordController);
                   }
                 },
                 child: const Text('Sign Up'),

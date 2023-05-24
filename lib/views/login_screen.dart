@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../controllers/login_controller.dart';
-import '../models/user_model.dart';
+import '../controllers/user_controller.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -12,9 +11,9 @@ class LoginScreen extends StatefulWidget {
 
 class LoginScreenState extends State<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
-
-  final LoginController _loginController = LoginController();
-  final UserModel _user = UserModel();
+  final UserController _loginController = UserController();
+  String emailController = '';
+  String passwordController = '';
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +37,7 @@ class LoginScreenState extends State<LoginScreen> {
                   return null;
                 },
                 onSaved: (value) {
-                  _user.email = value!;
+                  emailController = value!;
                 },
               ),
               const SizedBox(height: 20.0),
@@ -52,7 +51,7 @@ class LoginScreenState extends State<LoginScreen> {
                   return null;
                 },
                 onSaved: (value) {
-                  _user.password = value!;
+                  passwordController = value!;
                 },
               ),
               const SizedBox(height: 20.0),
@@ -61,7 +60,7 @@ class LoginScreenState extends State<LoginScreen> {
                   if (_formKey.currentState!.validate()) {
                     _formKey.currentState!.save();
                     _loginController.login(
-                        context, _user.email, _user.password);
+                        context, emailController, passwordController);
                   }
                 },
                 child: const Text('Log In'),
