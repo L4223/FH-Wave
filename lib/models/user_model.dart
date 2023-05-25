@@ -1,11 +1,7 @@
 class UserModel {
-  String uid;
-  String email;
-  String username;
+  final String uid;
+  final String email;
+  final String username;
 
-  UserModel({
-    this.username = '',
-    this.email = '',
-    this.uid = '',
-  });
+  UserModel({required this.uid, required this.email, required this.username});
 }

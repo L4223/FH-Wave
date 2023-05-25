@@ -12,7 +12,7 @@ class SignUpScreen extends StatefulWidget {
 class SignUpScreenState extends State<SignUpScreen> {
   final _formKey = GlobalKey<FormState>();
   final UserController _signUpController = UserController();
-  String nameController = '';
+
   String emailController = '';
   String passwordController = '';
 
@@ -31,18 +31,6 @@ class SignUpScreenState extends State<SignUpScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              TextFormField(
-                decoration: const InputDecoration(labelText: 'Name'),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter your name';
-                  }
-                  return null;
-                },
-                onSaved: (value) {
-                  nameController = value!;
-                },
-              ),
               const SizedBox(height: 20.0),
               TextFormField(
                 decoration: const InputDecoration(labelText: 'Email'),
@@ -75,8 +63,8 @@ class SignUpScreenState extends State<SignUpScreen> {
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
                     _formKey.currentState!.save();
-                    _signUpController.signUp(context, nameController,
-                        emailController, passwordController);
+                    _signUpController.signUp(
+                        context, emailController, passwordController);
                   }
                 },
                 child: const Text('Sign Up'),

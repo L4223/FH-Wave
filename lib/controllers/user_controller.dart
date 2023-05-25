@@ -16,6 +16,7 @@ class UserController {
       );
 
       var user = userCredential.user;
+
       if (user != null && user.emailVerified) {
         currentUser = UserModel(
             uid: user.uid,
@@ -87,8 +88,8 @@ class UserController {
     }
   }
 
-  Future<void> signUp(BuildContext context, String username, String email,
-      String password) async {
+  Future<void> signUp(
+      BuildContext context, String email, String password) async {
     try {
       var userCredential = await _auth.createUserWithEmailAndPassword(
         email: email,
