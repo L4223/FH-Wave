@@ -3,15 +3,15 @@ import 'package:flutter/material.dart';
 Color hintergrundfarbe = Colors.white;
 
 class DarkMode extends StatefulWidget {
-  final Function(Color) updateBackgroundColor; // Callback-Funktion definieren
+  final Function(Color) updateBackgroundColor; // Callback-function
 
   const DarkMode(this.updateBackgroundColor, {Key? key}) : super(key: key);
 
   @override
-  DarkModeButton createState() => DarkModeButton();
+  DarkModeState createState() => DarkModeState();
 }
 
-class DarkModeButton extends State<DarkMode> {
+class DarkModeState extends State<DarkMode> {
   @override
   Widget build(BuildContext context) {
     return OutlinedButton(

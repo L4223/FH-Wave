@@ -1,10 +1,22 @@
 import 'package:flutter/material.dart';
 import '../controllers/profile_screen_controller.dart';
+import 'widgets/dark_mode_button.dart';
 
-/// Hier kann man für ProfileScreen weiter entwickeln
-class ProfileScreen extends StatelessWidget {
-  ProfileScreen({Key? key}) : super(key: key);
-  final ProfileScreenController _controller = ProfileScreenController();
+final ProfileScreenController _controller = ProfileScreenController();
+
+class ProfileScreen extends StatefulWidget {
+  const ProfileScreen({Key? key}) : super(key: key);
+
+  @override
+  State<ProfileScreen> createState() => _ProfileScreenState();
+}
+
+class _ProfileScreenState extends State<ProfileScreen> {
+  void updateBackgroundColor(Color color) {
+    setState(() {
+      hintergrundfarbe = color;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -25,11 +37,15 @@ class ProfileScreen extends StatelessWidget {
         ),
         iconTheme: const IconThemeData(color: Colors.black),
       ),
-      body:
+      body: ListView(
+        children: [
+          DarkMode(updateBackgroundColor),
+        ],
+      ),
+      backgroundColor: hintergrundfarbe,
 
-          /// Hier schreibst du deine Code
-          /// und bitte vergisst du noch MVC-Design-Pattern
-          Container(),
+      /// Hier schreibst du deine Code
+      /// und bitte vergisst du noch MVC-Design-PatternContainer(),
     );
   }
 }
