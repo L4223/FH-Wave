@@ -6,6 +6,7 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    //Aktuelle Angemeldete E-mail aus Firebase
     var user = FirebaseAuth.instance.currentUser;
     var name = user?.email;
 

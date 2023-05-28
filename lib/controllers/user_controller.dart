@@ -7,6 +7,9 @@ class UserController {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   UserModel? currentUser;
 
+  //User existiert? ==>
+  // Eingabefehler mithilfe von AlertDialogs überpruft.
+  //Kein Eingabefehler ==> Anmelden
   Future<void> login(
       BuildContext context, String email, String password) async {
     try {
@@ -16,7 +19,9 @@ class UserController {
       );
 
       var user = userCredential.user;
-
+// Regstriert und verifiziert?
+// Daten aus Firebase speichern/Id & e-mail & username
+// und Navigieren ==> HomeScreen
       if (user != null && user.emailVerified) {
         currentUser = UserModel(
             uid: user.uid,
@@ -88,6 +93,9 @@ class UserController {
     }
   }
 
+  //Email und Password != Null? ==>
+  // Eingabefehler mithilfe von AlertDialogs überpruft.
+  //Kein Eingabefehler ==> Regstrieren
   Future<void> signUp(
       BuildContext context, String email, String password) async {
     try {
@@ -95,7 +103,7 @@ class UserController {
         email: email,
         password: password,
       );
-
+      // Wenn ein Konto erstellt wurde, sende einen Bestätigungslink !
       var user = userCredential.user;
       if (user != null) {
         await user.sendEmailVerification();
@@ -166,6 +174,16 @@ class UserController {
           ],
         ),
       );
+    }
+  }
+
+  //Authentifizierungsüberprüfung
+  bool checkAuth() {
+    var user = FirebaseAuth.instance.currentUser;
+    if (user != null && user.emailVerified) {
+      return true;
+    } else {
+      return false;
     }
   }
 }

@@ -56,6 +56,8 @@ class LoginScreenState extends State<LoginScreen> {
               ),
               const SizedBox(height: 20.0),
               ElevatedButton(
+                //Login Button
+                //E-mail und Password an anmeldesfunktion Übergeben
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
                     _formKey.currentState!.save();
@@ -65,6 +67,7 @@ class LoginScreenState extends State<LoginScreen> {
                 },
                 child: const Text('Log In'),
               ),
+              //Underline Navigieren ==> SignupScreen
               const SizedBox(height: 20.0),
               GestureDetector(
                 onTap: () {

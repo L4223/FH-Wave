@@ -12,11 +12,8 @@ class SignUpScreen extends StatefulWidget {
 class SignUpScreenState extends State<SignUpScreen> {
   final _formKey = GlobalKey<FormState>();
   final UserController _signUpController = UserController();
-
   String emailController = '';
   String passwordController = '';
-
-  //final UserModel _user = UserModel();
 
   @override
   Widget build(BuildContext context) {
@@ -33,6 +30,7 @@ class SignUpScreenState extends State<SignUpScreen> {
             children: [
               const SizedBox(height: 20.0),
               TextFormField(
+                // EmailFeld
                 decoration: const InputDecoration(labelText: 'Email'),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
@@ -46,6 +44,7 @@ class SignUpScreenState extends State<SignUpScreen> {
               ),
               const SizedBox(height: 20.0),
               TextFormField(
+                //PasswordFeld
                 decoration: const InputDecoration(labelText: 'Password'),
                 obscureText: true,
                 validator: (value) {
@@ -59,6 +58,8 @@ class SignUpScreenState extends State<SignUpScreen> {
                 },
               ),
               const SizedBox(height: 20.0),
+              //Signup Button
+              //E-mail und Password an Regstrierungsfunktion Übergeben
               ElevatedButton(
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
@@ -69,6 +70,7 @@ class SignUpScreenState extends State<SignUpScreen> {
                 },
                 child: const Text('Sign Up'),
               ),
+              //Underline Navigieren ==> LoginScreen
               const SizedBox(height: 20.0),
               GestureDetector(
                 onTap: () {
