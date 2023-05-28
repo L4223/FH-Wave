@@ -25,7 +25,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       home:
           // Authentifizierungsüberprüfung:
-          //User Rigstriert und verfiziert ==> HomeScreen
+          // User Rigstriert und verfiziert ==> HomeScreen
           // ansonsten ==> LoginScreen
           user.checkAuth() == false ? const LoginScreen() : const HomeScreen(),
       theme: ThemeData(
