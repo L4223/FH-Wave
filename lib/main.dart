@@ -1,7 +1,7 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
+import 'controllers/user_controller.dart';
 import 'firebase_options.dart';
 import 'views/home_screen.dart';
 import 'views/login_screen.dart';
@@ -20,12 +20,14 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Rufe die Authentifizierungsüberprüfung auf
-    checkAuth();
-
+    final UserController _user = UserController();
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: checkAuth() == false ? const LoginScreen() : const HomeScreen(),
+      home:
+          // Authentifizierungsüberprüfung:
+          //User Rigstriert und verfiziert ==> HomeScreen
+          // ansonsten ==> LoginScreen
+          _user.checkAuth() == false ? const LoginScreen() : const HomeScreen(),
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
@@ -36,16 +38,5 @@ class MyApp extends StatelessWidget {
         '/signup': (context) => const SignUpScreen(),
       },
     );
-  }
-}
-
-bool checkAuth() {
-  //Authentifizierungsüberprüfung
-  var user = FirebaseAuth.instance.currentUser;
-
-  if (user != null && user.emailVerified) {
-    return true;
-  } else {
-    return false;
   }
 }
