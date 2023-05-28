@@ -40,7 +40,7 @@ class MyApp extends StatelessWidget {
 }
 
 bool checkAuth() {
-  //Authentifizierungsüberprüfung
+  //Authentifizierungsüberprüfung//
   var user = FirebaseAuth.instance.currentUser;
 
   if (user != null && user.emailVerified) {
