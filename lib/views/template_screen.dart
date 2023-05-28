@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../controllers/template_screen_controller.dart';
-import '../views/building_Plan_Widget.dart';
+import '../views/building_plan_widget.dart';
 
 /// Hier ist nur eine Template für Screens, die ohne ausgefallenen Dekorationen
 /// Biite kopierst du hier den Code, um neues Screen zu erstellen

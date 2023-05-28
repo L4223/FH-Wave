@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 import '../app_colors.dart';
 import 'add_widgets_screen.dart';
 import 'template_screen.dart';
 import 'widgets/widget_button.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 Widget meineWidgetsScreen(BuildContext context) {
   return Wrap(
@@ -26,7 +26,6 @@ Widget meineWidgetsScreen(BuildContext context) {
           'assets/map.svg',
           width: 70,
           height:70,
-          color: Colors.black,
         ),
         targetPage: TemplateScreen(),
       ),

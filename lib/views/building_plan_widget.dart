@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:geolocator/geolocator.dart';
-import 'package:permission_handler/permission_handler.dart';
 import 'package:geocoding/geocoding.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:fh_wave/models/building_plan.dart';
-
 
 import '../models/building_plan.dart';
 
@@ -25,22 +23,25 @@ class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
 
   @override
-  _HomePageState createState() => _HomePageState();
+
+  HomePageState createState() => HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class HomePageState extends State<HomePage> {
   late GoogleMapController mapController;
   late Position _currentPosition;
   String _currentAddress = '';
   Building? selectedBuilding;
   List<Building> buildingList =   [
   Building(name: 'C12', address:'Grenzstraße 3, 24149 Kiel'),
-  Building(name: 'C13', address:'Fachhochschule Kiel Informatik und Elektrotechnik'),
+  Building(name: 'C13', address:'Fachhochschule Kiel Informatik und'
+      ' Elektrotechnik'),
   Building(name: 'C33', address:'Heikendorfer Weg 37, 24149 Kiel'),
   Building(name: 'C34', address:'Heikendorfer Weg 35, 24149 Kiel'),
   Building(name: 'C14', address:'Grenzstrasse 17, 24149 Kiel'),
   Building(name: 'C15', address:'Grenzstraße 14, 24149 Kiel'),
-  Building(name: 'C11', address:'Hochspannungs- und Blitzlabor der FH Kiel, 24149 Kiel'),
+  Building(name: 'C11', address:'Hochspannungs- und Blitzlabor der FH Kiel,'
+      ' 24149 Kiel'),
   Building(name: 'C32', address:'Moorblöcken 1a , 24149 Kiel'),
   Building(name: 'C06', address:'Schwentinestrasse 7, 24149 Kiel'),
   Building(name: 'C20', address:'Schwentinestrasse 24, 24149 Kiel'),
@@ -70,6 +71,8 @@ class _HomePageState extends State<HomePage> {
     if (permissionStatus.isGranted) {
       getCurrentLocation();
     } else {
+
+      // ignore: use_build_context_synchronously
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
         content: Text('Location services are disabled. '
             'Please enable the services'
@@ -114,14 +117,15 @@ class _HomePageState extends State<HomePage> {
 
   void openMaps() async {
     if (selectedBuilding != null) {
-      final url = 'https://www.google.com/maps/dir/?api=1&origin=$_currentAddress&destination=${Uri.encodeComponent(selectedBuilding!.address)}';
-      if (await canLaunch(url)) {
-        await launch(url);
+      final url = Uri.parse('https://www.google.com/maps/dir/?api=1&origin=$_currentAddress&destination=${Uri.encodeComponent(selectedBuilding!.address)}');
+      if (await canLaunchUrl(url)) {
+        await launchUrl(url);
       } else {
         debugPrint('Could not launch $url');
       }
     }
   }
+
 
   void _onMapCreated(GoogleMapController controller) {
     mapController = controller;
@@ -136,8 +140,8 @@ class _HomePageState extends State<HomePage> {
     return Column(
         children: [
           Flexible(
-            child: _currentPosition != null
-                ? GoogleMap(
+            child:
+                GoogleMap(
               onMapCreated: _onMapCreated,
               initialCameraPosition: CameraPosition(
                 target: LatLng(
@@ -146,9 +150,6 @@ class _HomePageState extends State<HomePage> {
                 ),
                 zoom: 11.0,
               ),
-            )
-                : const Center(
-              child: CircularProgressIndicator(),
             ),
           ),
           Padding(
