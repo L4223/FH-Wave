@@ -20,14 +20,14 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final UserController _user = UserController();
+    UserController? user = UserController();
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home:
           // Authentifizierungsüberprüfung:
           //User Rigstriert und verfiziert ==> HomeScreen
           // ansonsten ==> LoginScreen
-          _user.checkAuth() == false ? const LoginScreen() : const HomeScreen(),
+          user.checkAuth() == false ? const LoginScreen() : const HomeScreen(),
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
