@@ -12,14 +12,12 @@ import '../models/building_plan.dart';
 
 //void main() => runApp(const MyApp());
 
-class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+class BuildingPlanWidget extends StatelessWidget {
+  const BuildingPlanWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: const HomePage(),
-    );
+    return const HomePage();
   }
 }
 
@@ -73,7 +71,9 @@ class _HomePageState extends State<HomePage> {
       getCurrentLocation();
     } else {
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        content: Text('Location services are disabled. Please enable the services'),
+        content: Text('Location services are disabled. '
+            'Please enable the services'
+        ),
       ));
     }
   }
@@ -103,7 +103,8 @@ class _HomePageState extends State<HomePage> {
       if (addresses.isNotEmpty) {
         final address = addresses.first;
         setState(() {
-          _currentAddress = '${address.street}, ${address.postalCode} ${address.locality}';
+          _currentAddress = '${address.street}, ${address.postalCode} ${
+              address.locality}';
         });
       }
     } catch (error) {
@@ -132,13 +133,9 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Geolocator & Google Maps App'),
-      ),
-      body: Column(
+    return Column(
         children: [
-          Expanded(
+          Flexible(
             child: _currentPosition != null
                 ? GoogleMap(
               onMapCreated: _onMapCreated,
@@ -177,7 +174,6 @@ class _HomePageState extends State<HomePage> {
             child: const Text('Open Maps'),
           ),
         ],
-      ),
-    );
+      );
   }
 }
