@@ -10,8 +10,8 @@ class UserController {
   //User existiert? ==>
   // Eingabefehler mithilfe von AlertDialogs überpruft.
   //Kein Eingabefehler ==> Anmelden
-  Future<void> login(BuildContext context, String email,
-      String password) async {
+  Future<void> login(
+      BuildContext context, String email, String password) async {
     try {
       var userCredential = await _auth.signInWithEmailAndPassword(
         email: email,
@@ -34,66 +34,61 @@ class UserController {
         // ignore: use_build_context_synchronously
         showDialog(
           context: context,
-          builder: (context) =>
-              AlertDialog(
-                title: const Text('Email Verification'),
-                content: const Text(
-                    'Please verify your email before logging in.'),
-                actions: [
-                  TextButton(
-                    onPressed: () => Navigator.pop(context),
-                    child: const Text('OK'),
-                  ),
-                ],
+          builder: (context) => AlertDialog(
+            title: const Text('Email Verification'),
+            content: const Text('Please verify your email before logging in.'),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(context),
+                child: const Text('OK'),
               ),
+            ],
+          ),
         );
       }
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
         showDialog(
           context: context,
-          builder: (context) =>
-              AlertDialog(
-                title: const Text('Log In Error'),
-                content: const Text('No user found for that email.'),
-                actions: [
-                  TextButton(
-                    onPressed: () => Navigator.pop(context),
-                    child: const Text('OK'),
-                  ),
-                ],
+          builder: (context) => AlertDialog(
+            title: const Text('Log In Error'),
+            content: const Text('No user found for that email.'),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(context),
+                child: const Text('OK'),
               ),
+            ],
+          ),
         );
       } else if (e.code == 'wrong-password') {
         showDialog(
           context: context,
-          builder: (context) =>
-              AlertDialog(
-                title: const Text('Log In Error'),
-                content: const Text('Wrong password provided.'),
-                actions: [
-                  TextButton(
-                    onPressed: () => Navigator.pop(context),
-                    child: const Text('OK'),
-                  ),
-                ],
+          builder: (context) => AlertDialog(
+            title: const Text('Log In Error'),
+            content: const Text('Wrong password provided.'),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(context),
+                child: const Text('OK'),
               ),
+            ],
+          ),
         );
       }
     } catch (e) {
       showDialog(
         context: context,
-        builder: (context) =>
-            AlertDialog(
-              title: const Text('Log In Error'),
-              content: Text('An error occurred: $e'),
-              actions: [
-                TextButton(
-                  onPressed: () => Navigator.pop(context),
-                  child: const Text('OK'),
-                ),
-              ],
+        builder: (context) => AlertDialog(
+          title: const Text('Log In Error'),
+          content: Text('An error occurred: $e'),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text('OK'),
             ),
+          ],
+        ),
       );
     }
   }
@@ -101,8 +96,8 @@ class UserController {
   //Email und Password != Null? ==>
   // Eingabefehler mithilfe von AlertDialogs überpruft.
   //Kein Eingabefehler ==> Regstrieren
-  Future<void> signUp(BuildContext context, String email,
-      String password) async {
+  Future<void> signUp(
+      BuildContext context, String email, String password) async {
     try {
       var userCredential = await _auth.createUserWithEmailAndPassword(
         email: email,
@@ -119,70 +114,65 @@ class UserController {
         // ignore: use_build_context_synchronously
         showDialog(
           context: context,
-          builder: (context) =>
-              AlertDialog(
-                title: const Text('Sign Up Successful'),
-                content:
+          builder: (context) => AlertDialog(
+            title: const Text('Sign Up Successful'),
+            content:
                 const Text('Please check your email to verify your account.'),
-                actions: [
-                  TextButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                      Navigator.pushNamed(context, '/login');
-                    },
-                    child: const Text('OK'),
-                  ),
-                ],
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                  Navigator.pushNamed(context, '/login');
+                },
+                child: const Text('OK'),
               ),
+            ],
+          ),
         );
       }
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
         showDialog(
           context: context,
-          builder: (context) =>
-              AlertDialog(
-                title: const Text('Sign Up Error'),
-                content: const Text('The password provided is too weak.'),
-                actions: [
-                  TextButton(
-                    onPressed: () => Navigator.pop(context),
-                    child: const Text('OK'),
-                  ),
-                ],
+          builder: (context) => AlertDialog(
+            title: const Text('Sign Up Error'),
+            content: const Text('The password provided is too weak.'),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(context),
+                child: const Text('OK'),
               ),
+            ],
+          ),
         );
       } else if (e.code == 'email-already-in-use') {
         showDialog(
           context: context,
-          builder: (context) =>
-              AlertDialog(
-                title: const Text('Sign Up Error'),
-                content: const Text(
-                    'The account already exists for that email.'),
-                actions: [
-                  TextButton(
-                    onPressed: () => Navigator.pop(context),
-                    child: const Text('OK'),
-                  ),
-                ],
+          builder: (context) => AlertDialog(
+            title: const Text('Sign Up Error'),
+            content: const Text('The account already exists for that email.'),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(context),
+                child: const Text('OK'),
               ),
+            ],
+          ),
         );
       }
     } catch (e) {
       showDialog(
         context: context,
-        builder: (context) =>
-            AlertDialog(
-              title: const Text('Sign Up Error'),
-              content: Text('An error occurred: $e'),
-              actions: [
-                TextButton(
-                  onPressed: () => Navigator.pop(context),
-                  child: const Text('OK'),
-                ),
-              ],
+        builder: (context) => AlertDialog(
+          title: const Text('Sign Up Error'),
+          content: Text('An error occurred: $e'),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text('OK'),
             ),
+          ],
+        ),
       );
     }
   }
