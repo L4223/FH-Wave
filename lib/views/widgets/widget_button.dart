@@ -9,6 +9,7 @@ class WidgetButton extends StatelessWidget {
   final Color textColor;
   final Widget targetPage;
   final bool isLarge;
+  final Widget? icon;
 
   final WidgetButtonController _controller = WidgetButtonController();
 
@@ -18,6 +19,7 @@ class WidgetButton extends StatelessWidget {
     this.textColor = Colors.black,
     required this.targetPage,
     this.isLarge = false,
+    this.icon
   });
 
   @override
@@ -40,16 +42,23 @@ class WidgetButton extends StatelessWidget {
           ),
           child: Padding(
             padding: const EdgeInsets.all(12.0),
-            child: Center(
-              child: Text(
-                title!,
+            child: Column(
+              children: [
+                if (icon != null)
+                  Center(
+                    child:icon!
+                  ),
+          const SizedBox(height: 8),
+                Text(title!,
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   color: textColor,
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
+
                 ),
-              ),
+                ),
+              ],
             ),
           ),
         ),
@@ -57,3 +66,12 @@ class WidgetButton extends StatelessWidget {
     );
   }
 }
+
+
+
+
+
+
+
+
+

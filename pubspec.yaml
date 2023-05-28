@@ -31,7 +31,7 @@ dependencies:
   flutter:
     sdk: flutter
 
-  flutter_svg: ^0.22.0
+  flutter_svg: ^2.0.6
 
 
   # The following adds the Cupertino Icons font to your application.
@@ -73,6 +73,7 @@ flutter:
   assets:
     - assets/fhwave_logo_weiss.svg
     - assets/fhwave_logo.svg
+    - assets/map.svg
     - fonts/Roboto-Black.ttf
     - fonts/Roboto-BlackItalic.ttf
     - fonts/Roboto-Bold.ttf

@@ -6,10 +6,11 @@ import 'package:geocoding/geocoding.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:fh_wave/models/building_plan.dart';
 
+
 import '../models/building_plan.dart';
 
 
-void main() => runApp(const MyApp());
+//void main() => runApp(const MyApp());
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
