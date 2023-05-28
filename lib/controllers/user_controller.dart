@@ -176,4 +176,14 @@ class UserController {
       );
     }
   }
+
+  //Authentifizierungsüberprüfung
+  bool checkAuth() {
+    var user = FirebaseAuth.instance.currentUser;
+    if (user != null && user.emailVerified) {
+      return true;
+    } else {
+      return false;
+    }
+  }
 }
