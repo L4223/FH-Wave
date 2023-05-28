@@ -31,6 +31,8 @@ dependencies:
   flutter:
     sdk: flutter
 
+  flutter_svg: ^0.22.0
+
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -47,6 +49,7 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^2.0.0
+  flutter_sticky_header: ^0.6.5
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -63,6 +66,24 @@ flutter:
   # assets:
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
+  assets:
+    - assets/fhwave_logo_weiss.svg
+    - assets/fhwave_logo.svg
+    - fonts/Roboto-Black.ttf
+    - fonts/Roboto-BlackItalic.ttf
+    - fonts/Roboto-Bold.ttf
+    - fonts/Roboto-BoldItalic.ttf
+    - fonts/Roboto-Medium.ttf
+    - fonts/Roboto-MediumItalic.ttf
+    - fonts/Roboto-Regular.ttf
+    - fonts/Roboto-Italic.ttf
+    - fonts/Roboto-Light.ttf
+    - fonts/Roboto-LightItalic.ttf
+    - fonts/Roboto-Thin.ttf
+    - fonts/Roboto-ThinItalic.ttf
+
+  fonts:
+    - family: Roboto
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
