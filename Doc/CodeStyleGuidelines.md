@@ -3,6 +3,7 @@
 ## Grundregeln
 
 - ##### Codesprache ist Englisch!
+- ##### Don't Repeat Yourself
 - ##### Kommentare und Commits werden auf deutsch geschrieben!
 - ##### Eindeutige sprechende Namen!
 - ##### Kommentiere so viel wie nötig, so wenig wie möglich!
@@ -106,6 +107,11 @@ Die Dokumentation muss up to date gehalten werden und am besten auch im Code fes
 ## Nutzung
 Falls gewisse Nutzungstechniken auffallen, die man lassen oder nutzen sollte, können diese hier dokumentiert werden.
 
+Don't Repeat Yourseelf, DRY!
+Bedeutet dass bevor ich immer wieder eine Variable durch etwas Teile, daraus eine eigene Variable mache.
+Oder bevor ich eine Rechnung immer wieder ausrufe, daraus eine eigene Funktion mache
+und die Funktion aufrufe.
+
 #### Formatierung
 Verwendung von Einrückungen für Blöcke und Schleifen <br>
 Verwendung von Klammern für alle Blöcke, auch bei Einzeilern <br>
@@ -177,15 +183,15 @@ Jeder Commit muss mit einem eindeutigen Namen versehen sein.
 
 Commit Anfangs-Kürzel:
 
-Docu_ *um Dokumentation zu ändern*
-Env_ *um etwas an dem Entwicklungsvorgang zu ändern*  
-Feature_ *ein neues Feature hinzufügen*
-UpdateFeature_ *ein Feature updaten*
-Fix_ *einen Fix zu machen, unschöne Stellen ändern*
-BugFix_ *einen Fehler beheben*
-UI_ *Aussehen wird angepasst*
-Backend_ *Backend, Datenbank wird angepasst*
-Firebase_ *LogIn Dateien oder ähnliches wird angepasst*
+**Docu_** *um Dokumentation zu ändern* <br>
+**Env_** *um etwas an dem Entwicklungsvorgang zu ändern* <br>
+**Feature_** *ein neues Feature hinzufügen* <br>
+**UpdateFeature_** *ein Feature updaten* <br>
+**Fix_** *einen Fix zu machen, unschöne Stellen ändern* <br>
+**BugFix_** *einen Fehler beheben* <br>
+**UI_** *Aussehen wird angepasst* <br>
+**Backend_** *Backend, Datenbank wird angepasst* <br>
+**Firebase_** *LogIn Dateien oder ähnliches wird angepasst* <br>
 
 
 
