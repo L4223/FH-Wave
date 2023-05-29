@@ -2,19 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../controllers/dark_mode_controller.dart';
 
-Color hintergrundfarbe = Colors.white;
-
-/*
-class DarkMode extends StatefulWidget {
-  final Function(Color) updateBackgroundColor; // Callback-function
-
-  const DarkMode(this.updateBackgroundColor, {Key? key}) : super(key: key);
-
-  @override
-  DarkModeButton createState() => DarkModeButton();
-}
-*/
 class DarkModeButton extends StatelessWidget {
+  const DarkModeButton({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Consumer<DarkModeController>(builder: (context, controller, _) {
@@ -25,8 +15,8 @@ class DarkModeButton extends StatelessWidget {
               borderRadius: BorderRadius.circular(100.0),
             ),
           ),
-          minimumSize: MaterialStateProperty.all(const Size(200, 50)),
-          maximumSize: MaterialStateProperty.all(const Size(300, 50)),
+          minimumSize: MaterialStateProperty.all(const Size(50, 50)),
+          maximumSize: MaterialStateProperty.all(const Size(50, 50)),
           side: MaterialStateProperty.all(
             const BorderSide(width: 2, color: Colors.black),
           ),

@@ -15,14 +15,6 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  /*
-  void updateBackgroundColor(Color color) {
-    setState(() {
-      hintergrundfarbe = color;
-    });
-  }
-   */
-
   @override
   Widget build(BuildContext context) {
     return Consumer<DarkModeController>(builder: (context, controller, _) {
@@ -44,7 +36,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           iconTheme: const IconThemeData(color: Colors.black),
         ),
         body: ListView(
-          children: [
+          children: const [
             DarkModeButton(),
           ],
         ),
