@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import 'controllers/dark_mode_controller.dart';
 import 'views/home_screen.dart';
 
 void main() {
@@ -6,16 +9,24 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  const MyApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      theme: ThemeData(
-        fontFamily: 'Roboto',
+    return ChangeNotifierProvider<DarkModeController>(
+      create: (_) => DarkModeController(),
+      child: Consumer<DarkModeController>(
+        builder: (context, controller, _) {
+          return MaterialApp(
+            theme: ThemeData(
+              brightness:
+                  controller.isDarkMode ? Brightness.dark : Brightness.light,
+            ),
+            debugShowCheckedModeBanner: false,
+            home: const HomeScreen(),
+          );
+        },
       ),
-      debugShowCheckedModeBanner: false,
-      home: const HomeScreen(),
     );
   }
 }

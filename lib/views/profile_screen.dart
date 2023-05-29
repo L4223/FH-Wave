@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import '../controllers/dark_mode_controller.dart';
 import '../controllers/profile_screen_controller.dart';
 import 'widgets/dark_mode_button.dart';
 
@@ -12,40 +15,44 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
+  /*
   void updateBackgroundColor(Color color) {
     setState(() {
       hintergrundfarbe = color;
     });
   }
+   */
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        shadowColor: Colors.transparent,
-        toolbarHeight: 100,
-        title: Align(
-          alignment: Alignment.centerLeft,
-          child: Text(
-            _controller.title,
-            style: TextStyle(
-                color: _controller.color,
-                fontSize: _controller.fontSize,
-                fontWeight: _controller.fontWeight),
+    return Consumer<DarkModeController>(builder: (context, controller, _) {
+      return Scaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.transparent,
+          shadowColor: Colors.transparent,
+          toolbarHeight: 100,
+          title: Align(
+            alignment: Alignment.centerLeft,
+            child: Text(
+              _controller.title,
+              style: TextStyle(
+                  color: _controller.color,
+                  fontSize: _controller.fontSize,
+                  fontWeight: _controller.fontWeight),
+            ),
           ),
+          iconTheme: const IconThemeData(color: Colors.black),
         ),
-        iconTheme: const IconThemeData(color: Colors.black),
-      ),
-      body: ListView(
-        children: [
-          DarkMode(updateBackgroundColor),
-        ],
-      ),
-      backgroundColor: hintergrundfarbe,
+        body: ListView(
+          children: [
+            DarkModeButton(),
+          ],
+        ),
+        backgroundColor: controller.isDarkMode ? Colors.white12 : Colors.white,
 
-      /// Hier schreibst du deine Code
-      /// und bitte vergisst du noch MVC-Design-PatternContainer(),
-    );
+        /// Hier schreibst du deine Code
+        /// und bitte vergisst du noch MVC-Design-PatternContainer(),
+      );
+    });
   }
 }
