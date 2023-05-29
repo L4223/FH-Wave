@@ -41,6 +41,7 @@ dependencies:
   firebase_core: ^2.13.0
   firebase_database: ^10.2.1
   firebase_auth: ^4.6.1
+  table_calendar: ^3.0.9
   cloud_firestore: ^4.7.1
   url_launcher: ^6.1.11
   firebase_dynamic_links: ^5.3.1
