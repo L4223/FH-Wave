@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../app_colors.dart';
 import 'add_widgets_screen.dart';
+import 'calendar_screen.dart';
 import 'group_screens/group_screen.dart';
 import 'template_screen.dart';
 import 'widgets/widget_button.dart';
@@ -25,9 +26,9 @@ Widget meineWidgetsScreen(BuildContext context) {
         targetPage: const GroupCreationScreen(),
       ),
       WidgetButton(
-          title: 'TEMPLATE WIDGET',
+          title: 'Kalender',
           backgroundColor: AppColors.appYellow,
-          targetPage: TemplateScreen(),
+          targetPage: const CalendarScreen(),
           isLarge: true),
 
       /// Widgets hier hinzufügen.

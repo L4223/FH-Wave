@@ -31,7 +31,6 @@ class GroupController {
   Future<void> addGroupRequest(String groupId, String userName) async {
     try {
       var uid = await getUserIdFromUsername(userName);
-
       final userRef = firestore.collection('users').doc(uid);
       await userRef.update({
         'group_requests': FieldValue.arrayUnion([groupId]),
