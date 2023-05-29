@@ -21,14 +21,20 @@ class HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final screenWidth = MediaQuery.of(context).size.width;
+    final screenWidth = MediaQuery
+        .of(context)
+        .size
+        .width;
     final width = screenWidth * 0.41;
     return Scaffold(
       // appBar: null,
       body: Stack(children: [
         // Blauer Hintergrund mit Farbverlauf
         Container(
-          height: MediaQuery.of(context).size.height * 3 / 5,
+          height: MediaQuery
+              .of(context)
+              .size
+              .height * 3 / 5,
           decoration: const BoxDecoration(
             gradient: LinearGradient(
               begin: Alignment.topCenter,
@@ -63,13 +69,14 @@ class HomeScreenState extends State<HomeScreen> {
                             /// Hier IconButton muss später durch Image ersetzt
                             /// werden, danch packen wir _controller.image ein
                             child: IconButton(
-                              icon: const Icon(Icons.photo_camera_outlined),
+                              icon: const Icon(Icons.account_circle_outlined),
                               color: Colors.black,
                               onPressed: () {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => ProfileScreen()),
+                                      builder: (context) =>
+                                      const ProfileScreen()),
                                 );
                               },
 
@@ -86,8 +93,7 @@ class HomeScreenState extends State<HomeScreen> {
                     const SizedBox(
                       height: 52,
                     ),
-                     Text(
-                        '${_controller.greeting}, \n${_controller.name}!',
+                    Text('${_controller.greeting}, \n${_controller.name}!',
                         style: TextStyle(
                             fontSize: 36.0,
                             fontWeight: FontWeight.w800,
@@ -95,7 +101,7 @@ class HomeScreenState extends State<HomeScreen> {
                     const SizedBox(
                       height: 4,
                     ),
-                     Text(_controller.motivatingWords,
+                    Text(_controller.motivatingWords,
                         style: const TextStyle(
                           fontSize: 20.0,
                           fontWeight: FontWeight.w600,
