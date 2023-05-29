@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 import '../app_colors.dart';
 import 'add_widgets_screen.dart';
@@ -16,14 +17,19 @@ Widget meineWidgetsScreen(BuildContext context) {
     children: [
       /// Hier sind nur Beispiele, biite modifizieren oder ersetzen
       WidgetButton(
-        title: 'TEMPLATE WIDGET',
-        backgroundColor: AppColors.appBlue,
-        targetPage: TemplateScreen(),
+      title:'',
+      backgroundColor: AppColors.appPurple,
+      icon: SvgPicture.asset(
+        'assets/map.svg',
+        width: 70,
+        height:70,
       ),
+      targetPage: TemplateScreen(),
+  ),
       WidgetButton(
-        title: 'Gruppen',
-        backgroundColor: AppColors.appPurple,
-        targetPage: const GroupCreationScreen(),
+      title: 'Gruppen',
+      backgroundColor: AppColors.appPurple,
+      targetPage: const GroupCreationScreen(),
       ),
       WidgetButton(
           title: 'Kalender',
