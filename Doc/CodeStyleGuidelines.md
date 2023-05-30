@@ -3,11 +3,14 @@
 ## Grundregeln
 
 - ##### Codesprache ist Englisch!
+- ##### Don't Repeat Yourself
+- ##### Kommentare und Commits werden auf deutsch geschrieben!
 - ##### Eindeutige sprechende Namen!
 - ##### Kommentiere so viel wie nötig, so wenig wie möglich!
 - ##### try-catch-Blöcke müssen benutzt werden
 - ##### Commit-Nachrichten müssen eindeutig sein
 - ##### Design Pattern wird eingehalten!
+- ##### *flutter analyze .* und *dart format .* **VOR** dem merge-request ausführen
 
 
 <br>Generell sollen alle **DO** und **DON'T** von den [Dart Style Guide] umgesetzt werden.<br>
@@ -93,7 +96,7 @@ Id id;
 ## Dokumentation
 
 ### Kommentare
-- Kommentiere auf Sprache?
+- Kommentiere auf deutsch
 - Kommentiere in vollen Sätzen
 - Benutze keine Block-Kommentare
 - Benutze /// um ein Kommentar für die Dokumentation zu schreiben. Diese können später automatisch in die Dokumentation. 
@@ -103,6 +106,11 @@ Die Dokumentation muss up to date gehalten werden und am besten auch im Code fes
 
 ## Nutzung
 Falls gewisse Nutzungstechniken auffallen, die man lassen oder nutzen sollte, können diese hier dokumentiert werden.
+
+Don't Repeat Yourseelf, DRY!
+Bedeutet dass bevor ich immer wieder eine Variable durch etwas Teile, daraus eine eigene Variable mache.
+Oder bevor ich eine Rechnung immer wieder ausrufe, daraus eine eigene Funktion mache
+und die Funktion aufrufe.
 
 #### Formatierung
 Verwendung von Einrückungen für Blöcke und Schleifen <br>
@@ -139,8 +147,7 @@ Falls gewisse Namensgebungen, Formatierungen, Syntax auffallen, die man lassen o
 ## Design Pattern
 
 ## MVC
-[MVC Guide]
-[Model-View-Controller (MVC)]: https://medium.com/p/1fabe2069b01
+[Model-View-Controller (MVC)]
 
 ## Benennung
 
@@ -162,6 +169,8 @@ Try Catch muss eingesetzt werden.
 
 ## GIT-Guide
 
+Commit Sprache ist deutsch.
+
 Branch Namen werden in drei Bereiche geteilt und mit Unterstrichen getrennt. Es wird als **UpperCamelCase** geschrieben. <br>
 Struktur: <br>
 Feature_Funktion_Name <br>
@@ -171,6 +180,19 @@ Von den Features wird nur in den Develop-Branch gemergt, der Develop-Branch ist 
 Es kann immer vom Develop-Branch gemergt werden, um seinen eigene Branch zu aktualisieren.
 
 Jeder Commit muss mit einem eindeutigen Namen versehen sein.
+
+Commit Anfangs-Kürzel:
+
+**Docu_** *um Dokumentation zu ändern* <br>
+**Env_** *um etwas an dem Entwicklungsvorgang zu ändern* <br>
+**Feature_** *ein neues Feature hinzufügen* <br>
+**UpdateFeature_** *ein Feature updaten* <br>
+**Fix_** *einen Fix zu machen, unschöne Stellen ändern* <br>
+**BugFix_** *einen Fehler beheben* <br>
+**UI_** *Aussehen wird angepasst* <br>
+**Backend_** *Backend, Datenbank wird angepasst* <br>
+**Firebase_** *LogIn Dateien oder ähnliches wird angepasst* <br>
+
 
 
 Beispiel:
@@ -197,8 +219,9 @@ Beispiel:
 * //Master
 ``` 
 
-## Definition of Done
+
 
 
 
 [Dart Style	Guide]: https://dart.dev/guides/language/effective-dart
+[Model-View-Controller (MVC)]: https://medium.com/p/1fabe2069b01
