@@ -29,12 +29,16 @@ class DefaultFirebaseOptions {
       case TargetPlatform.windows:
         throw UnsupportedError(
           'DefaultFirebaseOptions have not been configured for windows - '
-              'you can reconfigure this by running the FlutterFire CLI again.',
+
+          'you can reconfigure this by running the FlutterFire CLI again.',
+
         );
       case TargetPlatform.linux:
         throw UnsupportedError(
           'DefaultFirebaseOptions have not been configured for linux - '
-              'you can reconfigure this by running the FlutterFire CLI again.',
+
+          'you can reconfigure this by running the FlutterFire CLI again.',
+
         );
       default:
         throw UnsupportedError(
@@ -54,12 +58,14 @@ class DefaultFirebaseOptions {
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-      apiKey: 'AIzaSyANUV9WeE0Kl-47hzEZwWcRZVreJfotw-A',
-      appId: '1:728562690240:android:d1967f8145a42636eba525',
-      messagingSenderId: '728562690240',
-      projectId: 'fh-wave',
-      storageBucket: 'fh-wave.appspot.com',
-      databaseURL: "https://fh-wave-default-rtdb.europe-west1.firebasedatabase.app"
+
+    apiKey: 'AIzaSyANUV9WeE0Kl-47hzEZwWcRZVreJfotw-A',
+    appId: '1:728562690240:android:d1967f8145a42636eba525',
+    messagingSenderId: '728562690240',
+    projectId: 'fh-wave',
+    storageBucket: 'fh-wave.appspot.com',
+    databaseURL: "https://fh-wave-default-rtdb.europe-west1.firebasedatabase.app"
+
   );
 
   static const FirebaseOptions ios = FirebaseOptions(

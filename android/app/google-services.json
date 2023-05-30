@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "728562690240",
+    "firebase_url": "https://fh-wave-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "fh-wave",
+    "storage_bucket": "fh-wave.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:728562690240:android:d1967f8145a42636eba525",
+        "android_client_info": {
+          "package_name": "de.fh_kiel.fh_wave"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "728562690240-46t9ihausu3a38m7vck078m7lu2otf2v.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyANUV9WeE0Kl-47hzEZwWcRZVreJfotw-A"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "728562690240-46t9ihausu3a38m7vck078m7lu2otf2v.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "728562690240-jj733tqquv5k0jai0benfbs99un6anh3.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "de.fhkiel.fhWave"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

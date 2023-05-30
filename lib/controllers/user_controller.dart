@@ -1,3 +1,9 @@
+
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
+
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -5,11 +11,17 @@ import '../models/user_model.dart';
 
 class UserController {
   final FirebaseAuth _auth = FirebaseAuth.instance;
+
   UserModel? currentUser;
 
   //User existiert? ==>
   // Eingabefehler mithilfe von AlertDialogs überpruft.
   //Kein Eingabefehler ==> Anmelden
+
+  UserModel? _currentUser;
+
+  User? get currentUser => _auth.currentUser;
+
   Future<void> login(
       BuildContext context, String email, String password) async {
     try {
@@ -19,17 +31,17 @@ class UserController {
       );
 
       var user = userCredential.user;
+
 // Regstriert und verifiziert?
 // Daten aus Firebase speichern/Id & e-mail & username
 // und Navigieren ==> HomeScreen
-      if (user != null && user.emailVerified) {
-        currentUser = UserModel(
-            uid: user.uid,
-            email: user.email!,
-            username: user.displayName ?? '');
 
+
+      if (user != null && user.emailVerified) {
+        _currentUser = UserModel(uid: user.uid, email: user.email!);
         // ignore: use_build_context_synchronously
-        Navigator.pushNamed(context, '/home');
+        Navigator.pushNamed(context, '/home', arguments: _currentUser);
+
       } else {
         // ignore: use_build_context_synchronously
         showDialog(
@@ -93,24 +105,25 @@ class UserController {
     }
   }
 
+
   //Email und Password != Null? ==>
   // Eingabefehler mithilfe von AlertDialogs überpruft.
   //Kein Eingabefehler ==> Regstrieren
   Future<void> signUp(
       BuildContext context, String email, String password) async {
+
     try {
       var userCredential = await _auth.createUserWithEmailAndPassword(
         email: email,
         password: password,
       );
-      // Wenn ein Konto erstellt wurde, sende einen Bestätigungslink !
+
+
       var user = userCredential.user;
       if (user != null) {
         await user.sendEmailVerification();
-        currentUser = UserModel(
-            uid: user.uid,
-            email: user.email!,
-            username: user.displayName ?? '');
+        setupUserDb(username, user.uid, email);
+
         // ignore: use_build_context_synchronously
         showDialog(
           context: context,
@@ -176,7 +189,6 @@ class UserController {
       );
     }
   }
-
   //Authentifizierungsüberprüfung
   bool checkAuth() {
     var user = FirebaseAuth.instance.currentUser;
@@ -184,6 +196,23 @@ class UserController {
       return true;
     } else {
       return false;
+    }}
+  Future<void> setupUserDb(String userName, String uid, String userMail) async {
+    var firestore = FirebaseFirestore.instance;
+
+    try {
+      final groupRef = firestore.collection('users').doc(uid);
+      var list = [];
+
+      await groupRef.set({
+        'userName': userName,
+        'uid': uid,
+        'userMail': userMail,
+        'group_requests': FieldValue.arrayUnion(list),
+        'groups': FieldValue.arrayUnion(list),
+      });
+    } catch (e) {
+      // print('Fehler beim Erstellen der Gruppe: $e');
     }
   }
 }
