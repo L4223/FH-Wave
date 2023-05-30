@@ -1,24 +1,13 @@
-
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
-
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-import '../models/user_model.dart';
-
 class UserController {
   final FirebaseAuth _auth = FirebaseAuth.instance;
-
-  UserModel? currentUser;
 
   //User existiert? ==>
   // Eingabefehler mithilfe von AlertDialogs überpruft.
   //Kein Eingabefehler ==> Anmelden
-
-  UserModel? _currentUser;
 
   User? get currentUser => _auth.currentUser;
 
@@ -36,12 +25,10 @@ class UserController {
 // Daten aus Firebase speichern/Id & e-mail & username
 // und Navigieren ==> HomeScreen
 
-
       if (user != null && user.emailVerified) {
-        _currentUser = UserModel(uid: user.uid, email: user.email!);
+        // _currentUser = UserModel(uid: user.uid, email: user.email!);
         // ignore: use_build_context_synchronously
-        Navigator.pushNamed(context, '/home', arguments: _currentUser);
-
+        Navigator.pushNamed(context, '/home');
       } else {
         // ignore: use_build_context_synchronously
         showDialog(
@@ -105,19 +92,16 @@ class UserController {
     }
   }
 
-
   //Email und Password != Null? ==>
   // Eingabefehler mithilfe von AlertDialogs überpruft.
   //Kein Eingabefehler ==> Regstrieren
-  Future<void> signUp(
-      BuildContext context, String email, String password) async {
-
+  Future<void> signUp(BuildContext context, String username, String email,
+      String password) async {
     try {
       var userCredential = await _auth.createUserWithEmailAndPassword(
         email: email,
         password: password,
       );
-
 
       var user = userCredential.user;
       if (user != null) {
@@ -189,6 +173,7 @@ class UserController {
       );
     }
   }
+
   //Authentifizierungsüberprüfung
   bool checkAuth() {
     var user = FirebaseAuth.instance.currentUser;
@@ -196,7 +181,9 @@ class UserController {
       return true;
     } else {
       return false;
-    }}
+    }
+  }
+
   Future<void> setupUserDb(String userName, String uid, String userMail) async {
     var firestore = FirebaseFirestore.instance;
 
