@@ -1,19 +1,33 @@
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../../controllers/quick_link_button_controller.dart';
 
-///  Ein Button für Quicklink
+/// A button for Quicklink
 class QuickLinkButton extends StatelessWidget {
   final QuickLinkButtonController _controller = QuickLinkButtonController();
   final String title;
   final IconData icon;
-  final Widget targetPage;
+  final String targetURL;
+
+  late final Uri quicklinkURL;
 
   QuickLinkButton({
-    super.key,
+    Key? key,
     required this.title,
     required this.icon,
-    required this.targetPage,
-  });
+    required this.targetURL,
+  }) : super(key: key);
+
+  void _launchURL(String targetURL) async {
+    quicklinkURL = Uri.parse(targetURL);
+    try {
+      if (!await canLaunchUrl(quicklinkURL)) {
+        await launchUrl(quicklinkURL);
+      }
+    } catch (e) {
+      ///print('Error launching URL: $e');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +35,7 @@ class QuickLinkButton extends StatelessWidget {
     const height = 50.0;
 
     return GestureDetector(
-      onTap: () => _controller.navigateToTargetPage(context, targetPage),
+      onTap: () => _launchURL(targetURL),
       child: Container(
         width: width,
         height: height,
