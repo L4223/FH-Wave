@@ -21,20 +21,18 @@ class HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final screenWidth = MediaQuery
-        .of(context)
-        .size
-        .width;
+    //Aktuelle Angemeldete E-mail aus Firebase
+    // var user = FirebaseAuth.instance.currentUser;
+    // var name = user?.email;
+
+    final screenWidth = MediaQuery.of(context).size.width;
     final width = screenWidth * 0.41;
     return Scaffold(
       // appBar: null,
       body: Stack(children: [
         // Blauer Hintergrund mit Farbverlauf
         Container(
-          height: MediaQuery
-              .of(context)
-              .size
-              .height * 3 / 5,
+          height: MediaQuery.of(context).size.height * 3 / 5,
           decoration: const BoxDecoration(
             gradient: LinearGradient(
               begin: Alignment.topCenter,
@@ -76,7 +74,7 @@ class HomeScreenState extends State<HomeScreen> {
                                   context,
                                   MaterialPageRoute(
                                       builder: (context) =>
-                                      const ProfileScreen()),
+                                          const ProfileScreen()),
                                 );
                               },
 

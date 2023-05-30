@@ -1,11 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import '../models/user_model.dart';
 
 class UserController {
   final FirebaseAuth _auth = FirebaseAuth.instance;
-  UserModel? _currentUser;
+
+  //User existiert? ==>
+  // Eingabefehler mithilfe von AlertDialogs überpruft.
+  //Kein Eingabefehler ==> Anmelden
 
   User? get currentUser => _auth.currentUser;
 
@@ -19,10 +21,14 @@ class UserController {
 
       var user = userCredential.user;
 
+// Regstriert und verifiziert?
+// Daten aus Firebase speichern/Id & e-mail & username
+// und Navigieren ==> HomeScreen
+
       if (user != null && user.emailVerified) {
-        _currentUser = UserModel(uid: user.uid, email: user.email!);
+        // _currentUser = UserModel(uid: user.uid, email: user.email!);
         // ignore: use_build_context_synchronously
-        Navigator.pushNamed(context, '/home', arguments: _currentUser);
+        Navigator.pushNamed(context, '/home');
       } else {
         // ignore: use_build_context_synchronously
         showDialog(
@@ -86,6 +92,9 @@ class UserController {
     }
   }
 
+  //Email und Password != Null? ==>
+  // Eingabefehler mithilfe von AlertDialogs überpruft.
+  //Kein Eingabefehler ==> Regstrieren
   Future<void> signUp(BuildContext context, String username, String email,
       String password) async {
     try {
@@ -98,6 +107,7 @@ class UserController {
       if (user != null) {
         await user.sendEmailVerification();
         setupUserDb(username, user.uid, email);
+
         // ignore: use_build_context_synchronously
         showDialog(
           context: context,
@@ -161,6 +171,16 @@ class UserController {
           ],
         ),
       );
+    }
+  }
+
+  //Authentifizierungsüberprüfung
+  bool checkAuth() {
+    var user = FirebaseAuth.instance.currentUser;
+    if (user != null && user.emailVerified) {
+      return true;
+    } else {
+      return false;
     }
   }
 

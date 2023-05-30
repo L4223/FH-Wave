@@ -47,6 +47,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
               mensaButton(),
               const SizedBox(height: 5),
               timetablesButton(),
+              const SizedBox(
+                height: 5,
+              ),
             ],
           ),
         ),
