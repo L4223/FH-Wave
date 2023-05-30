@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../controllers/quick_link_button_controller.dart';
 
-/// A button for Quicklink
+/// Quicklink Button
 class QuickLinkButton extends StatelessWidget {
   final QuickLinkButtonController _controller = QuickLinkButtonController();
   final String title;
