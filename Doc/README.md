@@ -1,5 +1,17 @@
-# Auschecken des Quellcodes
+# Wichtige Informationen für Entwickler
+
+## Inhaltsverzeichnis
+
+- [Auschecken des Quellcodes](#auschecken-des-quellcodes)
+- [Benötigte Tools für die Entwicklung](#benötigte-tools-für-die-entwicklung)
+- [Datenbank mit Firebase](#datenbank-mit-firebase)
+- [Verwendung von Farben](#verwendung-von-farben)
+- [Schritte zur fertigen Installation der App](#schritte-zur-fertigen-installation-der-app)
+- [Weitere Ressourcen](#weitere-ressourcen)
+
+## Auschecken des Quellcodes
 ### Voraussetzungen
+
 
 - [Git](https://git-scm.com/downloads) ist auf Ihrem Rechner installiert.
 - Eine IDE ist installiert, die sich gut für die Entwicklung mit Flutter eignet. Empfohlen werden IntelliJ IDEA, Android Studio und Visual Studio Code. Im Folgenden wird [Android Studio](https://developer.android.com/studio) als Beispiel verwendet.
@@ -23,7 +35,7 @@ git clone https://gitlab.iue.fh-kiel.de/aem_2023/team-9/app.git
 
 
 
-# Benötigte Tools für die Entwicklung
+## Benötigte Tools für die Entwicklung
 
 **Flutter SDK:** Installieren Sie [Flutter SDK](https://docs.flutter.dev/get-started/install). Befolgen Sie die Anweisungen für Ihr Betriebssystem auf der offiziellen Flutter-Website.
 
@@ -35,8 +47,24 @@ git clone https://gitlab.iue.fh-kiel.de/aem_2023/team-9/app.git
 
 **Emulatoren oder physische Geräte:** Sie benötigen entweder Emulatoren (Android und/oder iOS) oder physische Geräte(nur Android möglich), um Ihre Flutter-Apps auszuführen und zu testen. Siehe jeweils die Dokumentation, um einen Emulator/Simulator zu erstellen
 
+## Datenbank mit Firebase
 
-# Schritte zur fertigen Installation der App
+
+## Verwendung von Farben
+Die Farbspezifikation ist gemäß dem Material Design von Google definiert. Von 50 bis 900 sind diese Farben in der Reihenfolge von heller zu dunkler angeordnet und können verwendet werden, um eine einheitliche und ästhetisch ansprechende Benutzeroberfläche zu schaffen. Die gesamte Darstellung von allen Farben finden Sie [auf Figma](https://www.figma.com/file/2BIHFaTz4u4FBwlu6wyJzK/AEM?type=design&node-id=0%3A1&t=I1BSBydlBKw9DLqy-1).
+
+In Material Design, die Nummer "500" in der Farbnummerierung repräsentiert das Standardniveau der Farbe. Diese Stufe steht für eine mittlere Sättigung und Helligkeit und wird in der Regel als Standardwert für die Farbe verwendet.
+
+Es gibt eine Klasse **AppColors** unter "lib" > "app_colors.dart", die alle Farben enthält, die für die fhwave-App benötigt werden.
+Bitte beachten Sie, dass für die Schriftfarben nur black oder fhwaveNeutral[nummer] verwendet werden darf.
+
+### Wie zu verwenden:
+
+- Klassen importieren: `import '../app_colors.dart';`
+- `AppColors.[Farbbezeichnung]` z.B. `AppColors.fhwaveBlue500`
+
+
+## Schritte zur fertigen Installation der App
 
 **Android**
 
@@ -55,5 +83,5 @@ git clone https://gitlab.iue.fh-kiel.de/aem_2023/team-9/app.git
 - Nachdem die Archivierung abgeschlossen ist, öffnet sich der Organizer. Wählen Sie das Archiv und klicken Sie auf Distribute App, um den Prozess der Veröffentlichung im App Store zu starten.
 - Befolgen Sie die Anweisungen in der [offiziellen Flutter-Dokumentation](https://flutter.dev/docs/deployment/ios), um Ihre App im App Store/Testflight zu veröffentlichen.
 
-# Weitere Ressourcen
+## Weitere Ressourcen
 Weitere Informationen zur Entwicklung von Flutter-Apps finden Sie in der [offiziellen Dokumentation](https://flutter.dev/docs).
