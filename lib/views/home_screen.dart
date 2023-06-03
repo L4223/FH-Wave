@@ -31,16 +31,7 @@ class HomeScreenState extends State<HomeScreen> {
       // appBar: null,
       body: Stack(children: [
         // Blauer Hintergrund mit Farbverlauf
-        Container(
-          height: MediaQuery.of(context).size.height * 3 / 5,
-          decoration: const BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-              colors: [AppColors.appBlue, Color.fromRGBO(250, 250, 250, 0)],
-            ),
-          ),
-        ),
+        AppColors.getFhwaveBlueGradientContainer(context),
         ListView(
           children: [
             Padding(

@@ -1,4 +1,4 @@
-# FHWave App
+# fhwave-App
 
 Die fhwave-App ist ein einfacher und effizienter Assistent für die Studierenden der Fachhochschule Kiel .
 
