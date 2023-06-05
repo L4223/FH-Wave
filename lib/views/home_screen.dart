@@ -37,7 +37,7 @@ class HomeScreenState extends State<HomeScreen> {
             gradient: LinearGradient(
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
-              colors: [AppColors.appBlue, Color.fromRGBO(250, 250, 250, 0)],
+              colors: [ Color.fromRGBO(250, 250, 250, 0)],
             ),
           ),
         ),
