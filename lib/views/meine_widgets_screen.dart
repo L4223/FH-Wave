@@ -18,9 +18,13 @@ Widget meineWidgetsScreen(BuildContext context) {
       /// Hier sind nur Beispiele, biite modifizieren oder ersetzen
       WidgetButton(
       title:'',
+<<<<<<< HEAD
 
 
       backgroundColor: AppColors.fhwavePurple500,
+=======
+      backgroundColor: AppColors.appPurple,
+>>>>>>> develop
       icon: SvgPicture.asset(
         'assets/map.svg',
         width: 70,
@@ -30,8 +34,12 @@ Widget meineWidgetsScreen(BuildContext context) {
   ),
       WidgetButton(
       title: 'Gruppen',
+<<<<<<< HEAD
 
       backgroundColor: AppColors.fhwavePurple500,
+=======
+      backgroundColor: AppColors.appPurple,
+>>>>>>> develop
       targetPage: const GroupCreationScreen(),
       ),
       WidgetButton(
