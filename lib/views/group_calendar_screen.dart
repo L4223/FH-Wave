@@ -32,21 +32,46 @@ class _GroupCalendarScreenState extends State<GroupCalendarScreen> {
           height: 50,
         ),
         SizedBox(
-          height: 300,
+          height: 600,
           child: SfCalendar(
             view: CalendarView.month,
+            headerStyle: CalendarHeaderStyle(
+              textStyle: TextStyle(
+                fontSize: 18,
+                fontFamily: 'Helvetica-Bold',
+              ),
+            ),
+            appointmentTextStyle: TextStyle(
+              fontSize: 14,
+              fontFamily: 'Helvetica',
+            ),
             dataSource: MeetingDataSource(_getDataSource()),
             // by default the month appointment display mode set as Indicator, we can
             // change the display mode as appointment using the appointment display
             // mode property
             monthViewSettings: const MonthViewSettings(
                 // showAgenda: true,
+                showAgenda: true,
                 appointmentDisplayMode:
                     MonthAppointmentDisplayMode.appointment),
           ),
         ),
-        DropdownButtonExample(),
-        MyPopup(),
+        Container(
+            width: 200,
+            height: 50,
+            decoration: BoxDecoration(
+              border: Border.all(
+                color: Colors.black,
+                width: 1.0,
+              ),
+            ),
+            child: DropdownButtonExample()),
+        Align(
+            alignment: Alignment.centerRight,
+            child: Padding(
+              padding: const EdgeInsets.all(40.0),
+              child: MyPopup(),
+            )),
         Text(currentUser!.uid)
       ],
     ));
@@ -193,8 +218,8 @@ class _MyPopupState extends State<MyPopup> {
 
   @override
   Widget build(BuildContext context) {
-    return ElevatedButton(
-      child: const Text('Popup öffnen'),
+    return FloatingActionButton(
+      child: const Icon(Icons.add),
       onPressed: () {
         showDialog(
           context: context,
