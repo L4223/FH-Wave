@@ -15,7 +15,7 @@ class WidgetButton extends StatelessWidget {
 
   WidgetButton({super.key,
     required this.title,
-    this.backgroundColor = AppColors.appBlue,
+    this.backgroundColor = AppColors.fhwaveBlue500,
     this.textColor = Colors.black,
     required this.targetPage,
     this.isLarge = false,

@@ -18,23 +18,21 @@ Widget meineWidgetsScreen(BuildContext context) {
     children: [
       /// Hier sind nur Beispiele, biite modifizieren oder ersetzen
       WidgetButton(
-        title: '',
-        backgroundColor: AppColors.appPurple,
-        icon: SvgPicture.asset(
-          'assets/map.svg',
-          width: 70,
-          height: 70,
-        ),
-        targetPage: TemplateScreen(),
+      title:'',
+      backgroundColor: AppColors.fhwavePurple500,
+      icon: SvgPicture.asset(
+        'assets/map.svg',
+        width: 70,
+        height:70,
       ),
       WidgetButton(
-        title: 'Gruppen',
-        backgroundColor: AppColors.appPurple,
-        targetPage: const GroupCreationScreen(),
+      title: 'Gruppen',
+      backgroundColor: AppColors.fhwavePurple500,
+      targetPage: const GroupCreationScreen(),
       ),
       WidgetButton(
           title: 'Kalender',
-          backgroundColor: AppColors.appYellow,
+          backgroundColor: AppColors.fhwaveYellow500,
           targetPage: const GroupCalendarScreen(),
           isLarge: true),
 

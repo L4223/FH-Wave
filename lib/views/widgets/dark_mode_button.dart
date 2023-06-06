@@ -25,7 +25,7 @@ class DarkModeButton extends StatelessWidget {
         onPressed: () {
           controller.toggleDarkMode();
         },
-        child: Text(controller.isDarkMode ? 'DarkMode' : 'LightMode'),
+        child: Text(controller.isDarkMode ? 'LightMode' : 'DarkMode'),
       );
     });
   }
