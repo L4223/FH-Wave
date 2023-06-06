@@ -175,7 +175,7 @@ class UserController {
   }
 
   //Authentifizierungsüberprüfung
-  bool checkAuth() {
+  Future<bool> checkAuth() async {
     var user = FirebaseAuth.instance.currentUser;
     if (user != null && user.emailVerified) {
       return true;
@@ -183,6 +183,7 @@ class UserController {
       return false;
     }
   }
+
 
   Future<void> setupUserDb(String userName, String uid, String userMail) async {
     var firestore = FirebaseFirestore.instance;
