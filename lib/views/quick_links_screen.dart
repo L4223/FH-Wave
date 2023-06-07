@@ -1,71 +1,72 @@
 import 'package:flutter/material.dart';
-import 'widgets/quick_link_button.dart';
-
-
+import 'widgets/buttons/quick_link_button.dart';
 
 Widget quickLinksScreen(BuildContext context) {
-  return Column(
+  return const Column(
     children: [
       QuickLinkButton(
-        title: 'Webmail',
+        text: 'Webmail',
         icon: Icons.mail_outline_rounded,
-        targetURL: 'https://student.fh-kiel.de/',
+        url: 'https://student.fh-kiel.de/',
       ),
-      const SizedBox(height: 10), //Spacing
+      SizedBox(height: 10.0),
+      //Spacing
       QuickLinkButton(
-        title: 'Moodle',
+        text: 'Moodle',
         icon: Icons.public_outlined,
-        targetURL: 'https://lms.fh-kiel.de/login/index.php',
+        url: 'https://lms.fh-kiel.de/login/index.php',
       ),
-      const SizedBox(height: 10), //Spacing
+      SizedBox(height: 10.0),
       QuickLinkButton(
-        title: 'Mensa',
+        text: 'Mensa',
         icon: Icons.food_bank_outlined,
-        targetURL: 'https://studentenwerk.sh/de/mensen-in-kiel?ort=1&mensa=5#mensaplan',
+        url:
+            'https://studentenwerk.sh/de/mensen-in-kiel?ort=1&mensa=5#mensaplan',
       ),
-      const SizedBox(height: 10), //Spacing
+      SizedBox(height: 10.0),
       QuickLinkButton(
-        title: 'QIS',
+        text: 'QIS',
         icon: Icons.inventory_2_outlined,
-        targetURL: 'https://qis.fh-kiel.de/qisserver/rds?state=user&type=0',
+        url: 'https://qis.fh-kiel.de/qisserver/rds?state=user&type=0',
       ),
-      const SizedBox(height: 10), //Spacing
+      SizedBox(height: 10.0),
       QuickLinkButton(
-        title: 'Moduldatenbank',
+        text: 'Moduldatenbank',
         icon: Icons.dataset_outlined,
-        targetURL: 'https://moduldatenbank.fh-kiel.de/de-DE',
+        url: 'https://moduldatenbank.fh-kiel.de/de-DE',
       ),
-      const SizedBox(height: 10), //Spacing
+      SizedBox(height: 10.0),
+
       QuickLinkButton(
-        title: 'Modulanmeldung',
+        text: 'Modulanmeldung',
         icon: Icons.dataset_linked_outlined,
-        targetURL: 'https://modulanmeldung.fh-kiel.de/',
+        url: 'https://modulanmeldung.fh-kiel.de/',
       ),
-      const SizedBox(height: 10), //Spacing
+      SizedBox(height: 10.0), //Spacing
       QuickLinkButton(
-        title: 'Bibliothek',
+        text: 'Bibliothek',
         icon: Icons.local_library_outlined,
-        targetURL: 'https://www.fh-kiel.de/zentralbibliothek/',
+        url: 'https://www.fh-kiel.de/zentralbibliothek/',
       ),
-      const SizedBox(height: 10), //Spacing
+      SizedBox(height: 10.0), //Spacing
       QuickLinkButton(
-        title: 'DFNCloud',
+        text: 'DFNCloud',
         icon: Icons.settings_system_daydream_outlined,
-        targetURL: 'https://dfncloud.fh-kiel.de/login',
+        url: 'https://dfncloud.fh-kiel.de/login',
       ),
-      const SizedBox(height: 10), //Spacing
+      SizedBox(height: 10.0), //Spacing
       QuickLinkButton(
-        title: 'IDA',
+        text: 'IDA',
         icon: Icons.groups_outlined,
-        targetURL: 'https://ida.fh-kiel.de/',
+        url: 'https://ida.fh-kiel.de/',
       ),
-      const SizedBox(height: 10), //Spacing
+      SizedBox(height: 10.0), //Spacing
       QuickLinkButton(
-        title: 'FH Intern',
+        text: 'FH Intern',
         icon: Icons.newspaper_rounded,
-        targetURL: 'https://www.fh-kiel.de/fh-intern/',
+        url: 'https://www.fh-kiel.de/fh-intern/',
       ),
-      const SizedBox(height: 60), //Spacing zu Seitenende
+      SizedBox(height: 60.0), //Spacing zu Seitenende
       /// Quicklinks hier weiter hinzufügen
     ],
   );

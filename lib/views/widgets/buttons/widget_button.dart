@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import '../../app_colors.dart';
-import '../../controllers/widget_button_controller.dart';
+import '../../../app_colors.dart';
+import '../../../controllers/widget_button_controller.dart';
 
 /// Hier sollte man für Widgets weiter entwickeln
 class WidgetButton extends StatelessWidget {

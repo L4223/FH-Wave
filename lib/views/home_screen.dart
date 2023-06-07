@@ -6,31 +6,32 @@ import '../controllers/home_screen_controller.dart';
 import 'meine_widgets_screen.dart';
 import 'profile_screen.dart';
 import 'quick_links_screen.dart';
+import 'widgets/toggle_button.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+  const HomeScreen({Key? key}) : super(key: key);
 
   @override
   HomeScreenState createState() => HomeScreenState();
 }
 
 class HomeScreenState extends State<HomeScreen> {
+  bool isMeineWidgetsVisible = true;
   final HomeScreenController _controller = HomeScreenController();
-  bool isLeftButtonSelected = true;
+  int selectedIndex = 0;
+  List<bool> isSelected = [true, false];
   PageController pageController = PageController(initialPage: 0);
+
+  void onToggle(bool isMeineWidgetsSelected) {
+    setState(() {
+      isMeineWidgetsVisible = isMeineWidgetsSelected;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    //Aktuelle Angemeldete E-mail aus Firebase
-    // var user = FirebaseAuth.instance.currentUser;
-    // var name = user?.email;
-
-    final screenWidth = MediaQuery.of(context).size.width;
-    final width = screenWidth * 0.41;
     return Scaffold(
-      // appBar: null,
       body: Stack(children: [
-        // Blauer Hintergrund mit Farbverlauf
         AppColors.getFhwaveBlueGradientContainer(context),
         ListView(
           children: [
@@ -43,20 +44,15 @@ class HomeScreenState extends State<HomeScreen> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        // fhwave logo
                         SvgPicture.asset(
                           'assets/fhwave_logo_weiss.svg',
                           width: 70,
                         ),
                         ClipOval(
-                          // Profil-Button
                           child: Container(
                             width: 40.0,
                             height: 40.0,
                             color: Colors.white,
-
-                            /// Hier IconButton muss später durch Image ersetzt
-                            /// werden, danch packen wir _controller.image ein
                             child: IconButton(
                               icon: const Icon(Icons.account_circle_outlined),
                               color: Colors.black,
@@ -68,10 +64,6 @@ class HomeScreenState extends State<HomeScreen> {
                                           const ProfileScreen()),
                                 );
                               },
-
-                              /// Um die Konsistenz des Designs zu halten,
-                              /// sollten Sie daran denken, die Dekorationen
-                              /// von Button zu eliminieren
                               highlightColor: Colors.transparent,
                               splashColor: Colors.transparent,
                             ),
@@ -93,91 +85,26 @@ class HomeScreenState extends State<HomeScreen> {
                     Text(_controller.motivatingWords,
                         style: const TextStyle(
                           fontSize: 20.0,
-                          fontWeight: FontWeight.w600,
+                          fontWeight: FontWeight.w500,
                         )),
                     const SizedBox(
                       height: 28,
                     ),
-                    // Zwei Buttons in einer Reihe zum Wechseln der Seiten
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              isLeftButtonSelected = true;
-                            });
-                          },
-                          child: Container(
-                            decoration: BoxDecoration(
-                              color: isLeftButtonSelected
-                                  ? Colors.black
-                                  : Colors.transparent,
-                              borderRadius: BorderRadius.circular(25.0),
-                              border: Border.all(
-                                width: 2.0,
-                              ),
-                            ),
-                            width: width,
-                            height: 50.0,
-                            child: Center(
-                              child: Text(
-                                'Meine Widgets',
-                                style: TextStyle(
-                                  color: isLeftButtonSelected
-                                      ? Colors.white
-                                      : Colors.black,
-                                  fontSize: 16.0,
-                                  fontWeight: FontWeight.w700,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                        GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              isLeftButtonSelected = false;
-                            });
-                          },
-                          child: Container(
-                            decoration: BoxDecoration(
-                              color: isLeftButtonSelected
-                                  ? Colors.transparent
-                                  : Colors.black,
-                              borderRadius: BorderRadius.circular(25.0),
-                              border: Border.all(
-                                width: 2.0,
-                              ),
-                            ),
-                            width: width,
-                            height: 50.0,
-                            child: Center(
-                              child: Text(
-                                'Quicklinks',
-                                style: TextStyle(
-                                  color: isLeftButtonSelected
-                                      ? Colors.black
-                                      : Colors.white,
-                                  fontSize: 16.0,
-                                  fontWeight: FontWeight.w700,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
+                    ToggleButton(onToggle: onToggle),
                     const SizedBox(
-                      height: 28,
+                      height: 25,
                     ),
-                    // Die Widgets werden hier dargestellt
                     Visibility(
-                        visible: isLeftButtonSelected,
-                        child: meineWidgetsScreen(context)),
-                    // Die Quicklinks werden hier dargestellt
+                      visible: isMeineWidgetsVisible,
+                      child: Column(children: [
+                        const SizedBox(
+                          height: 15,
+                        ),
+                        meineWidgetsScreen(context)
+                      ]),
+                    ),
                     Visibility(
-                      visible: !isLeftButtonSelected,
+                      visible: !isMeineWidgetsVisible,
                       child: quickLinksScreen(context),
                     ),
                   ],
