@@ -60,9 +60,27 @@ Bitte beachten Sie, dass für die Schriftfarben nur black oder fhwaveNeutral[num
 
 ### Wie zu verwenden:
 
-- Klassen importieren: `import '../app_colors.dart';`
+- Klassen importieren: z.B. `import '../app_colors.dart';` 
 - `AppColors.[Farbbezeichnung]` z.B. `AppColors.fhwaveBlue500`
 
+## Verwendung von Buttons
+Wir haben die folgenden Buttons für unsere App definiert:
+
+**fhwave-Primary-Button** ist ein primärer Button-Stil. Hier sind einige Beispiele für die Einsatzung: Aktionen mit höherer Priorität. Bestimmte Aktivitäten, zu denen Wir den Nutzer veranlassen möchten. z.B. "Bestätigen", "Löschen", "Speichern","Weiter", "Anmelden" usw.
+
+**fhwave-Primary-Button-With-Icon** ist ein primärer Button-Stil mit einem Icon. Hauptsächlich zur besseren visuellen Darstellung des Zwecks der Button verwendet. Hier sind eine Beispiel für die Einsatzung: "+ Hinzufügen"
+
+**fhwave-Secondary-Button** ist ein Wireframe sekundärer Button-Stil. Beispiele für die Einsatzung: Bei Sekundärer Optionen/ Alternativer Aktionen. Bei zwei Aktionen mit unterschiedlicher Priorität. "Abbrechen". Auchte darauf, dass "Abbrechen" auch Prämier Button sein kann, wenn wir den Nutzer zu "Abbrechen" veranlassen möchten, um Fehlbedienung zu verhindern. z.B. bei dem Löschen/Auflösen der Gruppe.
+
+**fhwave-Quick-Link-Button** ist für Quicklinks definiert.
+
+### Wie zu verwenden:
+Wir nehmen Primary Button als Beispiel:
+- Importiere die Datei, in der sich die Primary Button Klasse befindet. z.B. `import 'widgets/buttons/primary_button.dart';`
+- Übergib den Text für den Button an das `text`-Attribut des PrimaryButton-Widgets.
+- Übergib die entsprechende Funktion an das `onTap`-Attribut des PrimaryButton-Widgets.
+- Optinal können Sie selbe die Breite und Höhe des Buttons definieren, indem Sie `width`-Attribut und `height`-Attribut übergeben.
+- Platzieren Sie das PrimaryButton-Widget an der gewünschten Stelle in Ihrem Flutter-Layout, z. B. innerhalb einer `Column` oder `Row`.
 
 ## Schritte zur fertigen Installation der App
 
