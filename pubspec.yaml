@@ -98,6 +98,8 @@ flutter:
     - fonts/Roboto-LightItalic.ttf
     - fonts/Roboto-Thin.ttf
     - fonts/Roboto-ThinItalic.ttf
+    - assets/mapStyle.json
+
 
   fonts:
     - family: Roboto
