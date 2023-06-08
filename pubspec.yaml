@@ -52,8 +52,6 @@ dependencies:
   table_calendar: ^3.0.9
   cloud_firestore: ^4.7.1
   firebase_dynamic_links: ^5.3.1
-
-
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -98,8 +96,22 @@ flutter:
     - fonts/Roboto-Thin.ttf
     - fonts/Roboto-ThinItalic.ttf
 
+
   fonts:
     - family: Roboto
+      fonts:
+        - asset: fonts/Roboto-Black.ttf
+        - asset: fonts/Roboto-BlackItalic.ttf
+        - asset: fonts/Roboto-Bold.ttf
+        - asset: fonts/Roboto-BoldItalic.ttf
+        - asset: fonts/Roboto-Medium.ttf
+        - asset: fonts/Roboto-MediumItalic.ttf
+        - asset: fonts/Roboto-Regular.ttf
+        - asset: fonts/Roboto-Italic.ttf
+        - asset: fonts/Roboto-Light.ttf
+        - asset: fonts/Roboto-LightItalic.ttf
+        - asset: fonts/Roboto-Thin.ttf
+        - asset: fonts/Roboto-ThinItalic.ttf
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
