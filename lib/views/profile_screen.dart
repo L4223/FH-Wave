@@ -4,7 +4,6 @@ import 'package:provider/provider.dart';
 import '../controllers/dark_mode_controller.dart';
 import '../controllers/profile_screen_controller.dart';
 import 'widgets/dark_mode_button.dart';
-import 'widgets/mensa_button.dart';
 import 'widgets/timetables_button.dart';
 
 final ProfileScreenController _controller = ProfileScreenController();
@@ -43,12 +42,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               const DarkModeButton(),
-              const SizedBox(height: 5),
-              mensaButton(),
-              const SizedBox(height: 5),
+              const SizedBox(height: 10),
               timetablesButton(),
               const SizedBox(
-                height: 5,
+                height: 10,
               ),
             ],
           ),

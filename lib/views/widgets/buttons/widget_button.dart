@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import '../../app_colors.dart';
-import '../../controllers/widget_button_controller.dart';
+import '../../../app_colors.dart';
+import '../../../controllers/widget_button_controller.dart';
 
 /// Hier sollte man für Widgets weiter entwickeln
 class WidgetButton extends StatelessWidget {
@@ -15,7 +15,7 @@ class WidgetButton extends StatelessWidget {
 
   WidgetButton({super.key,
     required this.title,
-    this.backgroundColor = AppColors.appBlue,
+    this.backgroundColor = AppColors.fhwaveBlue500,
     this.textColor = Colors.black,
     required this.targetPage,
     this.isLarge = false,

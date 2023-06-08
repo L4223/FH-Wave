@@ -18,18 +18,11 @@ dynamic screenSize; //Screen Size
 
 UserController userController = UserController();
 User? user = userController.currentUser;
-Future<void> main() async {
-  // FirebaseOptions firebaseOptions = FirebaseOptions(
-  //     apiKey: "AIzaSyANUV9WeE0Kl-47hzEZwWcRZVreJfotw-A",
-  //     appId: "1:728562690240:android:d1967f8145a42636eba525",
-  //     messagingSenderId: "728562690240",
-  //     projectId: "fh-wave",
-  //     databaseURL: "https://fh-wave-default-rtdb.europe-west1.firebasedatabase.app"
-  // );
 
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
-      name: "FH-Wave", options: DefaultFirebaseOptions.android);
+      name: "FH-Wave", options: DefaultFirebaseOptions.currentPlatform);
 
   runApp(const MyApp());
 }
@@ -43,22 +36,33 @@ class MyApp extends StatelessWidget {
       create: (_) => DarkModeController(),
       child: Consumer<DarkModeController>(
         builder: (context, controller, _) {
-          return MaterialApp(
-            theme: ThemeData(
-              brightness:
-                  controller.isDarkMode ? Brightness.dark : Brightness.light,
-              fontFamily: 'Roboto',
-            ),
-            debugShowCheckedModeBanner: false,
-            home: userController.checkAuth() == false
-                ? const LoginScreen()
-                : const HomeScreen(),
-            routes: {
-              '/login': (context) => const LoginScreen(),
-              '/home': (context) => const HomeScreen(),
-              '/signup': (context) => const SignUpScreen(),
-              '/group': (context) => const GroupCreationScreen(),
-              '/calendar': (context) => const CalendarScreen(),
+          return FutureBuilder<bool>(
+            future: userController.checkAuth(),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const CircularProgressIndicator();
+              } else {
+                final isAuthenticated = snapshot.data ?? false;
+                return MaterialApp(
+                  theme: ThemeData(
+                    brightness: controller.isDarkMode
+                        ? Brightness.dark
+                        : Brightness.light,
+                    fontFamily: 'Roboto',
+                  ),
+                  debugShowCheckedModeBanner: false,
+                  home: isAuthenticated
+                      ? const HomeScreen()
+                      : const LoginScreen(),
+                  routes: {
+                    '/login': (context) => const LoginScreen(),
+                    '/home': (context) => const HomeScreen(),
+                    '/signup': (context) => const SignUpScreen(),
+                    '/group': (context) => const GroupCreationScreen(),
+                    '/calendar': (context) => const CalendarScreen(),
+                  },
+                );
+              }
             },
           );
         },
