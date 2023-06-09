@@ -13,14 +13,15 @@ class WidgetButton extends StatelessWidget {
 
   final WidgetButtonController _controller = WidgetButtonController();
 
-  WidgetButton({super.key,
+  WidgetButton({
+    Key? key,
     required this.title,
     this.backgroundColor = AppColors.fhwaveBlue500,
     this.textColor = Colors.black,
     required this.targetPage,
     this.isLarge = false,
-    this.icon
-  });
+    this.icon,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -43,20 +44,21 @@ class WidgetButton extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.all(12.0),
             child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 if (icon != null)
                   Center(
-                    child:icon!
+                    child: icon!,
                   ),
-          const SizedBox(height: 8),
-                Text(title!,
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  color: textColor,
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-
-                ),
+                const SizedBox(height: 8),
+                Text(
+                  title!,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: textColor,
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ],
             ),
@@ -66,12 +68,3 @@ class WidgetButton extends StatelessWidget {
     );
   }
 }
-
-
-
-
-
-
-
-
-

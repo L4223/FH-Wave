@@ -87,6 +87,8 @@ flutter:
     - assets/fhwave_logo_weiss.svg
     - assets/fhwave_logo.svg
     - assets/map.svg
+    - assets/team.svg
+    - assets/calendar.svg
 
   fonts:
     - family: Roboto
