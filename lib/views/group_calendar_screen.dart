@@ -1,14 +1,16 @@
+import 'package:fh_wave/views/widgets/buttons/secondary_button.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 
+import '../app_colors.dart';
 import '../controllers/calendar_controller.dart';
 import '../controllers/group_controller.dart';
 import '../controllers/user_controller.dart';
+import 'widgets/buttons/primary_button.dart';
 
 GroupController groupController = GroupController();
 UserController userController = UserController();
-MyCalendarController calendarController = MyCalendarController();
 
 User? currentUser = userController.currentUser;
 
@@ -23,6 +25,8 @@ class GroupCalendarScreen extends StatefulWidget {
 }
 
 class _GroupCalendarScreenState extends State<GroupCalendarScreen> {
+  MyCalendarController calendarController = MyCalendarController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -39,14 +43,25 @@ class _GroupCalendarScreenState extends State<GroupCalendarScreen> {
             // by default the month appointment display mode set as Indicator, we can
             // change the display mode as appointment using the appointment display
             // mode property
+            appointmentTextStyle: const TextStyle(
+                fontWeight: FontWeight.w600, color: AppColors.fhwaveBlue800),
             monthViewSettings: const MonthViewSettings(
-                // showAgenda: true,
-                appointmentDisplayMode:
-                    MonthAppointmentDisplayMode.appointment),
+              // showAgenda: true,
+              appointmentDisplayMode: MonthAppointmentDisplayMode.appointment,
+            ),
           ),
         ),
-        DropdownButtonExample(),
+        const DropdownButtonExample(),
         MyPopup(),
+        ElevatedButton(
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const When2Meet()),
+            );
+          },
+          child: const Text('When2Meet'),
+        ),
         Text(currentUser!.uid)
       ],
     ));
@@ -119,6 +134,9 @@ class Meeting {
   /// Creates a meeting class with required details.
   Meeting(this.eventName, this.from, this.to, this.background, this.isAllDay);
 
+  String get date =>
+      "$eventName - ${from.day}.${from.month}.${from.year} - ${to.day}.${to.month}.${to.year}";
+
   /// Event name which is equivalent to subject property of [Appointment].
   String eventName;
 
@@ -183,6 +201,8 @@ class _MyPopupState extends State<MyPopup> {
   TextEditingController dateTextController = TextEditingController();
   TextEditingController timeTextController = TextEditingController();
 
+  MyCalendarController calendarController = MyCalendarController();
+
   @override
   void dispose() {
     nameTextController.dispose();
@@ -244,5 +264,155 @@ class _MyPopupState extends State<MyPopup> {
         );
       },
     );
+  }
+}
+
+bool meetSelection = false;
+
+class When2Meet extends StatefulWidget {
+  const When2Meet({Key? key}) : super(key: key);
+
+  @override
+  State<When2Meet> createState() => _When2MeetState();
+}
+
+class _When2MeetState extends State<When2Meet> {
+  MyCalendarController calendarController = MyCalendarController();
+
+  final meetings = <Meeting>[];
+  var day1;
+  var day2;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        body: Stack(
+      children: [
+        AppColors.getFhwaveBlueGradientContainer(context),
+        ListView(children: [
+          Column(
+            children: [
+              const SizedBox(
+                height: 50,
+                child: Placeholder(),
+              ),
+              SfCalendar(
+                onTap: (day) {
+                  if (meetSelection) {
+                    day1ToDay2(day);
+                  }
+                },
+                view: CalendarView.month,
+                dataSource: MeetingDataSource(_getDataSource()),
+                // by default the month appointment display mode set as Indicator, we can
+                // change the display mode as appointment using the appointment display
+                // mode property
+                monthViewSettings: const MonthViewSettings(
+                    // showAgenda: true,
+                    appointmentDisplayMode:
+                        MonthAppointmentDisplayMode.appointment),
+              ),
+              const SizedBox(
+                height: 50,
+              ),
+              when2MeetButton(),
+              SizedBox(
+                height: 200,
+                child: ListView.builder(
+                  itemCount: meetings.length,
+                  itemBuilder: (context, index) {
+                    return ListTile(
+                      title: Text(meetings[index].date),
+                    );
+                  },
+                ),
+              ),
+            ],
+          ),
+        ]),
+      ],
+    ));
+  }
+
+  Widget when2MeetButton() {
+    if (!meetSelection) {
+      return Column(
+        children: [
+          SizedBox(
+            height: 35,
+          ),
+          PrimaryButton(
+              text: "When2Meet",
+              onTap: () {
+                setState(() {
+                  meetSelection = !meetSelection;
+                });
+              }),
+          const SizedBox(
+            height: 20,
+          ),
+          SecondaryButton(
+              text: "Auswertung",
+              onTap: () {
+                setState(() {});
+              })
+        ],
+      );
+    } else {
+      return Column(
+        children: [
+          const Padding(
+            padding: EdgeInsets.all(10),
+            child: Text("Du kannst jetzt auswählen, wann du Zeit hast."),
+          ),
+          PrimaryButton(
+              text: "Auswahl abgeben",
+              onTap: () {
+                setState(() {
+                  meetSelection = !meetSelection;
+                });
+              }),
+          const SizedBox(
+            height: 20,
+          ),
+          SecondaryButton(
+              text: "Auswahl zurücksetzen",
+              onTap: () {
+                setState(meetings.clear);
+              }),
+        ],
+      );
+    }
+  }
+
+  void day1ToDay2(CalendarTapDetails day) {
+    if (day1 != null) {
+      day2 = day.date;
+
+      setState(() {
+        meetings.add(
+            Meeting("When2Meet", day1, day2, AppColors.fhwaveBlue600, false));
+
+        day1 = null;
+        day2 = null;
+      });
+    } else {
+      day1 = day.date;
+    }
+  }
+
+  List<Meeting> _getDataSource() {
+    //
+    // final today = DateTime.now();
+    // var startTime = DateTime(today.year, today.month, today.day, 9);
+    // final endTime = startTime.add(const Duration(hours: 2));
+    // meetings.add(
+    //   Meeting('Conference', startTime, endTime, const Color(0xFF0F8644), false),
+    // );
+    //
+    // startTime = DateTime(today.year, today.month, 20, 9);
+    // meetings.add(
+    //     Meeting("Klausur", startTime, endTime, const Color(0xFFf2c232), false));
+    return meetings;
   }
 }

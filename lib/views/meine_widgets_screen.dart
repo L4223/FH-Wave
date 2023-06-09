@@ -5,6 +5,7 @@ import '../app_colors.dart';
 
 // import 'add_widgets_screen.dart';
 import 'calendar_screen.dart';
+import 'group_calendar_screen.dart';
 import 'group_screens/group_screen.dart';
 import 'template_screen.dart';
 
@@ -39,7 +40,7 @@ Widget meineWidgetsScreen(BuildContext context) {
       WidgetButton(
           title: 'Kalender',
           backgroundColor: AppColors.fhwaveYellow500,
-          targetPage: const CalendarScreen(),
+          targetPage: const GroupCalendarScreen(),
           isLarge: true),
       // PrimaryButtonWithIcon(
       //   icon: Icons.add,

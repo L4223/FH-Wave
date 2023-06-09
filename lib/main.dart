@@ -11,6 +11,7 @@ import 'firebase_options.dart';
 import 'views/auth_screens/login_screen.dart';
 import 'views/auth_screens/signup_screen.dart';
 import 'views/calendar_screen.dart';
+import 'views/group_calendar_screen.dart';
 import 'views/group_screens/group_screen.dart';
 import 'views/home_screen.dart';
 
@@ -59,7 +60,7 @@ class MyApp extends StatelessWidget {
                     '/home': (context) => const HomeScreen(),
                     '/signup': (context) => const SignUpScreen(),
                     '/group': (context) => const GroupCreationScreen(),
-                    '/calendar': (context) => const CalendarScreen(),
+                    '/calendar': (context) => const GroupCalendarScreen(),
                   },
                 );
               }
