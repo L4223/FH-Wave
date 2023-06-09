@@ -7,7 +7,6 @@ import '../app_colors.dart';
 import 'calendar_screen.dart';
 import 'group_screens/group_screen.dart';
 import 'template_screen.dart';
-
 // import 'widgets/buttons/primary_button.dart';
 // import 'widgets/buttons/primary_button_with_icon.dart';
 // import 'widgets/buttons/secondary_button.dart';
@@ -22,23 +21,33 @@ Widget meineWidgetsScreen(BuildContext context) {
     children: [
       /// Hier sind nur Beispiele, biite modifizieren oder ersetzen
       WidgetButton(
-        title: '',
-        backgroundColor: AppColors.fhwavePurple500,
+        title: 'Campus Navigation',
+        backgroundColor: AppColors.fhwaveBlue500,
         icon: SvgPicture.asset(
           'assets/map.svg',
-          width: 70,
-          height: 70,
+          width: 45,
+          height: 45,
         ),
         targetPage: TemplateScreen(),
       ),
       WidgetButton(
         title: 'Gruppen',
         backgroundColor: AppColors.fhwavePurple500,
+        icon: SvgPicture.asset(
+          'assets/team.svg',
+          width: 45,
+          height: 45,
+        ),
         targetPage: const GroupCreationScreen(),
       ),
       WidgetButton(
           title: 'Kalender',
           backgroundColor: AppColors.fhwaveYellow500,
+          icon: SvgPicture.asset(
+            'assets/calendar.svg',
+            width: 50,
+            height: 50,
+          ),
           targetPage: const CalendarScreen(),
           isLarge: true),
       // PrimaryButtonWithIcon(

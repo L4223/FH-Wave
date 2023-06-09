@@ -48,14 +48,14 @@ class GroupCreationScreenState extends State<GroupCreationScreen> {
     return Scaffold(
         appBar: AppBar(
           title: const Text('Gruppe erstellen'),
-          leading: GestureDetector(
-            child: const Icon(
-              Icons.arrow_back,
-            ),
-            onTap: () {
-              Navigator.pushNamed(context, "/home");
-            },
-          ),
+          // leading: GestureDetector(
+          //   child: const Icon(
+          //     Icons.arrow_back,
+          //   ),
+          //   onTap: () {
+          //     Navigator.pushNamed(context, "/home");
+          //   },
+          // ),
           actions: [
             IconButton(
               icon: const Icon(Icons.local_post_office),
