@@ -92,6 +92,10 @@ class UserController {
     }
   }
 
+  Future<void> logOut() async {
+    _auth.signOut();
+  }
+
   //Email und Password != Null? ==>
   // Eingabefehler mithilfe von AlertDialogs überpruft.
   //Kein Eingabefehler ==> Regstrieren

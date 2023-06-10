@@ -1,12 +1,15 @@
+import 'package:fh_wave/views/widgets/group_widgets/group_buttons.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../controllers/dark_mode_controller.dart';
+import '../controllers/user_controller.dart';
 import '../controllers/profile_screen_controller.dart';
 import 'widgets/dark_mode_button.dart';
 import 'widgets/timetables_button.dart';
 
 final ProfileScreenController _controller = ProfileScreenController();
+final UserController userController = UserController();
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({Key? key}) : super(key: key);
@@ -47,6 +50,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
               const SizedBox(
                 height: 10,
               ),
+              funcButton(context, "LogOut", Icons.logout, () {
+                userController
+                    .logOut()
+                    .then((value) => Navigator.pushNamed(context, "/login"));
+              })
             ],
           ),
         ),

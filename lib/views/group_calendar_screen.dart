@@ -1,19 +1,20 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 
+import '../app_colors.dart';
+import '../controllers/appointment_controller.dart';
 import '../controllers/calendar_controller.dart';
 import '../controllers/group_controller.dart';
 import '../controllers/user_controller.dart';
 
 GroupController groupController = GroupController();
 UserController userController = UserController();
+AppointmentController appointmentController = AppointmentController();
 MyCalendarController calendarController = MyCalendarController();
 
 User? currentUser = userController.currentUser;
-
-//TODO Liste mit Gruppennamen befüllen
-const List<String> list = <String>['One', 'Two', 'Three', 'Four'];
 
 class GroupCalendarScreen extends StatefulWidget {
   const GroupCalendarScreen({Key? key}) : super(key: key);
@@ -23,58 +24,64 @@ class GroupCalendarScreen extends StatefulWidget {
 }
 
 class _GroupCalendarScreenState extends State<GroupCalendarScreen> {
+  List<String> groupNames = [];
+
+  @override
+  void initState() {
+    super.initState();
+    fetchUserGroups();
+  }
+
+  Future<void> fetchUserGroups() async {
+    List<DocumentSnapshot> groupDocs =
+        await groupController.getUserGroups(currentUser!.uid);
+
+    setState(() {
+      groupNames =
+          groupDocs.map((doc) => doc['groupName'] as String).toSet().toList();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Column(
-      children: [
-        const SizedBox(
-          height: 50,
-        ),
-        SizedBox(
-          height: 600,
-          child: SfCalendar(
-            view: CalendarView.month,
-            headerStyle: CalendarHeaderStyle(
-              textStyle: TextStyle(
-                fontSize: 18,
-                fontFamily: 'Helvetica-Bold',
-              ),
-            ),
-            appointmentTextStyle: TextStyle(
-              fontSize: 14,
-              fontFamily: 'Helvetica',
-            ),
-            dataSource: MeetingDataSource(_getDataSource()),
-            // by default the month appointment display mode set as Indicator, we can
-            // change the display mode as appointment using the appointment display
-            // mode property
-            monthViewSettings: const MonthViewSettings(
-                // showAgenda: true,
-                showAgenda: true,
-                appointmentDisplayMode:
-                    MonthAppointmentDisplayMode.appointment),
-          ),
-        ),
-        Container(
-            width: 200,
+      body: Column(
+        children: [
+          const SizedBox(
             height: 50,
-            decoration: BoxDecoration(
-              border: Border.all(
-                color: Colors.black,
-                width: 1.0,
+          ),
+          Expanded(
+            child: SfCalendar(
+              view: CalendarView.month,
+              headerStyle: CalendarHeaderStyle(
+                textStyle: TextStyle(
+                  fontSize: 18,
+                  fontFamily: 'Helvetica-Bold',
+                ),
+              ),
+              appointmentTextStyle: TextStyle(
+                fontSize: 14,
+                fontFamily: 'Helvetica',
+              ),
+              dataSource: MeetingDataSource(_getDataSource()),
+              monthViewSettings: const MonthViewSettings(
+                showAgenda: true,
+                appointmentDisplayMode: MonthAppointmentDisplayMode.appointment,
               ),
             ),
-            child: DropdownButtonExample()),
-        Align(
+          ),
+          DropdownButtonExample(groupNames: groupNames),
+          Align(
             alignment: Alignment.centerRight,
             child: Padding(
               padding: const EdgeInsets.all(40.0),
               child: MyPopup(),
-            )),
-        Text(currentUser!.uid)
-      ],
-    ));
+            ),
+          ),
+          Text(currentUser!.uid),
+        ],
+      ),
+    );
   }
 
   List<Meeting> _getDataSource() {
@@ -83,21 +90,16 @@ class _GroupCalendarScreenState extends State<GroupCalendarScreen> {
     var startTime = DateTime(today.year, today.month, today.day, 9);
     final endTime = startTime.add(const Duration(hours: 2));
     meetings.add(
-      Meeting('Conference', startTime, endTime, const Color(0xFF0F8644), false),
+      Meeting('Conference', startTime, endTime, AppColors.fhwaveBlue500, false),
     );
     startTime = DateTime(today.year, today.month, 5, 9);
-    meetings.add(
-        Meeting("Klausur", startTime, endTime, const Color(0xFFf2c232), false));
+    meetings.add(Meeting(
+        "Klausur", startTime, endTime, AppColors.fhwaveGreen500, false));
     return meetings;
   }
 }
 
-/// An object to set the appointment collection data source to calendar, which
-/// used to map the custom appointment data to the calendar appointment, and
-/// allows to add, remove or reset the appointment collection.
 class MeetingDataSource extends CalendarDataSource {
-  /// Creates a meeting data source, which used to set the appointment
-  /// collection to the calendar
   MeetingDataSource(List<Meeting> source) {
     appointments = source;
   }
@@ -138,56 +140,54 @@ class MeetingDataSource extends CalendarDataSource {
   }
 }
 
-/// Custom business object class which contains properties to hold the detailed
-/// information about the event data which will be rendered in calendar.
 class Meeting {
-  /// Creates a meeting class with required details.
   Meeting(this.eventName, this.from, this.to, this.background, this.isAllDay);
 
-  /// Event name which is equivalent to subject property of [Appointment].
   String eventName;
-
-  /// From which is equivalent to start time property of [Appointment].
   DateTime from;
-
-  /// To which is equivalent to end time property of [Appointment].
   DateTime to;
-
-  /// Background which is equivalent to color property of [Appointment].
   Color background;
-
-  /// IsAllDay which is equivalent to isAllDay property of [Appointment].
   bool isAllDay;
 }
 
 class DropdownButtonExample extends StatefulWidget {
-  const DropdownButtonExample({super.key});
+  final List<String> groupNames;
+
+  const DropdownButtonExample({Key? key, required this.groupNames})
+      : super(key: key);
 
   @override
   State<DropdownButtonExample> createState() => _DropdownButtonExampleState();
 }
 
 class _DropdownButtonExampleState extends State<DropdownButtonExample> {
-  String dropdownValue = list.first;
+  String dropdownValue = '';
 
   @override
   Widget build(BuildContext context) {
+    if (widget.groupNames.isEmpty) {
+      return Text('Keine Gruppennamen vorhanden');
+    }
+
+    if (!widget.groupNames.contains(dropdownValue)) {
+      dropdownValue = widget.groupNames.first;
+    }
+
     return DropdownButton<String>(
       value: dropdownValue,
       icon: const Icon(Icons.arrow_downward),
       elevation: 16,
-      style: const TextStyle(color: Colors.deepPurple),
+      style: const TextStyle(color: AppColors.fhwavePurple500),
       underline: Container(
         height: 2,
-        color: Colors.deepPurpleAccent,
+        color: AppColors.fhwavePurple500,
       ),
       onChanged: (String? value) {
-        // This is called when the user selects an item.
         setState(() {
           dropdownValue = value!;
         });
       },
-      items: list.map<DropdownMenuItem<String>>((String value) {
+      items: widget.groupNames.map<DropdownMenuItem<String>>((String value) {
         return DropdownMenuItem<String>(
           value: value,
           child: Text(value),
@@ -246,14 +246,16 @@ class _MyPopupState extends State<MyPopup> {
                     decoration: const InputDecoration(labelText: 'Uhrzeit'),
                   ),
                   ElevatedButton(
-                      onPressed: () {
-                        calendarController.craeteNewAppointment(
-                            "9PuKNCIq7rgQ36EvLJbh",
-                            "Fortnite",
-                            "Battlepass lvl 100",
-                            DateTime.parse('1969-07-20 20:18:04Z'));
-                      },
-                      child: const Text("Termin erstellen"))
+                    onPressed: () {
+                      calendarController.craeteNewAppointment(
+                        "9PuKNCIq7rgQ36EvLJbh",
+                        "Fortnite",
+                        "Battlepass lvl 100",
+                        DateTime.parse('1969-07-20 20:18:04Z'),
+                      );
+                    },
+                    child: const Text("Termin erstellen"),
+                  ),
                 ],
               ),
               actions: [
