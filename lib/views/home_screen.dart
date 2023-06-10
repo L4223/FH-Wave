@@ -1,5 +1,6 @@
 import 'dart:math' as math;
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -29,6 +30,11 @@ class HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+
+    //Aktuelle User-date aus Firebase
+    var currentUser = FirebaseAuth.instance.currentUser;
+    var username = currentUser?.displayName;
+
     return Scaffold(
       body: Stack(children: [
         AppColors.getFhwaveBlueGradientContainer(context),
@@ -55,6 +61,7 @@ class HomeScreenState extends State<HomeScreen> {
                             'assets/fhwave_logo_weiss.svg',
                             width: 70,
                           ),
+
                           ClipOval(
                             child: Container(
                               width: 40.0,
@@ -79,9 +86,9 @@ class HomeScreenState extends State<HomeScreen> {
                         ],
                       ),
                       const SizedBox(
-                        height: 52,
+                        height: 40,
                       ),
-                      Text('${_controller.greeting}, \n${_controller.name}!',
+                      Text('${_controller.greeting}, \n$username!',
                           style: TextStyle(
                               fontSize: 36.0,
                               fontWeight: FontWeight.w800,
