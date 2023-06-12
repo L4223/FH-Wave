@@ -3,7 +3,6 @@ import 'package:flutter_svg/flutter_svg.dart';
 
 import '../app_colors.dart';
 
-// import 'add_widgets_screen.dart';
 import 'calendar_screen.dart';
 import 'group_screens/group_screen.dart';
 import 'template_screen.dart';
@@ -22,12 +21,12 @@ Widget meineWidgetsScreen(BuildContext context) {
     children: [
       /// Hier sind nur Beispiele, biite modifizieren oder ersetzen
       WidgetButton(
-        title: '',
-        backgroundColor: AppColors.fhwavePurple500,
+        title: 'Campus Navigation',
+        backgroundColor: AppColors.fhwaveBlue500,
         icon: SvgPicture.asset(
           'assets/map.svg',
-          width: 70,
-          height: 70,
+          width: 45,
+          height: 45,
         ),
         targetPage: TemplateScreen(),
   ),
@@ -35,14 +34,28 @@ Widget meineWidgetsScreen(BuildContext context) {
 
         title: 'Gruppen',
         backgroundColor: AppColors.fhwavePurple500,
-        targetPage: const GroupCreationScreen(),
+
+
+
+        icon: SvgPicture.asset(
+          'assets/team.svg',
+          width: 45,
+          height: 45,
+        ),
+        targetPage: const GroupsHome(),
 
       ),
       WidgetButton(
           title: 'Kalender',
           backgroundColor: AppColors.fhwaveYellow500,
+          icon: SvgPicture.asset(
+            'assets/calendar.svg',
+            width: 50,
+            height: 50,
+          ),
           targetPage: const CalendarScreen(),
           isLarge: true),
+
       // PrimaryButtonWithIcon(
       //   icon: Icons.add,
       //   text: "Member Hinzufügen",

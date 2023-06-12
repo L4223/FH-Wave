@@ -13,50 +13,53 @@ class WidgetButton extends StatelessWidget {
 
   final WidgetButtonController _controller = WidgetButtonController();
 
-  WidgetButton({super.key,
+  WidgetButton({
+    Key? key,
     required this.title,
     this.backgroundColor = AppColors.fhwaveBlue500,
     this.textColor = Colors.black,
     required this.targetPage,
     this.isLarge = false,
-    this.icon
-  });
+    this.icon,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
-    final width = isLarge ? screenWidth * 0.9 : screenWidth * 0.41;
+    final containerWidth = screenWidth * 0.85;
+    final buttonWidth = isLarge ? containerWidth : (containerWidth - 12) / 2;
     const height = 130.0;
 
     return SizedBox(
-      width: width,
+      width: buttonWidth,
       height: height,
       child: GestureDetector(
         onTap: () => _controller.navigateToPage(context, targetPage),
         child: Container(
-          width: width,
+          width: buttonWidth,
           height: height,
           decoration: BoxDecoration(
             color: backgroundColor,
-            borderRadius: BorderRadius.circular(15),
+            borderRadius: BorderRadius.circular(20),
           ),
           child: Padding(
             padding: const EdgeInsets.all(12.0),
             child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 if (icon != null)
                   Center(
-                    child:icon!
+                    child: icon!,
                   ),
-          const SizedBox(height: 8),
-                Text(title!,
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  color: textColor,
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-
-                ),
+                const SizedBox(height: 8),
+                Text(
+                  title!,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: textColor,
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ],
             ),
@@ -66,12 +69,3 @@ class WidgetButton extends StatelessWidget {
     );
   }
 }
-
-
-
-
-
-
-
-
-

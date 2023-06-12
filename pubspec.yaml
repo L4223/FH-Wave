@@ -52,6 +52,9 @@ dependencies:
   table_calendar: ^3.0.9
   cloud_firestore: ^4.7.1
   firebase_dynamic_links: ^5.3.1
+
+  syncfusion_flutter_calendar: ^21.2.8
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -95,6 +98,13 @@ flutter:
     - fonts/Roboto-LightItalic.ttf
     - fonts/Roboto-Thin.ttf
     - fonts/Roboto-ThinItalic.ttf
+    - assets/felix.jpg
+    - assets/team.svg
+    - assets/calendar.svg
+    - assets/fhwave-loading-weiss.gif
+    - assets/fhwave-loading-schwarz.gif
+    - assets/fhwave-loading-standard.gif
+    - assets/fhwave-loading-weiss-schwarz.gif
 
 
   fonts:

@@ -48,7 +48,8 @@ class QuickLinkButton extends StatelessWidget {
           color: AppColors.transparent, // Hintergrundfarbe des Buttons
           border: Border(
             bottom: BorderSide(
-              color: AppColors.fhwaveNeutral100, // Farbe der unteren Grenzlinie
+              color: Color.fromRGBO(0, 0, 0, 0.2),
+              // Farbe der unteren Grenzlinie
               width: 1.0, // Breite der unteren Grenzlinie
             ),
           ),

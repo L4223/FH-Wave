@@ -8,13 +8,14 @@ class CalendarScreen extends StatefulWidget {
 
   @override
   CalendarScreenState createState() => CalendarScreenState();
+
   void setSelectedDays(List<DateTime> selectedDays) {
     // Diese Methode bleibt leer, da sie im State gesetzt wird
   }
 }
 
 class CalendarScreenState extends State<CalendarScreen> {
-  final CalendarController _calendarController = CalendarController();
+  final MyCalendarController _calendarController = MyCalendarController();
   final CalendarFormat _calendarFormat = CalendarFormat.month;
   DateTime _focusedDay = DateTime.now();
   List<DateTime> _selectedDays = [];
@@ -22,8 +23,7 @@ class CalendarScreenState extends State<CalendarScreen> {
   @override
   void initState() {
     super.initState();
-    widget.setSelectedDays(
-        _selectedDays);
+    widget.setSelectedDays(_selectedDays);
     // Übergabe der initialen ausgewählten Tage an die übergeordnete Klasse
   }
 
@@ -61,7 +61,6 @@ class CalendarScreenState extends State<CalendarScreen> {
 
                 _calendarController.saveSelectedDays(_selectedDays);
                 _focusedDay = focusedDay; // Fokussierten Tag aktualisieren
-
               });
             },
             calendarStyle: CalendarStyle(
@@ -82,8 +81,8 @@ class CalendarScreenState extends State<CalendarScreen> {
             onPressed: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) =>
-                    const RequestAppointmentScreen()),
+                MaterialPageRoute(
+                    builder: (context) => const RequestAppointmentScreen()),
               );
             },
             child: const Text('Termin anfragen'),
