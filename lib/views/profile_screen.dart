@@ -1,19 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
-//import 'package:provider/provider.dart';
-import '../app_colors.dart';
-import '../controllers/dark_mode_controller.dart';
 import '../controllers/home_screen_controller.dart';
 import '../controllers/user_controller.dart';
 
-//import '../controllers/dark_mode_controller.dart';
-//import '../controllers/profile_screen_controller.dart';
 import '../views/home_screen.dart';
 import 'widgets/dark_mode_button.dart';
-
-//final ProfileScreenController _controller = ProfileScreenController();
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({Key? key}) : super(key: key);

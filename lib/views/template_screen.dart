@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../controllers/dark_mode_controller.dart';
 import '../controllers/template_screen_controller.dart';
 import '../views/building_plan_widget.dart';
 
@@ -11,26 +13,28 @@ class TemplateScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        shadowColor: Colors.transparent,
-        toolbarHeight: 100,
-        title: Align(
-          alignment: Alignment.centerLeft,
-          child: Text(
-            'Wo willst du hin?',
-            style: TextStyle(
-              color: _controller.color,
-              fontSize: _controller.fontSize,
-              fontWeight: _controller.fontWeight,
+    return Consumer<DarkModeController>(builder: (context, controller, _) {
+      return Scaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.transparent,
+          elevation: 0.0,
+          shadowColor: Colors.transparent,
+          toolbarHeight: 60,
+          title: Align(
+            alignment: Alignment.centerLeft,
+            child: Text(
+              'Wo willst du hin?',
+              style: TextStyle(
+                color: _controller.color,
+                fontSize: _controller.fontSize,
+                fontWeight: _controller.fontWeight,
+              ),
             ),
           ),
+          iconTheme: const IconThemeData(color: Colors.black),
         ),
-        iconTheme: const IconThemeData(color: Colors.black),
-      ),
-      body:
-          const BuildingPlanWidget(),
-    );
+        body: const BuildingPlanWidget(),
+      );
+    });
   }
 }
