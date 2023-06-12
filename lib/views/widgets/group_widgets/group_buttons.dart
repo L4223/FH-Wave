@@ -20,6 +20,64 @@ ButtonStyle roundButtonStyle(BuildContext context) {
       backgroundColor: MaterialStateProperty.all<Color>(bgColor));
 }
 
+Widget roundButton(BuildContext context, Function func, String text) {
+  return GestureDetector(
+    onTap: () {
+      func();
+    },
+    child: Container(
+      decoration: BoxDecoration(
+        color: Colors.black,
+        borderRadius: BorderRadius.circular(25.0),
+        border: Border.all(
+          width: 2.0,
+        ),
+      ),
+      width: 300,
+      height: 50.0,
+      child: Center(
+        child: Text(
+          text,
+          style: const TextStyle(
+            color: Colors.white,
+            fontSize: 16.0,
+            fontWeight: FontWeight.w700,
+          ),
+        ),
+      ),
+    ),
+  );
+}
+
+Widget smallRoundButton(BuildContext context, Function func, String text) {
+  return GestureDetector(
+    onTap: () {
+      func();
+    },
+    child: Container(
+      decoration: BoxDecoration(
+        color: Colors.black,
+        borderRadius: BorderRadius.circular(25.0),
+        border: Border.all(
+          width: 2.0,
+        ),
+      ),
+      width: 140,
+      height: 50.0,
+      child: Center(
+        child: Text(
+          text,
+          style: const TextStyle(
+            color: Colors.white,
+            fontSize: 16.0,
+            fontWeight: FontWeight.w700,
+          ),
+        ),
+      ),
+    ),
+  );
+}
+
 Widget funcButton(
     BuildContext context, String text, IconData icon, void Function() func) {
   return Consumer<DarkModeController>(builder: (context, controller, _) {

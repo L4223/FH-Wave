@@ -2,8 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import '../controllers/appointment_controller.dart';
-import 'request_screen.dart';
-
+import 'group_screens/request_screen.dart';
 
 class RequestAppointmentScreen extends StatefulWidget {
   const RequestAppointmentScreen({super.key});
@@ -17,7 +16,7 @@ class RequestAppointmentScreenState extends State<RequestAppointmentScreen> {
   late DateTime selectedDate;
   final TextEditingController _dateController = TextEditingController();
   final RequestAppointmentController _controller =
-  RequestAppointmentController();
+      RequestAppointmentController();
   List<String> _appointments = [];
 
   @override
@@ -64,8 +63,6 @@ class RequestAppointmentScreenState extends State<RequestAppointmentScreen> {
         _controller.requestAppointment(groupId, date);
       }
     }
-
-
   }
 
   @override
@@ -105,14 +102,16 @@ class RequestAppointmentScreenState extends State<RequestAppointmentScreen> {
               child: const Text('anfragen'),
             ),
             const SizedBox(height: 16.0),
-            Expanded(child: ListView.builder(
-              itemCount: _appointments.length,
-              itemBuilder: (context, index) {
-                return ListTile(
-                  title: Text(_appointments[index]),
-                );
-              },
-            ),)
+            Expanded(
+              child: ListView.builder(
+                itemCount: _appointments.length,
+                itemBuilder: (context, index) {
+                  return ListTile(
+                    title: Text(_appointments[index]),
+                  );
+                },
+              ),
+            )
           ],
         ),
       ),

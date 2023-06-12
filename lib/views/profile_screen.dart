@@ -31,114 +31,109 @@ class _ProfileScreenState extends State<ProfileScreen> {
     var user = FirebaseAuth.instance.currentUser;
     var username = user?.displayName;
     var userEmail = user?.email;
-
-    return Consumer<DarkModeController>(builder: (context, controller, _) {
-      return Scaffold(
-        backgroundColor: Colors.transparent, // Hintergrund transparent machen
-        body: Stack(
-          children: [
-            // HomeScreen im Hinterground anzeigen
-            const Positioned.fill(
-              child: HomeScreen(),
-            ),
-            // Scrollbare Fläsche auf home_screen Platzieren
-            DraggableScrollableSheet(
-              initialChildSize: 0.5,
-              minChildSize: 0.2,
-              maxChildSize: 1.0,
-              builder: (context, scrollController) {
-                return Container(
-                  decoration: BoxDecoration(
-                    color: controller.isDarkMode
-                        ? AppColors.fhwaveNeutral700
-                        : AppColors.white,
-                    borderRadius: const BorderRadius.only(
-                      topLeft: Radius.circular(20.0),
-                      topRight: Radius.circular(20.0),
-                    ),
+    return Scaffold(
+      backgroundColor: Colors.transparent, // Hintergrund transparent machen
+      body: Stack(
+        children: [
+// HomeScreen im Hinterground anzeigen
+          const Positioned.fill(
+            child: HomeScreen(),
+          ),
+// Scrollbare Fläsche auf home_screen Platzieren
+          DraggableScrollableSheet(
+            initialChildSize: 0.5,
+            minChildSize: 0.2,
+            maxChildSize: 1.0,
+            builder: (context, scrollController) {
+              return Container(
+                decoration: const BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(20.0),
+                    topRight: Radius.circular(20.0),
                   ),
-                  child: SingleChildScrollView(
-                    controller: scrollController,
-                    child: Column(
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
+                ),
+                child: SingleChildScrollView(
+                  controller: scrollController,
+                  child: Column(
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+// Exit Icon
+                          IconButton(
+                            icon: const Icon(Icons.close),
+                            color: _controller.fontColor,
+                            // Schließt den ProfileScreen
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                          ),
+                        ],
+                      ),
+                      Align(
+                        alignment: Alignment.center,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            // Exit Icon
-                            IconButton(
-                              icon: const Icon(Icons.close),
-                              color: _controller.fontColor,
-                              // Schließt den ProfileScreen
+//Profielbild
+                            const SizedBox(
+                              height: 150, // Höhe des Platzhalters anpassen
+                              width: 150, // Breite des Platzhalters anpassen
+                              child: CircleAvatar(
+                                  //backgroundImage: AssetImage('assets/felix.jpg'),
+                                  ),
+                            ),
+//Benuzername
+                            const SizedBox(height: 20.0),
+                            Text('$username!',
+                                style: TextStyle(
+                                    fontSize: 20.0,
+                                    fontWeight: FontWeight.w800,
+                                    color: _controller.fontColor)),
+//Benutzer E-Mail
+                            const SizedBox(
+                              height: 4,
+                            ),
+                            Text('$userEmail',
+                                style: TextStyle(
+                                    fontSize: 15.0,
+                                    fontWeight: FontWeight.w400,
+                                    color: _controller.fontColor)),
+//Abmelden Button
+                            const SizedBox(
+                              height: 20,
+                            ),
+                            ElevatedButton(
                               onPressed: () {
-                                Navigator.pop(context);
+                                currentUser.signOut();
+                                Navigator.pushNamed(context, '/login');
                               },
+                              style: ElevatedButton.styleFrom(
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(30.0),
+                                ),
+                                backgroundColor: Colors.black,
+                                minimumSize: const Size(150, 30),
+                              ),
+                              child: const Text('Abmelden'),
+                            ),
+                            const DarkModeButton(),
+                            const SizedBox(height: 10),
+                            const SizedBox(
+                              height: 10,
                             ),
                           ],
                         ),
-                        Align(
-                          alignment: Alignment.center,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              //Profielbild
-                              const SizedBox(
-                                height: 150, // Höhe des Platzhalters anpassen
-                                width: 150, // Breite des Platzhalters anpassen
-                                child: CircleAvatar(
-                                    //backgroundImage: AssetImage('assets/felix.jpg'),
-                                    ),
-                              ),
-                              //Benuzername
-                              const SizedBox(height: 20.0),
-                              Text('$username!',
-                                  style: TextStyle(
-                                      fontSize: 20.0,
-                                      fontWeight: FontWeight.w800,
-                                      color: _controller.fontColor)),
-                              //Benutzer E-Mail
-                              const SizedBox(
-                                height: 4,
-                              ),
-                              Text('$userEmail',
-                                  style: TextStyle(
-                                      fontSize: 15.0,
-                                      fontWeight: FontWeight.w400,
-                                      color: _controller.fontColor)),
-                              //Abmelden Button
-                              const SizedBox(
-                                height: 20,
-                              ),
-                              ElevatedButton(
-                                onPressed: () {
-                                  currentUser.signOut();
-                                  Navigator.pushNamed(context, '/login');
-                                },
-                                style: ElevatedButton.styleFrom(
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(30.0),
-                                  ),
-                                  backgroundColor: Colors.black,
-                                  minimumSize: const Size(150, 30),
-                                ),
-                                child: const Text('Abmelden'),
-                              ),
-                              const DarkModeButton(),
-                              const SizedBox(height: 10),
-                              const SizedBox(
-                                height: 10,
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
-                );
-              },
-            ),
-          ],
-        ),
-      );
-    });
+                ),
+              );
+            },
+          ),
+        ],
+      ),
+    );
   }
 }
