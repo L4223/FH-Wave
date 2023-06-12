@@ -8,28 +8,31 @@ class DarkModeButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var width = MediaQuery.of(context).size.width - 150;
     return Consumer<DarkModeController>(builder: (context, controller, _) {
-      return ElevatedButton(
-        style: ButtonStyle(
-          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-            RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(100.0),
+      return OutlinedButton(
+          style: ButtonStyle(
+            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+              RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(100.0),
+              ),
             ),
+            minimumSize: MaterialStateProperty.all(Size(width, 50)),
+            maximumSize: MaterialStateProperty.all(Size(width, 50)),
+            side: MaterialStateProperty.all(
+              const BorderSide(width: 2, color: Colors.black),
+            ),
+            foregroundColor: MaterialStateProperty.all(Colors.black),
           ),
-          minimumSize: MaterialStateProperty.all(const Size(200, 50)),
-          maximumSize: MaterialStateProperty.all(const Size(200, 50)),
-          side: MaterialStateProperty.all(
-            const BorderSide(width: 2, color: AppColors.black),
-          ),
-          foregroundColor: MaterialStateProperty.all(
-              controller.isDarkMode ? AppColors.white : AppColors.white),
-          backgroundColor: MaterialStateProperty.all(AppColors.black),
-        ),
-        onPressed: () {
-          controller.toggleDarkMode();
-        },
-        child: Text(controller.isDarkMode ? 'LightMode' : 'DarkMode'),
-      );
+          onPressed: () {
+            controller.toggleDarkMode();
+          },
+          child: Text(controller.isDarkMode ? 'LightMode' : 'DarkMode',
+              textAlign: TextAlign.center,
+              style: const TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.w700, // Schriftgewicht des Buttons
+              )));
     });
   }
 }

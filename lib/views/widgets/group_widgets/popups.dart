@@ -23,6 +23,7 @@ Widget nameInputField() {
     onChanged: (text) {
       groupNameTextController.text = text;
     },
+    cursorColor: AppColors.fhwavePurple500,
     maxLength: 20,
     decoration: const InputDecoration(
       labelText: "Name",
@@ -31,7 +32,10 @@ Widget nameInputField() {
       ),
       // helperText: 'Helper text',
       enabledBorder: UnderlineInputBorder(
-        borderSide: BorderSide(color: AppColors.fhwaveBlue400),
+        borderSide: BorderSide(color: AppColors.black),
+      ),
+      focusedBorder: UnderlineInputBorder(
+        borderSide: BorderSide(color: AppColors.fhwavePurple500),
       ),
     ),
   );
@@ -59,19 +63,21 @@ Future<void> createGroup(BuildContext context, String memberNames) async {
 void createGroupPopup(BuildContext context) {
   Widget memberInputField() {
     return TextFormField(
-      controller: memberTextController,
-      maxLength: 20,
-      decoration: const InputDecoration(
-        labelText: "Mitglieder",
-        labelStyle: TextStyle(
-          color: AppColors.fhwaveNeutral400,
-        ),
-        // helperText: 'Helper text',
-        enabledBorder: UnderlineInputBorder(
-          borderSide: BorderSide(color: AppColors.fhwaveBlue400),
-        ),
-      ),
-    );
+        controller: memberTextController,
+        cursorColor: AppColors.fhwavePurple500,
+        maxLength: 20,
+        decoration: const InputDecoration(
+            labelText: "Mitglieder",
+            labelStyle: TextStyle(
+              color: AppColors.fhwaveNeutral400,
+            ),
+            // helperText: 'Helper text',
+            enabledBorder: UnderlineInputBorder(
+              borderSide: BorderSide(color: AppColors.black),
+            ),
+            focusedBorder: UnderlineInputBorder(
+              borderSide: BorderSide(color: AppColors.fhwavePurple500),
+            )));
   }
 
   // void createNameList(String namesString) {
@@ -144,6 +150,7 @@ void createGroupPopup(BuildContext context) {
 void addMemberPopup(BuildContext context, String groupId) {
   Widget memberInputField() {
     return TextFormField(
+      cursorColor: AppColors.fhwavePurple500,
       controller: memberTextController,
       maxLength: 20,
       decoration: const InputDecoration(
@@ -153,7 +160,10 @@ void addMemberPopup(BuildContext context, String groupId) {
         ),
         // helperText: 'Helper text',
         enabledBorder: UnderlineInputBorder(
-          borderSide: BorderSide(color: AppColors.fhwaveBlue400),
+          borderSide: BorderSide(color: AppColors.black),
+        ),
+        focusedBorder: UnderlineInputBorder(
+          borderSide: BorderSide(color: AppColors.fhwavePurple500),
         ),
       ),
     );
@@ -208,6 +218,7 @@ void addMemberPopup(BuildContext context, String groupId) {
                     onTap: () => Navigator.of(context).pop(),
                     width: 130,
                   ),
+                  // SizedBox(width: 10,),
                   PrimaryButton(
                     text: "Hinzufügen",
                     onTap: () {
@@ -351,4 +362,67 @@ void confirmPopup(BuildContext context, IconData icon, String heading,
               ),
             ),
           ));
+}
+
+class BlurredDialog extends StatelessWidget {
+  const BlurredDialog({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Dialog(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(35.0),
+        ),
+        child: SizedBox(
+          width: 600.0,
+          height: 400.0,
+          // decoration: BoxDecoration(
+          //   borderRadius: BorderRadius.circular(20.0),
+
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              const SizedBox(
+                height: 50.0,
+              ),
+              Image.asset(
+                "assets/fhwave-loading-standard.gif",
+                gaplessPlayback: true,
+                width: 80.0,
+              ),
+              const SizedBox(
+                height: 20.0,
+              ),
+              const Center(
+                child: Text("Ein Semesterprojekt\n    von AEM Team 9",
+                    style: TextStyle(
+                        fontSize: 20.0,
+                        fontWeight: FontWeight.w600,
+                        color: AppColors.fhwaveNeutral900)),
+              ),
+              const SizedBox(
+                height: 70.0,
+              ),
+              PrimaryButton(
+                text: 'Alles klar',
+                width: 140,
+                onTap: () {
+                  Navigator.pop(context);
+                },
+              ),
+              const SizedBox(
+                height: 20.0,
+              ),
+              const Text("Version 1.0.0 - Ein fhwave-rojekt",
+                  style: TextStyle(
+                      fontSize: 14.0,
+                      fontWeight: FontWeight.w400,
+                      color: AppColors.fhwaveNeutral400)),
+              const SizedBox(
+                height: 20.0,
+              ),
+            ],
+          ),
+        ));
+  }
 }

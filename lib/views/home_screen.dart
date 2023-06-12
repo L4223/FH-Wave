@@ -11,6 +11,7 @@ import '../controllers/home_screen_controller.dart';
 import 'meine_widgets_screen.dart';
 import 'profile_screen.dart';
 import 'quick_links_screen.dart';
+import 'widgets/group_widgets/popups.dart';
 import 'widgets/toggle_button.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -37,57 +38,62 @@ class HomeScreenState extends State<HomeScreen> {
     var username = currentUser?.displayName;
 
     return Consumer<DarkModeController>(builder: (context, controller, _) {
-      return Scaffold(
-        appBar: null,
-        body: Stack(children: [
-          controller.isDarkMode
+
+    return Scaffold(
+      body: Stack(children: [
+        controller.isDarkMode
               ? AppColors.getFhwavePurpleGradientContainer(context)
               : AppColors.getFhwaveBlueGradientContainer(context),
-          CustomScrollView(
-            slivers: <Widget>[
-              SliverAppBar(
-                floating: false,
-                pinned: true,
-                snap: false,
-                expandedHeight: 250.0,
-                backgroundColor: AppColors.transparent,
-                shadowColor: Colors.transparent,
-                flexibleSpace: FlexibleSpaceBar(
-                  background: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 28.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const SizedBox(height: 80),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            SvgPicture.asset(
-                              'assets/fhwave_logo_weiss.svg',
-                              width: 70,
-                            ),
-                            ClipOval(
-                              child: Container(
-                                width: 40.0,
-                                height: 40.0,
-                                color: controller.isDarkMode
-                                    ? AppColors.fhwaveNeutral200
-                                    : AppColors.white,
-                                child: IconButton(
-                                  icon:
-                                      const Icon(Icons.account_circle_outlined),
-                                  color: AppColors.black,
-                                  onPressed: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              const ProfileScreen()),
-                                    );
+        CustomScrollView(
+          slivers: <Widget>[
+            SliverAppBar(
+              automaticallyImplyLeading: false,
+              floating: false,
+              pinned: true,
+              snap: false,
+              expandedHeight: 250.0,
+              backgroundColor: AppColors.transparent,
+              shadowColor: Colors.transparent,
+              flexibleSpace: FlexibleSpaceBar(
+                background: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 28.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const SizedBox(height: 80),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          GestureDetector(
+                              onTap: () {
+                                showDialog(
+                                  context: context,
+                                  builder: (context) {
+                                    return const BlurredDialog();
                                   },
-                                  highlightColor: Colors.transparent,
-                                  splashColor: Colors.transparent,
-                                ),
+                                );
+                              },
+                              child: Image.asset(
+                                "assets/fhwave-loading-weiss-schwarz.gif",
+                                gaplessPlayback: true,
+                                width: 70.0,
+                              )),
+                          // SvgPicture.asset(
+                          //   'assets/fhwave_logo_weiss.svg',
+                          //   width: 70,
+                          // ),
+
+                          ClipOval(
+                            child: Container(
+                              width: 40.0,
+                              height: 40.0,
+                              color: Colors.white,
+                              child: IconButton(
+                                icon: const Icon(Icons.account_circle_outlined),
+                                color: Colors.black,
+                                onPressed: () => _showBottomSheet(context),
+                                highlightColor: Colors.transparent,
+                                splashColor: Colors.transparent,
                               ),
                             ),
                           ],
@@ -183,4 +189,28 @@ class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
         minHeight != oldDelegate.minHeight ||
         child != oldDelegate.child;
   }
+}
+
+void _showBottomSheet(BuildContext context) {
+  showModalBottomSheet(
+    context: context,
+    isScrollControlled: true,
+    shape: const RoundedRectangleBorder(
+      borderRadius: BorderRadius.only(
+        topLeft: Radius.circular(30),
+        topRight: Radius.circular(30),
+      ),
+    ),
+    builder: (context) {
+      return ClipRRect(
+        borderRadius: const BorderRadius.only(
+          topLeft: Radius.circular(30),
+          topRight: Radius.circular(30),
+        ),
+        child: SizedBox(
+            height: MediaQuery.of(context).size.height * 2.7 / 5,
+            child: const ProfileScreen()),
+      );
+    },
+  );
 }

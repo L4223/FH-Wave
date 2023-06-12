@@ -5,6 +5,7 @@ import '../controllers/home_screen_controller.dart';
 import '../controllers/user_controller.dart';
 
 import '../views/home_screen.dart';
+import 'widgets/buttons/primary_button.dart';
 import 'widgets/dark_mode_button.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -23,109 +24,78 @@ class _ProfileScreenState extends State<ProfileScreen> {
     var user = FirebaseAuth.instance.currentUser;
     var username = user?.displayName;
     var userEmail = user?.email;
-    return Scaffold(
-      backgroundColor: Colors.transparent, // Hintergrund transparent machen
-      body: Stack(
-        children: [
-// HomeScreen im Hinterground anzeigen
-          const Positioned.fill(
-            child: HomeScreen(),
-          ),
-// Scrollbare Fläsche auf home_screen Platzieren
-          DraggableScrollableSheet(
-            initialChildSize: 0.5,
-            minChildSize: 0.2,
-            maxChildSize: 1.0,
-            builder: (context, scrollController) {
-              return Container(
-                decoration: const BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(20.0),
-                    topRight: Radius.circular(20.0),
-                  ),
-                ),
-                child: SingleChildScrollView(
-                  controller: scrollController,
-                  child: Column(
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
+    return Column(
+      children: [
+        const SizedBox(
+          height: 20,
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
 // Exit Icon
-                          IconButton(
-                            icon: const Icon(Icons.close),
-                            color: _controller.fontColor,
-                            // Schließt den ProfileScreen
-                            onPressed: () {
-                              Navigator.pop(context);
-                            },
-                          ),
-                        ],
-                      ),
-                      Align(
-                        alignment: Alignment.center,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
+            GestureDetector(
+              child: Icon(
+                Icons.close_rounded,
+                size: 30,
+                color: _controller.fontColor,
+              ),
+
+              // Schließt den ProfileScreen
+              onTap: () {
+                Navigator.pop(context);
+              },
+            ),
+            const SizedBox(
+              width: 20,
+            ),
+          ],
+        ),
+        Align(
+          alignment: Alignment.center,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
 //Profielbild
-                            const SizedBox(
-                              height: 150, // Höhe des Platzhalters anpassen
-                              width: 150, // Breite des Platzhalters anpassen
-                              child: CircleAvatar(
-                                  //backgroundImage: AssetImage('assets/felix.jpg'),
-                                  ),
-                            ),
+              const SizedBox(
+                height: 130, // Höhe des Platzhalters anpassen
+                width: 130, // Breite des Platzhalters anpassen
+                // child: CircleAvatar(
+                //     backgroundImage: AssetImage('assets/felix.jpg'),
+                //     ),
+              ),
 //Benuzername
-                            const SizedBox(height: 20.0),
-                            Text('$username!',
-                                style: TextStyle(
-                                    fontSize: 20.0,
-                                    fontWeight: FontWeight.w800,
-                                    color: _controller.fontColor)),
+              const SizedBox(height: 20.0),
+              Text('$username',
+                  style: TextStyle(
+                      fontSize: 25.0,
+                      fontWeight: FontWeight.w800,
+                      color: _controller.fontColor)),
 //Benutzer E-Mail
-                            const SizedBox(
-                              height: 4,
-                            ),
-                            Text('$userEmail',
-                                style: TextStyle(
-                                    fontSize: 15.0,
-                                    fontWeight: FontWeight.w400,
-                                    color: _controller.fontColor)),
+              const SizedBox(
+                height: 4,
+              ),
+              Text('$userEmail',
+                  style: TextStyle(
+                      fontSize: 15.0,
+                      fontWeight: FontWeight.w400,
+                      color: _controller.fontColor)),
 //Abmelden Button
-                            const SizedBox(
-                              height: 20,
-                            ),
-                            ElevatedButton(
-                              onPressed: () {
-                                currentUser.signOut();
-                                Navigator.pushNamed(context, '/login');
-                              },
-                              style: ElevatedButton.styleFrom(
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(30.0),
-                                ),
-                                backgroundColor: Colors.black,
-                                minimumSize: const Size(150, 30),
-                              ),
-                              child: const Text('Abmelden'),
-                            ),
-                            const DarkModeButton(),
-                            const SizedBox(height: 10),
-                            const SizedBox(
-                              height: 10,
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              );
-            },
+              const SizedBox(
+                height: 40,
+              ),
+              const DarkModeButton(),
+              const SizedBox(height: 20),
+              PrimaryButton(
+                text: 'Abmelden',
+                onTap: () {
+                  currentUser.signOut();
+                  Navigator.pushNamed(context, '/login');
+                },
+              ),
+            ],
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }

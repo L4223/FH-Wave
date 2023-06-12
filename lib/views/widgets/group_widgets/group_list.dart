@@ -36,24 +36,56 @@ class GroupListState extends State<GroupList> {
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
             ),
           ),
-          Container(
-            constraints: const BoxConstraints(
-              minHeight: 300,
-              maxHeight: 300,
-            ),
-            child: FutureBuilder<List<DocumentSnapshot>>(
-              future: _groupController.getUserGroups(currentUser!.uid),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const Text("Lade Gruppen...");
-                } else if (snapshot.hasError) {
-                  return const Text('Fehler beim Laden der Gruppen');
-                } else {
-                  var groups = snapshot.data!;
+          child: FutureBuilder<List<DocumentSnapshot>>(
+            future: _groupController.getUserGroups(currentUser!.uid),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return Center(
+                    child: Column(
+                  children: [
+                    const SizedBox(
+                      height: 100,
+                    ),
+                    Image.asset(
+                      "assets/fhwave-loading-schwarz.gif",
+                      gaplessPlayback: true,
+                      width: 60.0,
+                    ),
+                    const SizedBox(
+                      height: 30,
+                    ),
+                    const Text(
+                      "Lade Gruppen ...",
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontWeight: FontWeight.w700,
+                        fontSize: 16.0,
+                      ),
+                    ),
+                  ],
+                ));
+              } else if (snapshot.hasError) {
+                return const Text(
+                  'Fehler beim Laden der Gruppen',
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontWeight: FontWeight.w700,
+                    fontSize: 16.0,
+                  ),
+                );
+              } else {
+                var groups = snapshot.data!;
 
-                  if (groups.isEmpty) {
-                    return const Text('Keine Gruppen vorhanden');
-                  }
+                if (groups.isEmpty) {
+                  return const Text(
+                    'Keine Gruppen vorhanden',
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontWeight: FontWeight.w700,
+                      fontSize: 16.0,
+                    ),
+                  );
+                }
 
                   return ListView.separated(
                     shrinkWrap: true,
@@ -82,28 +114,28 @@ class GroupListState extends State<GroupList> {
                                 ),
                               ),
                             ),
-                            const Icon(Icons.arrow_forward_ios),
-                          ],
-                        ),
-                        onTap: () {
-                          selectedGroup = groupDoc['groupId'];
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) =>
-                                    GroupInfoScreen(
-                                      groupName: groupDoc["groupName"],
-                                      groupId: groupDoc["groupId"],
-                                      creatorId: groupDoc["creatorId"],
-                                    )),
-                          );
-                        },
-                      );
-                    },
-                  );
-                }
-              },
-            ),
+                          ),
+                          const Icon(Icons.arrow_forward_ios,
+                          size: 20,),
+                        ],
+                      ),
+                      onTap: () {
+                        selectedGroup = groupDoc['groupId'];
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => GroupInfoScreen(
+                                    groupName: groupDoc["groupName"],
+                                    groupId: groupDoc["groupId"],
+                                    creatorId: groupDoc["creatorId"],
+                                  )),
+                        );
+                      },
+                    );
+                  },
+                );
+              }
+            },
           ),
         ],
       );
