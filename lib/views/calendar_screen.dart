@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:table_calendar/table_calendar.dart';
+import '../app_colors.dart';
 import '../controllers/calendar_controller.dart';
+import '../controllers/dark_mode_controller.dart';
 import 'appointment_screen.dart';
 
 class CalendarScreen extends StatefulWidget {
@@ -35,71 +38,90 @@ class CalendarScreenState extends State<CalendarScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Kalender'),
-      ),
-      body: Column(
-        children: [
-          TableCalendar(
-            calendarFormat: _calendarFormat,
-            focusedDay: _focusedDay,
-            firstDay: DateTime.utc(2023, 1, 1),
-            lastDay: DateTime.utc(2024, 12, 31),
-            selectedDayPredicate: (day) {
-              return _selectedDays
-                  .any((selectedDay) => isSameDay(selectedDay, day));
-            },
-            onDaySelected: (selectedDay, focusedDay) {
-              setState(() {
-                if (_selectedDays.contains(selectedDay)) {
-                  _selectedDays
-                      .remove(selectedDay); // Tag aus der Liste entfernen
-                } else {
-                  _selectedDays.add(selectedDay); // Tag zur Liste hinzufügen
-                }
+    return Consumer<DarkModeController>(builder: (context, controller, _) {
+      return Scaffold(
+        appBar: AppBar(
+          iconTheme: const IconThemeData(color: Colors.black),
+          title: const Text(
+            'Kalender',
+            style: TextStyle(color: AppColors.black),
+          ),
+          backgroundColor: const Color(0xFFFFE34D),
+          elevation: 0.0,
+        ),
+        body: Container(
+          decoration: BoxDecoration(
+              gradient: LinearGradient(
+            begin: const Alignment(0.0, -0.7),
+            end: Alignment.topCenter,
+            colors: controller.isDarkMode
+                ? [const Color(0x00000000), const Color(0xFFFFE34D)]
+                : [const Color(0xFFFFFFFF), const Color(0xFFFFE34D)],
+          )),
+          child: Column(
+            children: [
+              TableCalendar(
+                calendarFormat: _calendarFormat,
+                focusedDay: _focusedDay,
+                firstDay: DateTime.utc(2023, 1, 1),
+                lastDay: DateTime.utc(2024, 12, 31),
+                selectedDayPredicate: (day) {
+                  return _selectedDays
+                      .any((selectedDay) => isSameDay(selectedDay, day));
+                },
+                onDaySelected: (selectedDay, focusedDay) {
+                  setState(() {
+                    if (_selectedDays.contains(selectedDay)) {
+                      _selectedDays
+                          .remove(selectedDay); // Tag aus der Liste entfernen
+                    } else {
+                      _selectedDays
+                          .add(selectedDay); // Tag zur Liste hinzufügen
+                    }
 
-                _calendarController.saveSelectedDays(_selectedDays);
-                _focusedDay = focusedDay; // Fokussierten Tag aktualisieren
-              });
-            },
-            calendarStyle: CalendarStyle(
-              selectedDecoration: const BoxDecoration(
-                color: Colors.green,
-                shape: BoxShape.circle,
+                    _calendarController.saveSelectedDays(_selectedDays);
+                    _focusedDay = focusedDay; // Fokussierten Tag aktualisieren
+                  });
+                },
+                calendarStyle: CalendarStyle(
+                  selectedDecoration: const BoxDecoration(
+                    color: Colors.green,
+                    shape: BoxShape.circle,
+                  ),
+                  todayDecoration: BoxDecoration(
+                    color: Colors.grey[300],
+                    shape: BoxShape.circle,
+                  ),
+                ),
+                headerStyle: const HeaderStyle(
+                  titleCentered: true,
+                ),
               ),
-              todayDecoration: BoxDecoration(
-                color: Colors.grey[300],
-                shape: BoxShape.circle,
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const RequestAppointmentScreen()),
+                  );
+                },
+                child: const Text('Termin anfragen'),
               ),
-            ),
-            headerStyle: const HeaderStyle(
-              titleCentered: true,
-            ),
+              Expanded(
+                child: ListView.builder(
+                  itemCount: _selectedDays.length,
+                  itemBuilder: (context, index) {
+                    final selectedDay = _selectedDays[index];
+                    return ListTile(
+                      title: Text(selectedDay.toString()),
+                    );
+                  },
+                ),
+              ),
+            ],
           ),
-          ElevatedButton(
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => const RequestAppointmentScreen()),
-              );
-            },
-            child: const Text('Termin anfragen'),
-          ),
-          Expanded(
-            child: ListView.builder(
-              itemCount: _selectedDays.length,
-              itemBuilder: (context, index) {
-                final selectedDay = _selectedDays[index];
-                return ListTile(
-                  title: Text(selectedDay.toString()),
-                );
-              },
-            ),
-          ),
-        ],
-      ),
-    );
+        ),
+      );
+    });
   }
 }

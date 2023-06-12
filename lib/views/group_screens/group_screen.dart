@@ -1,7 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../../app_colors.dart';
+import '../../controllers/dark_mode_controller.dart';
 import '../../controllers/group_controller.dart';
 import '../../controllers/user_controller.dart';
 import '../widgets/buttons/primary_button.dart';
@@ -58,53 +60,60 @@ class _GroupsHomeState extends State<GroupsHome> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Stack(children: [
-        AppColors.getFhwavePurpleGradientContainer(context),
-        ListView(
-          children: [
-            TransparentAppbar(
-              heading: "Gruppen",
-              route: "/home",
-            ),
-            Container(
-                alignment: Alignment.topRight,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    IconButton(
-                        onPressed: () {
-                          Navigator.pushNamed(context, "/request");
-                        },
-                        icon: _isRequestsEmpty
-                            ? const Icon(Icons.local_post_office)
-                            : const Icon(
-                                Icons.local_post_office,
-                                color: Colors.deepOrange,
-                              )),const SizedBox(width: 20,)
-                  ],
-                )),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 28.0),
-              child: Column(
-                children: [
-                  const GroupList(),
-                  const SizedBox(
-                    height: 100,
-                  ),
-                  PrimaryButtonWithIcon(
-                      icon: Icons.group_add_rounded,
-                      text: "Gruppe erstellen",
-                      onTap: () {
-                        createGroupPopup(context);
-                      }),
-                ],
+    return Consumer<DarkModeController>(builder: (context, controller, _) {
+      return Scaffold(
+        body: Stack(children: [
+          controller.isDarkMode
+              ? AppColors.getFhwavePurpleGradientContainer(context)
+              : AppColors.getFhwaveBlueGradientContainer(context),
+          ListView(
+            children: [
+              TransparentAppbar(
+                heading: "Gruppen",
+                route: "/home",
               ),
-            )
-          ],
-        ),
-      ]),
-    );
+              Container(
+                  alignment: Alignment.topRight,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      IconButton(
+                          onPressed: () {
+                            Navigator.pushNamed(context, "/request");
+                          },
+                          icon: _isRequestsEmpty
+                              ? const Icon(Icons.local_post_office)
+                              : const Icon(
+                                  Icons.local_post_office,
+                                  color: Colors.deepOrange,
+                                )),
+                      const SizedBox(
+                        width: 20,
+                      )
+                    ],
+                  )),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 28.0),
+                child: Column(
+                  children: [
+                    const GroupList(),
+                    const SizedBox(
+                      height: 100,
+                    ),
+                    PrimaryButtonWithIcon(
+                        icon: Icons.group_add_rounded,
+                        text: "Gruppe erstellen",
+                        onTap: () {
+                          createGroupPopup(context);
+                        }),
+                  ],
+                ),
+              )
+            ],
+          ),
+        ]),
+      );
+    });
   }
 }
 
@@ -136,11 +145,13 @@ class GroupInfoScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        body: Stack(children: [
-      AppColors.getFhwavePurpleGradientContainer(context),
-      ListView(
-        children: [
+    return Consumer<DarkModeController>(builder: (context, controller, _) {
+      return Scaffold(
+          body: Stack(children: [
+        controller.isDarkMode
+            ? AppColors.getFhwavePurpleGradientContainer(context)
+            : AppColors.getFhwaveBlueGradientContainer(context),
+        ListView(children: [
           Column(
             children: [
               TransparentAppbar(
@@ -162,10 +173,10 @@ class GroupInfoScreen extends StatelessWidget {
                 ),
               ),
             ],
-          )
-        ],
-      ),
-    ]));
+          ),
+        ])
+      ]));
+    });
   }
 
   Widget actionButtons(BuildContext context) {

@@ -28,8 +28,9 @@ class DarkModeButton extends StatelessWidget {
           },
           child: Text(controller.isDarkMode ? 'LightMode' : 'DarkMode',
               textAlign: TextAlign.center,
-              style: const TextStyle(
+              style: TextStyle(
                 fontSize: 18,
+                color: controller.isDarkMode ? Colors.white : Colors.black,
                 fontWeight: FontWeight.w700, // Schriftgewicht des Buttons
               )));
     });
