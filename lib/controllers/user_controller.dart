@@ -34,8 +34,9 @@ class UserController {
         showDialog(
           context: context,
           builder: (context) => AlertDialog(
-            title: const Text('Email Verification'),
-            content: const Text('Please verify your email before logging in.'),
+            title: const Text('E-Mail Überprüfung'),
+            content: const Text(
+                'Bitte verifiziere deine E-Mail, bevor du dich anmeldest.'),
             actions: [
               TextButton(
                 onPressed: () => Navigator.pop(context),
@@ -50,8 +51,8 @@ class UserController {
         showDialog(
           context: context,
           builder: (context) => AlertDialog(
-            title: const Text('Log In Error'),
-            content: const Text('No user found for that email.'),
+            title: const Text('Fehler bei der Anmeldung'),
+            content: const Text('Kein Konto für diese E-Mail gefunden.'),
             actions: [
               TextButton(
                 onPressed: () => Navigator.pop(context),
@@ -64,8 +65,8 @@ class UserController {
         showDialog(
           context: context,
           builder: (context) => AlertDialog(
-            title: const Text('Log In Error'),
-            content: const Text('Wrong password provided.'),
+            title: const Text('Fehler bei der Anmeldung'),
+            content: const Text('Passwort ist gültig'),
             actions: [
               TextButton(
                 onPressed: () => Navigator.pop(context),
@@ -79,8 +80,8 @@ class UserController {
       showDialog(
         context: context,
         builder: (context) => AlertDialog(
-          title: const Text('Log In Error'),
-          content: Text('An error occurred: $e'),
+          title: const Text('Fehler bei der Anmeldung'),
+          content: Text('Fehler aufgetreten: $e'),
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(context),
@@ -108,6 +109,9 @@ class UserController {
       );
 
       var user = userCredential.user;
+      //die eingegebne Name beim Regstrieren als DisplayName speichern!
+      await FirebaseAuth.instance.currentUser?.updateDisplayName(username);
+      await user?.reload();
       if (user != null) {
         await user.sendEmailVerification();
         setupUserDb(username, user.uid, email);
@@ -116,9 +120,11 @@ class UserController {
         showDialog(
           context: context,
           builder: (context) => AlertDialog(
-            title: const Text('Sign Up Successful'),
+            title: const Text('Registrierung erfolgreich'),
             content:
-                const Text('Please check your email to verify your account.'),
+                const Text(
+                    'Bitte überprüfe deine E-Mail,'
+                    'um dein Konto zu bestätigen.'),
             actions: [
               TextButton(
                 onPressed: () {
@@ -136,8 +142,8 @@ class UserController {
         showDialog(
           context: context,
           builder: (context) => AlertDialog(
-            title: const Text('Sign Up Error'),
-            content: const Text('The password provided is too weak.'),
+            title: const Text('Fehler bei der Registrierung'),
+            content: const Text('Passwort ist zu schwach.'),
             actions: [
               TextButton(
                 onPressed: () => Navigator.pop(context),
@@ -150,8 +156,9 @@ class UserController {
         showDialog(
           context: context,
           builder: (context) => AlertDialog(
-            title: const Text('Sign Up Error'),
-            content: const Text('The account already exists for that email.'),
+            title: const Text('Fehler bei der Registrierung'),
+            content: const Text(
+                'Ein Konto existiert bereits für diese E-Mail.'),
             actions: [
               TextButton(
                 onPressed: () => Navigator.pop(context),
@@ -165,8 +172,8 @@ class UserController {
       showDialog(
         context: context,
         builder: (context) => AlertDialog(
-          title: const Text('Sign Up Error'),
-          content: Text('An error occurred: $e'),
+          title: const Text('Fehler bei der Registrierung'),
+          content: Text('Fehler aufgetreten: $e'),
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(context),
@@ -179,13 +186,17 @@ class UserController {
   }
 
   //Authentifizierungsüberprüfung
-  bool checkAuth() {
+  Future<bool> checkAuth() async {
     var user = FirebaseAuth.instance.currentUser;
     if (user != null && user.emailVerified) {
       return true;
     } else {
       return false;
     }
+  }
+
+  Future<void> logOut() async {
+    _auth.signOut();
   }
 
   Future<void> setupUserDb(String userName, String uid, String userMail) async {
@@ -204,6 +215,16 @@ class UserController {
       });
     } catch (e) {
       // print('Fehler beim Erstellen der Gruppe: $e');
+    }
+  }
+  void signOut() async {
+    try {
+      await _auth.signOut();
+      // Erfolgreiche Abmeldung
+      //print("efolgreich abgemeldet");
+    } catch (e) {
+      // Fehler bei der Abmeldung
+      //print('Fehler bei der Abmeldung: $e');
     }
   }
 }

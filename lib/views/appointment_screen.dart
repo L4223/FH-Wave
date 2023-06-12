@@ -2,7 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import '../controllers/appointment_controller.dart';
-import 'request_screen.dart';
+import 'group_screens/request_screen.dart';
 
 class RequestAppointmentScreen extends StatefulWidget {
   const RequestAppointmentScreen({super.key});
@@ -15,7 +15,8 @@ class RequestAppointmentScreen extends StatefulWidget {
 class RequestAppointmentScreenState extends State<RequestAppointmentScreen> {
   late DateTime selectedDate;
   final TextEditingController _dateController = TextEditingController();
-  final AppointmentController _controller = AppointmentController();
+  final RequestAppointmentController _controller =
+      RequestAppointmentController();
   List<String> _appointments = [];
 
   @override

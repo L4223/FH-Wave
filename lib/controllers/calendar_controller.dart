@@ -48,7 +48,7 @@ class MyCalendarController {
 
   Future<void> craeteNewAppointment(
       String groupId, String name, String desc, DateTime dateTime) async {
-    FirebaseFirestore firestore = FirebaseFirestore.instance;
+    var firestore = FirebaseFirestore.instance;
     try {
       //Appointment in Gruppe erstellen
       final groupRef = firestore.collection('groups').doc(groupId);
@@ -59,7 +59,7 @@ class MyCalendarController {
         'dateTime': dateTime,
       });
     } catch (e) {
-      print(e);
+      // print(e);
     }
   }
 }

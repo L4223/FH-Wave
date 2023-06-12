@@ -1,15 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import '../../../app_colors.dart';
 import '../../../controllers/group_controller.dart';
 import '../../../controllers/user_controller.dart';
 import '../../group_screens/group_screen.dart';
 
+//Zeigt alle Gruppen eines Users an, in denen er Mitglied ist
 class GroupList extends StatefulWidget {
-  final String selectedGroup;
-  final ValueChanged<String> onGroupSelected;
-
-  const GroupList(
-      {super.key, required this.selectedGroup, required this.onGroupSelected});
+  const GroupList({super.key});
 
   @override
   GroupListState createState() => GroupListState();
@@ -28,17 +26,24 @@ class GroupListState extends State<GroupList> {
         const SizedBox(
           height: 20,
         ),
-        const Text("Deine Gruppen"),
+        Container(
+          alignment: Alignment.topLeft,
+          height: 70,
+          child: const Text(
+            "Meine Gruppen",
+            style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
+          ),
+        ),
         Container(
           constraints: const BoxConstraints(
-            minHeight: 100,
+            minHeight: 300,
             maxHeight: 300,
           ),
           child: FutureBuilder<List<DocumentSnapshot>>(
             future: _groupController.getUserGroups(currentUser!.uid),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
-                return const Text("...");
+                return const Text("Lade Gruppen...");
               } else if (snapshot.hasError) {
                 return const Text('Fehler beim Laden der Gruppen');
               } else {
@@ -48,27 +53,45 @@ class GroupListState extends State<GroupList> {
                   return const Text('Keine Gruppen vorhanden');
                 }
 
-                return ListView.builder(
+                return ListView.separated(
                   shrinkWrap: true,
                   physics: const AlwaysScrollableScrollPhysics(),
+                  separatorBuilder: (context, index) => const Divider(
+                    color: AppColors.fhwaveNeutral200, // Farbe des Strichs
+                    thickness: 1, // Dicke des Strichs
+                  ),
                   itemCount: groups.length,
                   itemBuilder: (context, index) {
                     var groupDoc = groups[index];
-                    var isSelected = selectedGroup == groupDoc['groupId'];
+                    // var isSelected = selectedGroup == groupDoc['groupId'];
 
                     return ListTile(
-                      title: Text(
-                        groupDoc['groupName'],
-                        style: TextStyle(
-                          color: isSelected ? Colors.blue : Colors.black,
-                          fontWeight:
-                              isSelected ? FontWeight.bold : FontWeight.normal,
-                        ),
+                      title: Row(
+                        children: [
+                          Expanded(
+                            child: Text(
+                              groupDoc['groupName'],
+                              style: const TextStyle(
+                                color: Colors.black,
+                                fontWeight: FontWeight.w700,
+                                fontSize: 16.0,
+                              ),
+                            ),
+                          ),
+                          const Icon(Icons.arrow_forward_ios),
+                        ],
                       ),
                       onTap: () {
-                        setState(() {
-                          selectedGroup = groupDoc['groupId'];
-                        });
+                        selectedGroup = groupDoc['groupId'];
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => GroupInfoScreen(
+                                    groupName: groupDoc["groupName"],
+                                    groupId: groupDoc["groupId"],
+                                    creatorId: groupDoc["creatorId"],
+                                  )),
+                        );
                       },
                     );
                   },
@@ -77,6 +100,20 @@ class GroupListState extends State<GroupList> {
             },
           ),
         ),
+      ],
+    );
+  }
+
+  Widget noGroupsFound() {
+    return const Column(
+      children: [
+        Icon(Icons.group_off),
+        Text("Keine Gruppen gefunden"),
+        Text(
+          "Erstelle zuerst eine Gruppe oder "
+          "trete einer bestehenden Gruppe bei.",
+          style: TextStyle(fontSize: 10, color: AppColors.fhwaveNeutral50),
+        )
       ],
     );
   }
