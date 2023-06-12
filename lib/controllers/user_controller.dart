@@ -191,6 +191,9 @@ class UserController {
     }
   }
 
+  Future<void> logOut() async {
+    _auth.signOut();
+  }
 
   Future<void> setupUserDb(String userName, String uid, String userMail) async {
     var firestore = FirebaseFirestore.instance;

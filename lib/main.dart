@@ -12,6 +12,7 @@ import 'views/auth_screens/login_screen.dart';
 import 'views/auth_screens/signup_screen.dart';
 import 'views/calendar_screen.dart';
 import 'views/group_screens/group_screen.dart';
+import 'views/group_screens/request_screen.dart';
 import 'views/home_screen.dart';
 
 dynamic screenSize; //Screen Size
@@ -58,7 +59,8 @@ class MyApp extends StatelessWidget {
                     '/login': (context) => const LoginScreen(),
                     '/home': (context) => const HomeScreen(),
                     '/signup': (context) => const SignUpScreen(),
-                    '/group': (context) => const GroupCreationScreen(),
+                    '/group': (context) => const GroupsHome(),
+                    '/request': (context) => const RequestScreen(),
                     '/calendar': (context) => const CalendarScreen(),
                   },
                 );

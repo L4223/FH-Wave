@@ -3,10 +3,10 @@ import 'package:flutter_svg/flutter_svg.dart';
 
 import '../app_colors.dart';
 
-// import 'add_widgets_screen.dart';
 import 'calendar_screen.dart';
 import 'group_screens/group_screen.dart';
 import 'template_screen.dart';
+
 // import 'widgets/buttons/primary_button.dart';
 // import 'widgets/buttons/primary_button_with_icon.dart';
 // import 'widgets/buttons/secondary_button.dart';
@@ -38,7 +38,7 @@ Widget meineWidgetsScreen(BuildContext context) {
           width: 45,
           height: 45,
         ),
-        targetPage: const GroupCreationScreen(),
+        targetPage: const GroupsHome(),
       ),
       WidgetButton(
           title: 'Kalender',
@@ -50,6 +50,7 @@ Widget meineWidgetsScreen(BuildContext context) {
           ),
           targetPage: const CalendarScreen(),
           isLarge: true),
+
       // PrimaryButtonWithIcon(
       //   icon: Icons.add,
       //   text: "Member Hinzufügen",
