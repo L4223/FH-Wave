@@ -1,7 +1,27 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+import '../views/group_calendar_screen.dart';
+
 class AppointmentController {
   FirebaseFirestore firestore = FirebaseFirestore.instance;
+
+  Future<void> createAppointment(String groupId, Meeting meeting) async {
+    try {
+      await FirebaseFirestore.instance
+          .collection('groups')
+          .doc(groupId)
+          .collection('appointments')
+          .add({
+        'title': meeting.eventName,
+        'startTime': Timestamp.fromDate(meeting.from),
+        'endTime': Timestamp.fromDate(meeting.to),
+        'color': meeting.background.value,
+        'isAllDay': meeting.isAllDay,
+      });
+    } catch (error) {
+      // Fehlerbehandlung hier
+    }
+  }
 
   Future<List<String>> getUserGroupIds(String userId) async {
     try {

@@ -25,6 +25,8 @@ class GroupCalendarScreen extends StatefulWidget {
 
 class _GroupCalendarScreenState extends State<GroupCalendarScreen> {
   List<String> groupNames = [];
+  List<Meeting> _meetings = [];
+  String groupId = '';
 
   @override
   void initState() {
@@ -32,15 +34,55 @@ class _GroupCalendarScreenState extends State<GroupCalendarScreen> {
     fetchUserGroups();
   }
 
-  Future<void> fetchUserGroups() async {
+  void fetchUserGroups() async {
     List<DocumentSnapshot> groupDocs =
-        await groupController.getUserGroups(currentUser!.uid);
+    await groupController.getUserGroups(currentUser!.uid);
 
     setState(() {
       groupNames =
           groupDocs.map((doc) => doc['groupName'] as String).toSet().toList();
     });
+
+    if (groupNames.isNotEmpty) {
+      _fetchMeetings(groupNames[0]);
+    }
   }
+
+  void _fetchMeetings(String groupId) {
+    setState(() {
+      this.groupId = groupId;
+    });
+    fetchMeetings(groupId);
+  }
+
+  Future<void> fetchMeetings(String groupId) async {
+    try {
+      final querySnapshot = await FirebaseFirestore.instance
+          .collection('groups')
+          .doc(groupId)
+          .collection('appointments')
+          .get();
+
+      final meetings = querySnapshot.docs.map((doc) {
+        final data = doc.data();
+        final startTime = (data['startTime'] as Timestamp).toDate();
+        final endTime = (data['endTime'] as Timestamp).toDate();
+        final title = data['title'] as String;
+        final colorValue = data['color'] as int; // Änderung hier
+        final color = Color(colorValue); // Änderung hier
+        final isAllDay = data['isAllDay'] as bool;
+
+        return Meeting(title, startTime, endTime, color, isAllDay);
+      }).toList();
+
+      setState(() {
+        _meetings = meetings;
+      });
+    } catch (error) {
+      print("Fehler beim Abrufen der Termine: $error");
+    }
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -63,7 +105,7 @@ class _GroupCalendarScreenState extends State<GroupCalendarScreen> {
                 fontSize: 14,
                 fontFamily: 'Helvetica',
               ),
-              dataSource: MeetingDataSource(_getDataSource()),
+              dataSource: MeetingDataSource(_meetings),
               monthViewSettings: const MonthViewSettings(
                 showAgenda: true,
                 appointmentDisplayMode: MonthAppointmentDisplayMode.appointment,
@@ -75,7 +117,7 @@ class _GroupCalendarScreenState extends State<GroupCalendarScreen> {
             alignment: Alignment.centerRight,
             child: Padding(
               padding: const EdgeInsets.all(40.0),
-              child: MyPopup(),
+              child: MyPopup(groupId: groupId),
             ),
           ),
           Text(currentUser!.uid),
@@ -84,19 +126,6 @@ class _GroupCalendarScreenState extends State<GroupCalendarScreen> {
     );
   }
 
-  List<Meeting> _getDataSource() {
-    final meetings = <Meeting>[];
-    final today = DateTime.now();
-    var startTime = DateTime(today.year, today.month, today.day, 9);
-    final endTime = startTime.add(const Duration(hours: 2));
-    meetings.add(
-      Meeting('Conference', startTime, endTime, AppColors.fhwaveBlue500, false),
-    );
-    startTime = DateTime(today.year, today.month, 5, 9);
-    meetings.add(Meeting(
-        "Klausur", startTime, endTime, AppColors.fhwaveGreen500, false));
-    return meetings;
-  }
 }
 
 class MeetingDataSource extends CalendarDataSource {
@@ -142,7 +171,13 @@ class MeetingDataSource extends CalendarDataSource {
 
 class Meeting {
   Meeting(this.eventName, this.from, this.to, this.background, this.isAllDay);
+  static Meeting fromInputData(String name, String description, String date, String time) {
+    final DateTime startTime = DateTime.parse(date + ' ' + time);
+    final DateTime endTime = startTime.add(Duration(hours: 1));
+    final Color color = Colors.blue; // Farbe anpassen
 
+    return Meeting(name, startTime, endTime, color, false);
+  }
   String eventName;
   DateTime from;
   DateTime to;
@@ -162,6 +197,18 @@ class DropdownButtonExample extends StatefulWidget {
 
 class _DropdownButtonExampleState extends State<DropdownButtonExample> {
   String dropdownValue = '';
+  String groupId = '';
+
+
+  Future<void> getGroupId() async {
+    final String selectedGroupId = await groupController.getGroupIdFromGroupName(dropdownValue);
+    setState(() {
+      groupId = selectedGroupId;
+    });
+    _GroupCalendarScreenState screenState = context.findAncestorStateOfType<_GroupCalendarScreenState>()!;
+    screenState._fetchMeetings(groupId);
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -173,31 +220,43 @@ class _DropdownButtonExampleState extends State<DropdownButtonExample> {
       dropdownValue = widget.groupNames.first;
     }
 
-    return DropdownButton<String>(
-      value: dropdownValue,
-      icon: const Icon(Icons.arrow_downward),
-      elevation: 16,
-      style: const TextStyle(color: AppColors.fhwavePurple500),
-      underline: Container(
-        height: 2,
-        color: AppColors.fhwavePurple500,
-      ),
-      onChanged: (String? value) {
-        setState(() {
-          dropdownValue = value!;
-        });
-      },
-      items: widget.groupNames.map<DropdownMenuItem<String>>((String value) {
-        return DropdownMenuItem<String>(
-          value: value,
-          child: Text(value),
-        );
-      }).toList(),
+    return Column(
+      children: [
+        DropdownButton<String>(
+          value: dropdownValue,
+          icon: const Icon(Icons.arrow_downward),
+          elevation: 16,
+          style: const TextStyle(color: AppColors.fhwavePurple500),
+          underline: Container(
+            height: 2,
+            color: AppColors.fhwavePurple500,
+          ),
+          onChanged: (String? value) {
+            setState(() {
+              dropdownValue = value!;
+            });
+            getGroupId();
+          },
+          items: widget.groupNames.map<DropdownMenuItem<String>>((String value) {
+            return DropdownMenuItem<String>(
+              value: value,
+              child: Text(value),
+            );
+          }).toList(),
+        ),
+        SizedBox(height: 20),
+        Text('Ausgewählter Name: $dropdownValue'),
+        Text('groupId:$groupId' )
+      ],
     );
   }
 }
 
 class MyPopup extends StatefulWidget {
+  final String groupId;
+
+  MyPopup({required this.groupId});
+
   @override
   _MyPopupState createState() => _MyPopupState();
 }
@@ -205,14 +264,32 @@ class MyPopup extends StatefulWidget {
 class _MyPopupState extends State<MyPopup> {
   TextEditingController nameTextController = TextEditingController();
   TextEditingController descriptionTextController = TextEditingController();
-  TextEditingController dateTextController = TextEditingController();
-  TextEditingController timeTextController = TextEditingController();
+  DateTime selectedDate = DateTime.now();
+  TimeOfDay selectedTime = TimeOfDay.now();
+
+  void createAppointment() {
+    final String name = nameTextController.text;
+    final String description = descriptionTextController.text;
+
+    final DateTime dateTime = DateTime(
+      selectedDate.year,
+      selectedDate.month,
+      selectedDate.day,
+      selectedTime.hour,
+      selectedTime.minute,
+    );
+
+    final Meeting newMeeting = Meeting(name, dateTime, dateTime, Colors.blue, false);
+
+    appointmentController.createAppointment(widget.groupId, newMeeting);
+
+    Navigator.of(context).pop();
+  }
 
   @override
   void dispose() {
     nameTextController.dispose();
     descriptionTextController.dispose();
-    dateTextController.dispose();
     super.dispose();
   }
 
@@ -227,6 +304,7 @@ class _MyPopupState extends State<MyPopup> {
             return AlertDialog(
               title: const Text('Neuer Termin'),
               content: Column(
+                mainAxisSize: MainAxisSize.min,
                 children: [
                   TextField(
                     controller: nameTextController,
@@ -234,36 +312,46 @@ class _MyPopupState extends State<MyPopup> {
                   ),
                   TextField(
                     controller: descriptionTextController,
-                    decoration:
-                        const InputDecoration(labelText: 'Beschreibung'),
-                  ),
-                  TextField(
-                    controller: dateTextController,
-                    decoration: const InputDecoration(labelText: 'Datum'),
-                  ),
-                  TextField(
-                    controller: timeTextController,
-                    decoration: const InputDecoration(labelText: 'Uhrzeit'),
+                    decoration: const InputDecoration(labelText: 'Beschreibung'),
                   ),
                   ElevatedButton(
-                    onPressed: () {
-                      calendarController.craeteNewAppointment(
-                        "9PuKNCIq7rgQ36EvLJbh",
-                        "Fortnite",
-                        "Battlepass lvl 100",
-                        DateTime.parse('1969-07-20 20:18:04Z'),
+                    onPressed: () async {
+                      final DateTime? pickedDate = await showDatePicker(
+                        context: context,
+                        initialDate: selectedDate,
+                        firstDate: DateTime.now(),
+                        lastDate: DateTime.now().add(const Duration(days: 365)),
                       );
+
+                      if (pickedDate != null) {
+                        setState(() {
+                          selectedDate = pickedDate;
+                        });
+                      }
                     },
-                    child: const Text("Termin erstellen"),
+                    child: const Text('Datum auswählen'),
+                  ),
+                  ElevatedButton(
+                    onPressed: () async {
+                      final TimeOfDay? pickedTime = await showTimePicker(
+                        context: context,
+                        initialTime: selectedTime,
+                      );
+
+                      if (pickedTime != null) {
+                        setState(() {
+                          selectedTime = pickedTime;
+                        });
+                      }
+                    },
+                    child: const Text('Uhrzeit auswählen'),
                   ),
                 ],
               ),
               actions: [
                 ElevatedButton(
-                  child: const Text('Schließen'),
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
+                  onPressed: createAppointment,
+                  child: const Text('Termin erstellen'),
                 ),
               ],
             );
@@ -272,4 +360,5 @@ class _MyPopupState extends State<MyPopup> {
       },
     );
   }
+
 }

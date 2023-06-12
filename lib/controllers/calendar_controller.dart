@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'user_controller.dart';
 
@@ -46,20 +48,22 @@ class MyCalendarController {
     }
   }
 
-  Future<void> craeteNewAppointment(
-      String groupId, String name, String desc, DateTime dateTime) async {
+  Future<void> createNewAppointment(String groupId, String title, String desc, DateTime startTime, DateTime endTime, Color color, bool isAllDay) async {
     var firestore = FirebaseFirestore.instance;
     try {
-      //Appointment in Gruppe erstellen
+      // Termin in der Gruppe erstellen
       final groupRef = firestore.collection('groups').doc(groupId);
       final appointRef = groupRef.collection('appointments').doc();
       await appointRef.set({
-        'name': name,
-        'desc': desc,
-        'dateTime': dateTime,
+        'title': title,
+        'startTime': startTime,
+        'endTime': endTime,
+        'color': color.toString(),
+        'isAllDay': isAllDay,
       });
     } catch (e) {
-      // print(e);
+      // Fehlerbehandlung
     }
+
   }
 }

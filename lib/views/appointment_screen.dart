@@ -15,8 +15,8 @@ class RequestAppointmentScreen extends StatefulWidget {
 class RequestAppointmentScreenState extends State<RequestAppointmentScreen> {
   late DateTime selectedDate;
   final TextEditingController _dateController = TextEditingController();
-  final RequestAppointmentController _controller =
-      RequestAppointmentController();
+  final AppointmentController _controller =
+      AppointmentController();
   List<String> _appointments = [];
 
   @override
