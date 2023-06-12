@@ -47,6 +47,8 @@ class GroupCreationScreenState extends State<GroupCreationScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
+          backgroundColor: Colors.transparent,
+          elevation: 0.0,
           title: const Text('Gruppe erstellen'),
           actions: [
             IconButton(

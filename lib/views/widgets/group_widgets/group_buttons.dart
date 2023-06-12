@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import '../../../controllers/dark_mode_controller.dart';
 
 TextStyle textStyle = const TextStyle(fontSize: 25, color: Color(0xFF26282b));
 
@@ -19,24 +22,26 @@ ButtonStyle roundButtonStyle(BuildContext context) {
 
 Widget funcButton(
     BuildContext context, String text, IconData icon, void Function() func) {
-  return Padding(
-    padding: const EdgeInsets.all(8.0),
-    child: ElevatedButton.icon(
-      style: roundButtonStyle(context),
-      icon: Icon(
-        icon,
-        color: iconColor,
-      ),
-      onPressed: func,
-      label: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Text(
-          text,
-          style: textStyle,
+  return Consumer<DarkModeController>(builder: (context, controller, _) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: ElevatedButton.icon(
+        style: roundButtonStyle(context),
+        icon: Icon(
+          icon,
+          color: iconColor,
+        ),
+        onPressed: func,
+        label: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Text(
+            text,
+            style: textStyle,
+          ),
         ),
       ),
-    ),
-  );
+    );
+  });
 }
 
 Widget pushScreenButton(

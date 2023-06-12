@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import '../../app_colors.dart';
 import '../../controllers/dark_mode_controller.dart';
 
 class DarkModeButton extends StatelessWidget {
@@ -8,7 +9,7 @@ class DarkModeButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Consumer<DarkModeController>(builder: (context, controller, _) {
-      return OutlinedButton(
+      return ElevatedButton(
         style: ButtonStyle(
           shape: MaterialStateProperty.all<RoundedRectangleBorder>(
             RoundedRectangleBorder(
@@ -18,9 +19,11 @@ class DarkModeButton extends StatelessWidget {
           minimumSize: MaterialStateProperty.all(const Size(200, 50)),
           maximumSize: MaterialStateProperty.all(const Size(200, 50)),
           side: MaterialStateProperty.all(
-            const BorderSide(width: 2, color: Colors.black),
+            const BorderSide(width: 2, color: AppColors.black),
           ),
-          foregroundColor: MaterialStateProperty.all(Colors.black),
+          foregroundColor: MaterialStateProperty.all(
+              controller.isDarkMode ? AppColors.white : AppColors.white),
+          backgroundColor: MaterialStateProperty.all(AppColors.black),
         ),
         onPressed: () {
           controller.toggleDarkMode();
