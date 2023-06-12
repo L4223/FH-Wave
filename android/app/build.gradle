@@ -51,8 +51,15 @@ android {
         applicationId "de.fh_kiel.fh_wave"
         // You can update the following values to match your application needs.
         // For more information, see: https://docs.flutter.dev/deployment/android#reviewing-the-gradle-build-configuration.
+<<<<<<< HEAD
 
 
+=======
+<<<<<<< HEAD
+=======
+
+>>>>>>> cbd3aa3d85ca32965f9ae40a19003b278abde09f
+>>>>>>> develop
         minSdkVersion 20
         targetSdkVersion flutter.targetSdkVersion
         versionCode flutterVersionCode.toInteger()

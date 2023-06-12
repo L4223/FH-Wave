@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:pie_chart/pie_chart.dart';
 
+import '../../app_colors.dart';
+
 
 class TimeTableItem {
   final int id;
@@ -75,7 +77,8 @@ class TimeTablePage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Stundenpläne'),
+        title: Text("Stundenplan"),
+        backgroundColor: AppColors.fhwaveGreen500,
       ),
       body: Column(
         children: [
