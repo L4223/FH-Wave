@@ -2,7 +2,6 @@ import 'dart:math' as math;
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 
 import '../app_colors.dart';
@@ -38,64 +37,65 @@ class HomeScreenState extends State<HomeScreen> {
     var username = currentUser?.displayName;
 
     return Consumer<DarkModeController>(builder: (context, controller, _) {
+      return Scaffold(
+        body: Stack(children: [
+          controller.isDarkMode
+              ? AppColors.getFhwaveGreenGradientContainer(context)
+              : AppColors.getFhwaveGreenGradientContainer(context),
+          CustomScrollView(
+            slivers: <Widget>[
+              SliverAppBar(
+                automaticallyImplyLeading: false,
+                floating: false,
+                pinned: true,
+                snap: false,
+                expandedHeight: 250.0,
+                backgroundColor: AppColors.transparent,
+                shadowColor: Colors.transparent,
+                flexibleSpace: FlexibleSpaceBar(
+                  background: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 28.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const SizedBox(height: 80),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            GestureDetector(
+                                onTap: () {
+                                  showDialog(
+                                    context: context,
+                                    builder: (context) {
+                                      return const BlurredDialog();
+                                    },
+                                  );
+                                },
+                                child: Image.asset(
+                                  "assets/fhwave-loading-weiss-schwarz.gif",
+                                  gaplessPlayback: true,
+                                  width: 70.0,
+                                )),
+                            // SvgPicture.asset(
+                            //   'assets/fhwave_logo_weiss.svg',
+                            //   width: 70,
+                            // ),
 
-    return Scaffold(
-      body: Stack(children: [
-        controller.isDarkMode
-              ? AppColors.getFhwavePurpleGradientContainer(context)
-              : AppColors.getFhwaveBlueGradientContainer(context),
-        CustomScrollView(
-          slivers: <Widget>[
-            SliverAppBar(
-              automaticallyImplyLeading: false,
-              floating: false,
-              pinned: true,
-              snap: false,
-              expandedHeight: 250.0,
-              backgroundColor: AppColors.transparent,
-              shadowColor: Colors.transparent,
-              flexibleSpace: FlexibleSpaceBar(
-                background: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 28.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const SizedBox(height: 80),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          GestureDetector(
-                              onTap: () {
-                                showDialog(
-                                  context: context,
-                                  builder: (context) {
-                                    return const BlurredDialog();
-                                  },
-                                );
-                              },
-                              child: Image.asset(
-                                "assets/fhwave-loading-weiss-schwarz.gif",
-                                gaplessPlayback: true,
-                                width: 70.0,
-                              )),
-                          // SvgPicture.asset(
-                          //   'assets/fhwave_logo_weiss.svg',
-                          //   width: 70,
-                          // ),
-
-                          ClipOval(
-                            child: Container(
-                              width: 40.0,
-                              height: 40.0,
-                              color: Colors.white,
-                              child: IconButton(
-                                icon: const Icon(Icons.account_circle_outlined),
-                                color: Colors.black,
-                                onPressed: () => _showBottomSheet(context),
-                                highlightColor: Colors.transparent,
-                                splashColor: Colors.transparent,
+                            ClipOval(
+                              child: Container(
+                                width: 40.0,
+                                height: 40.0,
+                                color: Colors.white,
+                                child: IconButton(
+                                  icon:
+                                      const Icon(Icons.account_circle_outlined),
+                                  color: Colors.black,
+                                  onPressed: () => _showBottomSheet(context),
+                                  highlightColor: Colors.transparent,
+                                  splashColor: Colors.transparent,
+                                ),
                               ),
-                            ),
+                            )
                           ],
                         ),
                         const SizedBox(

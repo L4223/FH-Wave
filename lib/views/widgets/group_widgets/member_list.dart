@@ -27,59 +27,63 @@ class MemberList extends StatelessWidget {
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
             ),
           ),
-
-          child: FutureBuilder<List<String>>(
-            future: groupController.getMemberNames(groupId),
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return Center(
-                    child: Column(
-                  children: [
-                    const SizedBox(
-                      height: 150,
+          Container(
+            constraints: const BoxConstraints(
+              minHeight: 300,
+              maxHeight: 300,
+            ),
+            child: FutureBuilder<List<String>>(
+              future: groupController.getMemberNames(groupId),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return Center(
+                      child: Column(
+                        children: [
+                          const SizedBox(
+                            height: 150,
+                          ),
+                          Image.asset(
+                            "assets/fhwave-loading-schwarz.gif",
+                            gaplessPlayback: true,
+                            width: 60.0,
+                          ),
+                          const SizedBox(
+                            height: 30,
+                          ),
+                          const Text(
+                            "Lade Info ...",
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.w700,
+                              fontSize: 16.0,
+                            ),
+                          ),
+                        ],
+                      ));
+                } else if (snapshot.hasError) {
+                  return Center(child: Text('Error: ${snapshot.error}'));
+                } else {
+                  return ListView.separated(
+                    separatorBuilder: (context, index) =>
+                    const Divider(
+                      color: AppColors.fhwaveNeutral200, // Farbe des Strichs
+                      thickness: 1, // Dicke des Strichs
                     ),
-                    Image.asset(
-                      "assets/fhwave-loading-schwarz.gif",
-                      gaplessPlayback: true,
-                      width: 60.0,
-                    ),
-                    const SizedBox(
-                      height: 30,
-                    ),
-                    const Text(
-                      "Lade Info ...",
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontWeight: FontWeight.w700,
-                        fontSize: 16.0,
-                      ),
-                    ),
-                  ],
-                ));
-              } else if (snapshot.hasError) {
-                return Center(child: Text('Error: ${snapshot.error}'));
-              } else {
-                return ListView.separated(
-                  separatorBuilder: (context, index) => const Divider(
-                    color: AppColors.fhwaveNeutral200, // Farbe des Strichs
-                    thickness: 1, // Dicke des Strichs
-                  ),
-                  itemCount: snapshot.data!.length,
-                  itemBuilder: (context, index) {
-                    var memberName = snapshot.data![index];
-                    return ListTile(
-                      leading: const Icon(Icons.person),
-                      iconColor: controller.isDarkMode ?
-                        AppColors.white : AppColors.black,
-                      title: Text(
-                        memberName,
-                        style: const TextStyle(
-                          color: controller.isDarkMode
-                                ? AppColors.white
-                                : AppColors.black,
-                          fontWeight: FontWeight.w700,
-                          fontSize: 16.0,
-
+                    itemCount: snapshot.data!.length,
+                    itemBuilder: (context, index) {
+                      var memberName = snapshot.data![index];
+                      return ListTile(
+                        leading: const Icon(Icons.person),
+                        iconColor: controller.isDarkMode ?
+                        Colors.white : Colors.black,
+                        title: Text(
+                          memberName,
+                          style: TextStyle(
+                            color: controller.isDarkMode ?
+                            Colors.white : Colors.black,
+                            fontWeight: FontWeight.w700,
+                            fontSize: 16.0,
+                          ),
                         ),
                         onTap: () {
                           // print(memberName);
