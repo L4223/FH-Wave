@@ -60,7 +60,7 @@ Widget meineWidgetsScreen(BuildContext context) {
       WidgetButton(
           title: 'Stundenplanverteilung',
           backgroundColor: AppColors.fhwaveGreen400,
-          icon: Icon(Icons.access_time, size: 56),
+          icon: const Icon(Icons.access_time, size: 56),
           targetPage:  TimeTablePage(),
           isLarge: true),
       // PrimaryButtonWithIcon(

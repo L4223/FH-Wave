@@ -6,8 +6,6 @@ import '../controllers/user_controller.dart';
 import 'widgets/buttons/primary_button.dart';
 import 'widgets/dark_mode_button.dart';
 
-import 'widgets/timetables_button.dart';
-import 'widgets/timetables_button.dart';
 //final ProfileScreenController _controller = ProfileScreenController();
 
 class ProfileScreen extends StatefulWidget {

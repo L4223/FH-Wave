@@ -38,9 +38,10 @@ class TimeTableItem {
   }
 }
 
+// ignore: must_be_immutable
 class TimeTablePage extends StatelessWidget {
 
-  var jsonText = '''
+  String jsonText = '''
   [
     {
       "id": 1,
@@ -70,14 +71,16 @@ class TimeTablePage extends StatelessWidget {
     List<dynamic> jsonData = jsonDecode(jsonText);
 
     var timeTableItems = jsonData
-        .map((dynamic item) => TimeTableItem.fromJson(item))
+        .map((dynamic item) {
+          return TimeTableItem.fromJson(item);
+        })
         .toList();
 
     final chartData = createChartData(timeTableItems);
 
     return Scaffold(
       appBar: AppBar(
-        title: Text("Stundenplan"),
+        title: const Text("Stundenplan"),
         backgroundColor: AppColors.fhwaveGreen500,
       ),
       body: Column(
@@ -103,8 +106,9 @@ class TimeTablePage extends StatelessWidget {
               ),
             ),
           ),
-           Container(height: 100, child: const Center(
-            child: Text("Das ist der Frühaufsteherplan!", style: TextStyle(fontSize: 28),),
+           const SizedBox(height: 100, child: Center(
+            child: Text("Das ist der Frühaufsteherplan!", style:
+            TextStyle(fontSize: 28),),
           )),
 
           Flexible(child:  SvgPicture.asset(
@@ -120,7 +124,8 @@ class TimeTablePage extends StatelessWidget {
 
   Map<String, double> createChartData(List<TimeTableItem> scheduleItems) {
     final chartData = <String, double>{};
-    final totalBlocks = scheduleItems.length * 5; // Assuming there are 5 blocks per item
+    final totalBlocks = scheduleItems.length * 5; // Assuming there are 5 blocks
+    // per item
 
     final blockCounts = <String, int>{
       'Block 1': 0,
@@ -146,10 +151,4 @@ class TimeTablePage extends StatelessWidget {
 
     return chartData;
   }
-}
-
-void main() {
-  runApp(MaterialApp(
-    home: TimeTablePage(),
-  ));
 }

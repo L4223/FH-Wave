@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+
+import '../app_colors.dart';
 import '../controllers/template_screen_controller.dart';
 import '../views/building_plan_widget.dart';
-import '../app_colors.dart';
 /// Hier ist nur eine Template für Screens, die ohne ausgefallenen Dekorationen
 /// Biite kopierst du hier den Code, um neues Screen zu erstellen
 /// Beahctet du die Erstellung von entsprechenden Model und Controller
@@ -17,7 +18,7 @@ class TemplateScreen extends StatelessWidget {
   backgroundColor: Colors.transparent,
   elevation: 0,
   flexibleSpace: Container(
-  decoration: BoxDecoration(
+  decoration: const BoxDecoration(
   gradient: AppColors.fhwaveBlueGradient,
   ),
   ),
@@ -35,7 +36,7 @@ class TemplateScreen extends StatelessWidget {
   iconTheme: const IconThemeData(color: Colors.black),
   ),
   ),
-  body: BuildingPlanWidget(),
+  body: const BuildingPlanWidget(),
   );
   }
   }

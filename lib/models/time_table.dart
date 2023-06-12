@@ -51,5 +51,6 @@ class TimeTableItem {
 }
 List<TimeTableItem> parseSchedule(String json) {
   final parsed = jsonDecode(json).cast<Map<String, dynamic>>();
-  return parsed.map<TimeTableItem>((json) => TimeTableItem.fromJson(json)).toList();
+  return parsed.map<TimeTableItem>(TimeTableItem.fromJson).
+  toList();
 }

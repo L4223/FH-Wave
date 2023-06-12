@@ -70,8 +70,11 @@ class HomePageState extends State<HomePage> {
     final permissionStatus = await Geolocator.requestPermission();
     if (permissionStatus == LocationPermission.denied ||
         permissionStatus == LocationPermission.deniedForever) {
+      // ignore: use_build_context_synchronously
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        content: Text('Location services are disabled. Please enable the services.'),
+        content: Text(''
+            'Location services are disabled. Please enable the services.'),
+
       ));
     } else {
       getCurrentLocation();
@@ -88,7 +91,8 @@ class HomePageState extends State<HomePage> {
       if (addresses.isNotEmpty) {
         final address = addresses.first;
         setState(() {
-          _currentAddress = '${address.street}, ${address.postalCode} ${address.locality}';
+          _currentAddress = '${address.street}, ${address.postalCode} '
+              '${address.locality}';
         });
       } else {
         throw Exception('No address found.');
@@ -106,7 +110,9 @@ class HomePageState extends State<HomePage> {
     if (selectedBuilding != null) {
       final destination = Uri.encodeComponent(selectedBuilding!.address);
       final url = 'https://www.google.com/maps/dir/?api=1&origin=$_currentAddress&destination=$destination&dir_action=navigate';
+      // ignore: deprecated_member_use
       if (await canLaunch(url)) {
+        // ignore: deprecated_member_use
         await launch(url);
       } else {
         debugPrint('Could not launch $url');
@@ -117,7 +123,8 @@ class HomePageState extends State<HomePage> {
 
   void loadMapStyle() async {
     try {
-      final String style = await DefaultAssetBundle.of(context).loadString('assets/mapStyle.json');
+      final style = await DefaultAssetBundle.of(context
+      ).loadString('assets/mapStyle.json');
       setState(() {
         mapStyle = style;
       });
@@ -175,7 +182,7 @@ class HomePageState extends State<HomePage> {
                 color: Colors.grey.withOpacity(0.5),
                 spreadRadius: 2,
                 blurRadius: 5,
-                offset: Offset(0, 3),
+                offset: const Offset(0, 3),
               ),
             ],
           ),
@@ -188,9 +195,7 @@ class HomePageState extends State<HomePage> {
                 border: InputBorder.none,
                 prefixIcon: Icon(Icons.search),
               ),
-              onChanged: (value) {
-                filterBuildingList(value);
-              },
+              onChanged: filterBuildingList,
             ),
           ),
         ),
@@ -200,14 +205,14 @@ class HomePageState extends State<HomePage> {
     height: 352,
     decoration: BoxDecoration(
     borderRadius: BorderRadius.circular(10),
-    boxShadow: [
+    boxShadow: const [
 
     ],
     ),
     child: ClipRRect(
     borderRadius: BorderRadius.circular(10),
     child: isDataLoading
-    ? Center(
+    ? const Center(
     child: CircularProgressIndicator(),
     )
         : GoogleMap(
@@ -237,7 +242,8 @@ class HomePageState extends State<HomePage> {
                 onTap: () {
                   setState(() {
                     selectedBuilding = building;
-                    searchController.text = building.name; // Set the search text to the selected building name
+                    searchController.text = building.name;
+                    // Set the search text to the selected building name
                   });
                 },
               );
