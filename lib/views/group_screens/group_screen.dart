@@ -60,48 +60,52 @@ class _GroupsHomeState extends State<GroupsHome> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Stack(children: [
-        AppColors.getFhwaveBlueGradientContainer(context),
-        ListView(
-          children: [
-            TransparentAppbar(
-              heading: "Gruppen",
-              route: "/",
-            ),
-            Container(
-                alignment: Alignment.topRight,
-                child: IconButton(
-                    onPressed: () {
-                      Navigator.pushNamed(context, "/request");
-                    },
-                    icon: _isRequestsEmpty
-                        ? const Icon(Icons.local_post_office)
-                        : const Icon(
-                            Icons.local_post_office,
-                            color: Colors.deepOrange,
-                          ))),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 28.0),
-              child: Column(
-                children: [
-                  const GroupList(),
-                  const SizedBox(
-                    height: 100,
-                  ),
-                  PrimaryButtonWithIcon(
-                      icon: Icons.group_add_rounded,
-                      text: "Gruppe erstellen",
-                      onTap: () {
-                        createGroupPopup(context);
-                      }),
-                ],
+    return Consumer<DarkModeController>(builder: (context, controller, _) {
+      return Scaffold(
+        body: Stack(children: [
+          controller.isDarkMode
+              ? AppColors.getFhwavePurpleGradientContainer(context)
+              : AppColors.getFhwaveBlueGradientContainer(context),
+          ListView(
+            children: [
+              TransparentAppbar(
+                heading: "Gruppen",
+                route: "/",
               ),
-            )
-          ],
-        ),
-      ]),
-    );
+              Container(
+                  alignment: Alignment.topRight,
+                  child: IconButton(
+                      onPressed: () {
+                        Navigator.pushNamed(context, "/request");
+                      },
+                      icon: _isRequestsEmpty
+                          ? const Icon(Icons.local_post_office)
+                          : const Icon(
+                              Icons.local_post_office,
+                              color: Colors.deepOrange,
+                            ))),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 28.0),
+                child: Column(
+                  children: [
+                    const GroupList(),
+                    const SizedBox(
+                      height: 100,
+                    ),
+                    PrimaryButtonWithIcon(
+                        icon: Icons.group_add_rounded,
+                        text: "Gruppe erstellen",
+                        onTap: () {
+                          createGroupPopup(context);
+                        }),
+                  ],
+                ),
+              )
+            ],
+          ),
+        ]),
+      );
+    });
   }
 }
 
@@ -133,36 +137,40 @@ class GroupInfoScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        body: Stack(children: [
-      AppColors.getFhwaveBlueGradientContainer(context),
-      ListView(
-        children: [
-          Column(
-            children: [
-              TransparentAppbar(
-                heading: groupName,
-                route: "/group",
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 28.0),
-                child: Column(
-                  children: [
-                    MemberList(
-                      groupId: groupId,
-                    ),
-                    const SizedBox(
-                      height: 150,
-                    ),
-                    actionButtons(context)
-                  ],
+    return Consumer<DarkModeController>(builder: (context, controller, _) {
+      return Scaffold(
+          body: Stack(children: [
+        controller.isDarkMode
+            ? AppColors.getFhwavePurpleGradientContainer(context)
+            : AppColors.getFhwaveBlueGradientContainer(context),
+        ListView(
+          children: [
+            Column(
+              children: [
+                TransparentAppbar(
+                  heading: groupName,
+                  route: "/group",
                 ),
-              ),
-            ],
-          )
-        ],
-      ),
-    ]));
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 28.0),
+                  child: Column(
+                    children: [
+                      MemberList(
+                        groupId: groupId,
+                      ),
+                      const SizedBox(
+                        height: 150,
+                      ),
+                      actionButtons(context)
+                    ],
+                  ),
+                ),
+              ],
+            )
+          ],
+        ),
+      ]));
+    });
   }
 
   Widget actionButtons(BuildContext context) {

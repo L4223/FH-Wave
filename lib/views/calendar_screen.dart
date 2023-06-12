@@ -38,6 +38,8 @@ class CalendarScreenState extends State<CalendarScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Kalender'),
+        backgroundColor: Colors.transparent,
+        elevation: 0.0,
       ),
       body: Column(
         children: [
