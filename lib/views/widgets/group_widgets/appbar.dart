@@ -17,17 +17,18 @@ class TransparentAppbar extends StatelessWidget {
         Row(
           children: [
             const SizedBox(
-              width: 10,
+              width: 22,
             ),
-            IconButton(
-              icon: const Icon(Icons.arrow_back_ios),
-              onPressed: () {
-                Navigator.pushNamed(context, route);
+            GestureDetector(
+              child: const Icon(Icons.arrow_back_ios_new_rounded),
+              onTap: () {
+                Navigator.pop(context, route);
               },
             ),
+            const SizedBox(width: 12),
             Text(
               heading,
-              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
+              style: const TextStyle(fontSize: 28, fontWeight: FontWeight.w800),
             ),
           ],
         ),

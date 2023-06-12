@@ -43,14 +43,51 @@ class GroupListState extends State<GroupList> {
             future: _groupController.getUserGroups(currentUser!.uid),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
-                return const Text("Lade Gruppen...");
+                return Center(
+                    child: Column(
+                  children: [
+                    const SizedBox(
+                      height: 100,
+                    ),
+                    Image.asset(
+                      "assets/fhwave-loading-schwarz.gif",
+                      gaplessPlayback: true,
+                      width: 60.0,
+                    ),
+                    const SizedBox(
+                      height: 30,
+                    ),
+                    const Text(
+                      "Lade Gruppen ...",
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontWeight: FontWeight.w700,
+                        fontSize: 16.0,
+                      ),
+                    ),
+                  ],
+                ));
               } else if (snapshot.hasError) {
-                return const Text('Fehler beim Laden der Gruppen');
+                return const Text(
+                  'Fehler beim Laden der Gruppen',
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontWeight: FontWeight.w700,
+                    fontSize: 16.0,
+                  ),
+                );
               } else {
                 var groups = snapshot.data!;
 
                 if (groups.isEmpty) {
-                  return const Text('Keine Gruppen vorhanden');
+                  return const Text(
+                    'Keine Gruppen vorhanden',
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontWeight: FontWeight.w700,
+                      fontSize: 16.0,
+                    ),
+                  );
                 }
 
                 return ListView.separated(
@@ -78,7 +115,8 @@ class GroupListState extends State<GroupList> {
                               ),
                             ),
                           ),
-                          const Icon(Icons.arrow_forward_ios),
+                          const Icon(Icons.arrow_forward_ios,
+                          size: 20,),
                         ],
                       ),
                       onTap: () {

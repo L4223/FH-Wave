@@ -2,13 +2,13 @@ import 'dart:math' as math;
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 import '../app_colors.dart';
 import '../controllers/home_screen_controller.dart';
 import 'meine_widgets_screen.dart';
 import 'profile_screen.dart';
 import 'quick_links_screen.dart';
+import 'widgets/group_widgets/popups.dart';
 import 'widgets/toggle_button.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -30,7 +30,6 @@ class HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-
     //Aktuelle User-date aus Firebase
     var currentUser = FirebaseAuth.instance.currentUser;
     var username = currentUser?.displayName;
@@ -41,6 +40,7 @@ class HomeScreenState extends State<HomeScreen> {
         CustomScrollView(
           slivers: <Widget>[
             SliverAppBar(
+              automaticallyImplyLeading: false,
               floating: false,
               pinned: true,
               snap: false,
@@ -57,10 +57,24 @@ class HomeScreenState extends State<HomeScreen> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          SvgPicture.asset(
-                            'assets/fhwave_logo_weiss.svg',
-                            width: 70,
-                          ),
+                          GestureDetector(
+                              onTap: () {
+                                showDialog(
+                                  context: context,
+                                  builder: (context) {
+                                    return const BlurredDialog();
+                                  },
+                                );
+                              },
+                              child: Image.asset(
+                                "assets/fhwave-loading-weiss-schwarz.gif",
+                                gaplessPlayback: true,
+                                width: 70.0,
+                              )),
+                          // SvgPicture.asset(
+                          //   'assets/fhwave_logo_weiss.svg',
+                          //   width: 70,
+                          // ),
 
                           ClipOval(
                             child: Container(
@@ -70,14 +84,7 @@ class HomeScreenState extends State<HomeScreen> {
                               child: IconButton(
                                 icon: const Icon(Icons.account_circle_outlined),
                                 color: Colors.black,
-                                onPressed: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            const ProfileScreen()),
-                                  );
-                                },
+                                onPressed: () => _showBottomSheet(context),
                                 highlightColor: Colors.transparent,
                                 splashColor: Colors.transparent,
                               ),
@@ -172,4 +179,28 @@ class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
         minHeight != oldDelegate.minHeight ||
         child != oldDelegate.child;
   }
+}
+
+void _showBottomSheet(BuildContext context) {
+  showModalBottomSheet(
+    context: context,
+    isScrollControlled: true,
+    shape: const RoundedRectangleBorder(
+      borderRadius: BorderRadius.only(
+        topLeft: Radius.circular(30),
+        topRight: Radius.circular(30),
+      ),
+    ),
+    builder: (context) {
+      return ClipRRect(
+        borderRadius: const BorderRadius.only(
+          topLeft: Radius.circular(30),
+          topRight: Radius.circular(30),
+        ),
+        child: SizedBox(
+            height: MediaQuery.of(context).size.height * 2.7 / 5,
+            child: const ProfileScreen()),
+      );
+    },
+  );
 }
