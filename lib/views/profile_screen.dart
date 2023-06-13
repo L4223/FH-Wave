@@ -55,7 +55,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-//Profielbild
               const SizedBox(
                 height: 130, // Höhe des Platzhalters anpassen
                 width: 130, // Breite des Platzhalters anpassen

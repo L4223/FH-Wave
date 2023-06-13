@@ -9,6 +9,7 @@ import 'template_screen.dart';
 // import 'widgets/buttons/primary_button_with_icon.dart';
 // import 'widgets/buttons/secondary_button.dart';
 import 'widgets/buttons/widget_button.dart';
+import 'widgets/time_table_screen.dart';
 
 Widget meineWidgetsScreen(BuildContext context) {
   return Wrap(
@@ -20,6 +21,7 @@ Widget meineWidgetsScreen(BuildContext context) {
       /// Hier sind nur Beispiele, biite modifizieren oder ersetzen
 
       WidgetButton(
+
         title: 'Campus Navigation',
         backgroundColor: AppColors.fhwaveBlue500,
         icon: SvgPicture.asset(
@@ -28,16 +30,21 @@ Widget meineWidgetsScreen(BuildContext context) {
           height: 45,
         ),
         targetPage: TemplateScreen(),
-      ),
+  ),
       WidgetButton(
+
         title: 'Gruppen',
         backgroundColor: AppColors.fhwavePurple500,
+
+
+
         icon: SvgPicture.asset(
           'assets/team.svg',
           width: 45,
           height: 45,
         ),
         targetPage: const GroupsHome(),
+
       ),
       WidgetButton(
           title: 'Kalender',
@@ -49,7 +56,12 @@ Widget meineWidgetsScreen(BuildContext context) {
           ),
           targetPage: const GroupCalendarScreen(),
           isLarge: true),
-
+      WidgetButton(
+          title: 'Stundenplanverteilung',
+          backgroundColor: AppColors.fhwaveGreen400,
+          icon: const Icon(Icons.access_time, size: 56),
+          targetPage:  TimeTablePage(),
+          isLarge: true),
       // PrimaryButtonWithIcon(
       //   icon: Icons.add,
       //   text: "Member Hinzufügen",
