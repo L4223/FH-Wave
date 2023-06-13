@@ -102,7 +102,7 @@ class SignUpScreenState extends State<SignUpScreen> {
                       if (value == null || value.isEmpty) {
                         return 'Bitte gib deine E-Mail ein!';
                       }
-                      if (!value.endsWith('fh-kiel.de')) {
+                      if (!value.trim().endsWith('fh-kiel.de')) {
                         return 'Nur FH-E-Mails sind erlaubt!';
                       }
                       return null;

@@ -30,7 +30,8 @@ class LoginScreenState extends State<LoginScreen> {
       body: Stack(
         children: [
           AppColors.getFhwaveBlueGradientContainer(context),
-          Padding(
+      SingleChildScrollView(
+          child: Padding(
             padding: const EdgeInsets.all(20.0),
             child: Form(
               key: _formKey,
@@ -173,6 +174,7 @@ class LoginScreenState extends State<LoginScreen> {
               ),
             ),
           )
+      )
         ],
       ),
     );
