@@ -92,6 +92,10 @@ flutter:
     - assets/felix.jpg
     - assets/team.svg
     - assets/calendar.svg
+    - assets/fhwave-loading-weiss.gif
+    - assets/fhwave-loading-schwarz.gif
+    - assets/fhwave-loading-standard.gif
+    - assets/fhwave-loading-weiss-schwarz.gif
 
 
   fonts:

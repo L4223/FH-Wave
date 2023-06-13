@@ -60,25 +60,30 @@ class _GroupsHomeState extends State<GroupsHome> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Stack(children: [
-        AppColors.getFhwaveBlueGradientContainer(context),
+        AppColors.getFhwavePurpleGradientContainer(context),
         ListView(
           children: [
             TransparentAppbar(
               heading: "Gruppen",
-              route: "/",
+              route: "/home",
             ),
             Container(
                 alignment: Alignment.topRight,
-                child: IconButton(
-                    onPressed: () {
-                      Navigator.pushNamed(context, "/request");
-                    },
-                    icon: _isRequestsEmpty
-                        ? const Icon(Icons.local_post_office)
-                        : const Icon(
-                            Icons.local_post_office,
-                            color: Colors.deepOrange,
-                          ))),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    IconButton(
+                        onPressed: () {
+                          Navigator.pushNamed(context, "/request");
+                        },
+                        icon: _isRequestsEmpty
+                            ? const Icon(Icons.local_post_office)
+                            : const Icon(
+                                Icons.local_post_office,
+                                color: Colors.deepOrange,
+                              )),const SizedBox(width: 20,)
+                  ],
+                )),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 28.0),
               child: Column(
@@ -133,7 +138,7 @@ class GroupInfoScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         body: Stack(children: [
-      AppColors.getFhwaveBlueGradientContainer(context),
+      AppColors.getFhwavePurpleGradientContainer(context),
       ListView(
         children: [
           Column(
