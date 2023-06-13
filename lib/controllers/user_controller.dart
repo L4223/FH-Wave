@@ -93,6 +93,10 @@ class UserController {
     }
   }
 
+  Future<void> logOut() async {
+    _auth.signOut();
+  }
+
   //Email und Password != Null? ==>
   // Eingabefehler mithilfe von AlertDialogs überpruft.
   //Kein Eingabefehler ==> Regstrieren
@@ -191,9 +195,6 @@ class UserController {
     }
   }
 
-  Future<void> logOut() async {
-    _auth.signOut();
-  }
 
   Future<void> setupUserDb(String userName, String uid, String userMail) async {
     var firestore = FirebaseFirestore.instance;

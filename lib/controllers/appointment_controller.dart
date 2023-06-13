@@ -1,49 +1,25 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 
-class RequestAppointmentController {
+import '../views/group_calendar_screen.dart';
+
+class AppointmentController {
   FirebaseFirestore firestore = FirebaseFirestore.instance;
 
-  Future<void> acceptAppointmentRequest
-      (String groupId, String requestId) async {
+  Future<void> createAppointment(String groupId, Meeting meeting) async {
     try {
-      // Firestore-Referenz für das Gruppenmitglied
-      DocumentReference memberRef = FirebaseFirestore.instance
+      await FirebaseFirestore.instance
           .collection('groups')
           .doc(groupId)
-          .collection('members')
-          .doc(FirebaseAuth.instance.currentUser!.uid);
-
-      // Anfrage aus der appointment_requests-Liste entfernen
-      await memberRef.update({
-        'appointment_requests': FieldValue.arrayRemove([requestId]),
+          .collection('appointments')
+          .add({
+        'title': meeting.eventName,
+        'startTime': Timestamp.fromDate(meeting.from),
+        'endTime': Timestamp.fromDate(meeting.to),
+        'color': meeting.background.value,
+        'isAllDay': meeting.isAllDay,
       });
-
-      // Anfrage zur appointments-Liste hinzufügen
-      await memberRef.update({
-        'appointments': FieldValue.arrayUnion([requestId]),
-      });
-    } catch (e) {
-      // print('Fehler beim Bestätigen der Terminanfrage: $e');
-    }
-  }
-
-  Future<void> declineAppointmentRequest
-      (String groupId, String requestId) async {
-    try {
-      // Firestore-Referenz für das Gruppenmitglied
-      DocumentReference memberRef = FirebaseFirestore.instance
-          .collection('groups')
-          .doc(groupId)
-          .collection('members')
-          .doc(FirebaseAuth.instance.currentUser!.uid);
-
-      // Anfrage aus der appointment_requests-Liste entfernen
-      await memberRef.update({
-        'appointment_requests': FieldValue.arrayRemove([requestId]),
-      });
-    } catch (e) {
-      // print('Fehler beim Ablehnen der Terminanfrage: $e');
+    } catch (error) {
+      // Fehlerbehandlung hier
     }
   }
 
@@ -82,6 +58,7 @@ class RequestAppointmentController {
       // print('Error requesting appointment: $e');
     }
   }
+
   Future<List<String>> getUserAppointments(String userId) async {
     try {
       final userRef = firestore.collection('users').doc(userId);
@@ -89,7 +66,7 @@ class RequestAppointmentController {
 
       if (userSnapshot.exists) {
         final appointments =
-        List<String>.from(userSnapshot.data()!['appointments']);
+            List<String>.from(userSnapshot.data()!['appointments']);
         return appointments;
       }
     } catch (e) {
@@ -98,5 +75,4 @@ class RequestAppointmentController {
 
     return [];
   }
-
 }

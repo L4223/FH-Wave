@@ -1,19 +1,20 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 
+import '../app_colors.dart';
+import '../controllers/appointment_controller.dart';
 import '../controllers/calendar_controller.dart';
 import '../controllers/group_controller.dart';
 import '../controllers/user_controller.dart';
 
 GroupController groupController = GroupController();
 UserController userController = UserController();
+AppointmentController appointmentController = AppointmentController();
 MyCalendarController calendarController = MyCalendarController();
 
 User? currentUser = userController.currentUser;
-
-//TODO Liste mit Gruppennamen befüllen
-const List<String> list = <String>['One', 'Two', 'Three', 'Four'];
 
 class GroupCalendarScreen extends StatefulWidget {
   const GroupCalendarScreen({Key? key}) : super(key: key);
@@ -23,54 +24,111 @@ class GroupCalendarScreen extends StatefulWidget {
 }
 
 class _GroupCalendarScreenState extends State<GroupCalendarScreen> {
+  List<String> groupNames = [];
+  List<Meeting> _meetings = [];
+  String groupId = '';
+
+  @override
+  void initState() {
+    super.initState();
+    fetchUserGroups();
+  }
+
+  void fetchUserGroups() async {
+    var groupDocs =
+    await groupController.getUserGroups(currentUser!.uid);
+
+    setState(() {
+      groupNames =
+          groupDocs.map((doc) => doc['groupName'] as String).toSet().toList();
+    });
+
+    if (groupNames.isNotEmpty) {
+      _fetchMeetings(groupNames[0]);
+    }
+  }
+
+  void _fetchMeetings(String groupId) {
+    setState(() {
+      this.groupId = groupId;
+    });
+    fetchMeetings(groupId);
+  }
+
+  Future<void> fetchMeetings(String groupId) async {
+    try {
+      final querySnapshot = await FirebaseFirestore.instance
+          .collection('groups')
+          .doc(groupId)
+          .collection('appointments')
+          .get();
+
+      final meetings = querySnapshot.docs.map((doc) {
+        final data = doc.data();
+        final startTime = (data['startTime'] as Timestamp).toDate();
+        final endTime = (data['endTime'] as Timestamp).toDate();
+        final title = data['title'] as String;
+        final colorValue = data['color'] as int;
+        final color = Color(colorValue);
+        final isAllDay = data['isAllDay'] as bool;
+
+        return Meeting(title, startTime, endTime, color, isAllDay);
+      }).toList();
+
+      setState(() {
+        _meetings = meetings;
+      });
+    } catch (error) {
+      //print("Fehler beim Abrufen der Termine: $error");
+    }
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Column(
-          children: [
-            const SizedBox(
-              height: 50,
-            ),
-            SizedBox(
-              height: 300,
-              child: SfCalendar(
-                view: CalendarView.month,
-                dataSource: MeetingDataSource(_getDataSource()),
-
-                monthViewSettings: const MonthViewSettings(
-                  // showAgenda: true,
-                    appointmentDisplayMode:
-                    MonthAppointmentDisplayMode.appointment),
+      body: Column(
+        children: [
+          const SizedBox(
+            height: 50,
+          ),
+          Expanded(
+            child: SfCalendar(
+              view: CalendarView.month,
+              headerStyle: const CalendarHeaderStyle(
+                textStyle: TextStyle(
+                  fontSize: 18,
+                  fontFamily: 'Helvetica-Bold',
+                ),
+              ),
+              appointmentTextStyle: const TextStyle(
+                fontSize: 14,
+                fontFamily: 'Helvetica',
+              ),
+              dataSource: MeetingDataSource(_meetings),
+              monthViewSettings: const MonthViewSettings(
+                showAgenda: true,
+                appointmentDisplayMode: MonthAppointmentDisplayMode.appointment,
               ),
             ),
-            const DropdownButtonExample(),
-            const MyPopup(),
-            Text(currentUser!.uid)
-          ],
-        ));
+          ),
+          DropdownButtonExample(groupNames: groupNames),
+          Align(
+            alignment: Alignment.centerRight,
+            child: Padding(
+              padding: const EdgeInsets.all(40.0),
+              child: MyPopup(groupId: groupId),
+            ),
+          ),
+          // Text(currentUser!.uid),
+        ],
+      ),
+    );
   }
 
-  List<Meeting> _getDataSource() {
-    final meetings = <Meeting>[];
-    final today = DateTime.now();
-    var startTime = DateTime(today.year, today.month, today.day, 9);
-    final endTime = startTime.add(const Duration(hours: 2));
-    meetings.add(
-      Meeting('Conference', startTime, endTime, const Color(0xFF0F8644), false),
-    );
-    startTime = DateTime(today.year, today.month, 5, 9);
-    meetings.add(
-        Meeting("Klausur", startTime, endTime, const Color(0xFFf2c232), false));
-    return meetings;
-  }
 }
 
-/// An object to set the appointment collection data source to calendar, which
-/// used to map the custom appointment data to the calendar appointment, and
-/// allows to add, remove or reset the appointment collection.
 class MeetingDataSource extends CalendarDataSource {
-  /// Creates a meeting data source, which used to set the appointment
-  /// collection to the calendar
   MeetingDataSource(List<Meeting> source) {
     appointments = source;
   }
@@ -111,67 +169,102 @@ class MeetingDataSource extends CalendarDataSource {
   }
 }
 
-/// Custom business object class which contains properties to hold the detailed
-/// information about the event data which will be rendered in calendar.
 class Meeting {
-  /// Creates a meeting class with required details.
   Meeting(this.eventName, this.from, this.to, this.background, this.isAllDay);
+  static Meeting fromInputData(String name, String description,
+      String date, String time) {
+    final startTime = DateTime.parse('$date $time');
+    final endTime = startTime.add(const Duration(hours: 1));
+    const Color color = Colors.blue;
 
-  /// Event name which is equivalent to subject property of [Appointment].
+    return Meeting(name, startTime, endTime, color, false);
+  }
   String eventName;
-
-  /// From which is equivalent to start time property of [Appointment].
   DateTime from;
-
-  /// To which is equivalent to end time property of [Appointment].
   DateTime to;
-
-  /// Background which is equivalent to color property of [Appointment].
   Color background;
-
-  /// IsAllDay which is equivalent to isAllDay property of [Appointment].
   bool isAllDay;
 }
 
 class DropdownButtonExample extends StatefulWidget {
-  const DropdownButtonExample({super.key});
+  final List<String> groupNames;
+
+  const DropdownButtonExample({Key? key, required this.groupNames})
+      : super(key: key);
 
   @override
   State<DropdownButtonExample> createState() => _DropdownButtonExampleState();
 }
 
 class _DropdownButtonExampleState extends State<DropdownButtonExample> {
-  String dropdownValue = list.first;
+  String dropdownValue = '';
+  String groupId = '';
+
+  Future<void> getGroupId(String selectedGroupName) async {
+    final selectedGroupId =
+    await groupController.getGroupIdFromGroupName(selectedGroupName);
+    setState(() {
+      groupId = selectedGroupId;
+    });
+    if (!mounted) return;
+    _fetchMeetings(groupId);
+  }
+
+  void _fetchMeetings(String groupId) {
+    var screenState =
+    context.findAncestorStateOfType<_GroupCalendarScreenState>()!;
+    screenState._fetchMeetings(groupId);
+  }
 
   @override
   Widget build(BuildContext context) {
-    return DropdownButton<String>(
-      value: dropdownValue,
-      icon: const Icon(Icons.arrow_downward),
-      elevation: 16,
-      style: const TextStyle(color: Colors.deepPurple),
-      underline: Container(
-        height: 2,
-        color: Colors.deepPurpleAccent,
-      ),
-      onChanged: (value) {
-        // This is called when the user selects an item.
-        setState(() {
-          dropdownValue = value!;
-        });
-      },
-      items: list.map<DropdownMenuItem<String>>((value) {
-        return DropdownMenuItem<String>(
-          value: value,
-          child: Text(value),
-        );
-      }).toList(),
+    if (widget.groupNames.isEmpty) {
+      return const Text('Keine Gruppennamen vorhanden');
+    }
+
+    if (!widget.groupNames.contains(dropdownValue)) {
+      dropdownValue = widget.groupNames.first;
+    }
+
+    getGroupId(dropdownValue);
+
+    return Column(
+      children: [
+        DropdownButton<String>(
+          value: dropdownValue,
+          icon: const Icon(Icons.arrow_downward),
+          elevation: 16,
+          style: const TextStyle(color: AppColors.fhwavePurple500),
+          underline: Container(
+            height: 2,
+            color: AppColors.fhwavePurple500,
+          ),
+          onChanged: (value) {
+            setState(() {
+              dropdownValue = value!;
+            });
+            getGroupId(value!);
+          },
+          items: widget.groupNames.map<DropdownMenuItem<String>>((value) {
+            return DropdownMenuItem<String>(
+              value: value,
+              child: Text(value),
+            );
+          }).toList(),
+        ),
+        const SizedBox(height: 20),
+        //Text('Ausgewählter Name: $dropdownValue'),
+        //Text('groupId:$groupId')
+      ],
     );
   }
 }
 
+
 class MyPopup extends StatefulWidget {
-  const MyPopup({super.key});
+  final String groupId;
+
+  const MyPopup({super.key, required this.groupId});
 
   @override
   MyPopupState createState() => MyPopupState();
@@ -180,21 +273,39 @@ class MyPopup extends StatefulWidget {
 class MyPopupState extends State<MyPopup> {
   TextEditingController nameTextController = TextEditingController();
   TextEditingController descriptionTextController = TextEditingController();
-  TextEditingController dateTextController = TextEditingController();
-  TextEditingController timeTextController = TextEditingController();
+  DateTime selectedDate = DateTime.now();
+  TimeOfDay selectedTime = TimeOfDay.now();
+
+  void createAppointment() {
+    final name = nameTextController.text;
+    //final String description = descriptionTextController.text;
+
+    final dateTime = DateTime(
+      selectedDate.year,
+      selectedDate.month,
+      selectedDate.day,
+      selectedTime.hour,
+      selectedTime.minute,
+    );
+
+    final newMeeting = Meeting(name, dateTime, dateTime, Colors.blue, false);
+
+    appointmentController.createAppointment(widget.groupId, newMeeting);
+
+    Navigator.of(context).pop();
+  }
 
   @override
   void dispose() {
     nameTextController.dispose();
     descriptionTextController.dispose();
-    dateTextController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return ElevatedButton(
-      child: const Text('Popup öffnen'),
+    return FloatingActionButton(
+      child: const Icon(Icons.add),
       onPressed: () {
         showDialog(
           context: context,
@@ -202,6 +313,7 @@ class MyPopupState extends State<MyPopup> {
             return AlertDialog(
               title: const Text('Neuer Termin'),
               content: Column(
+                mainAxisSize: MainAxisSize.min,
                 children: [
                   TextField(
                     controller: nameTextController,
@@ -209,34 +321,47 @@ class MyPopupState extends State<MyPopup> {
                   ),
                   TextField(
                     controller: descriptionTextController,
-                    decoration:
-                    const InputDecoration(labelText: 'Beschreibung'),
-                  ),
-                  TextField(
-                    controller: dateTextController,
-                    decoration: const InputDecoration(labelText: 'Datum'),
-                  ),
-                  TextField(
-                    controller: timeTextController,
-                    decoration: const InputDecoration(labelText: 'Uhrzeit'),
+                    decoration: const InputDecoration
+                      (labelText: 'Beschreibung'),
                   ),
                   ElevatedButton(
-                      onPressed: () {
-                        calendarController.craeteNewAppointment(
-                            "9PuKNCIq7rgQ36EvLJbh",
-                            "Fortnite",
-                            "Battlepass lvl 100",
-                            DateTime.parse('1969-07-20 20:18:04Z'));
-                      },
-                      child: const Text("Termin erstellen"))
+                    onPressed: () async {
+                      final pickedDate = await showDatePicker(
+                        context: context,
+                        initialDate: selectedDate,
+                        firstDate: DateTime.now(),
+                        lastDate: DateTime.now().add(const Duration(days: 365)),
+                      );
+
+                      if (pickedDate != null) {
+                        setState(() {
+                          selectedDate = pickedDate;
+                        });
+                      }
+                    },
+                    child: const Text('Datum auswählen'),
+                  ),
+                  ElevatedButton(
+                    onPressed: () async {
+                      final pickedTime = await showTimePicker(
+                        context: context,
+                        initialTime: selectedTime,
+                      );
+
+                      if (pickedTime != null) {
+                        setState(() {
+                          selectedTime = pickedTime;
+                        });
+                      }
+                    },
+                    child: const Text('Uhrzeit auswählen'),
+                  ),
                 ],
               ),
               actions: [
                 ElevatedButton(
-                  child: const Text('Schließen'),
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
+                  onPressed: createAppointment,
+                  child: const Text('Termin erstellen'),
                 ),
               ],
             );
@@ -245,4 +370,6 @@ class MyPopupState extends State<MyPopup> {
       },
     );
   }
+
 }
+

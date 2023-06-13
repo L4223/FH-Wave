@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_svg/svg.dart';
 
 import '../app_colors.dart';
-
-import 'calendar_screen.dart';
+import 'group_calendar_screen.dart';
 import 'group_screens/group_screen.dart';
 import 'template_screen.dart';
-
 // import 'widgets/buttons/primary_button.dart';
 // import 'widgets/buttons/primary_button_with_icon.dart';
 // import 'widgets/buttons/secondary_button.dart';
@@ -21,6 +19,7 @@ Widget meineWidgetsScreen(BuildContext context) {
     runSpacing: 12,
     children: [
       /// Hier sind nur Beispiele, biite modifizieren oder ersetzen
+
       WidgetButton(
 
         title: 'Campus Navigation',
@@ -55,7 +54,7 @@ Widget meineWidgetsScreen(BuildContext context) {
             width: 50,
             height: 50,
           ),
-          targetPage: const CalendarScreen(),
+          targetPage: const GroupCalendarScreen(),
           isLarge: true),
       WidgetButton(
           title: 'Stundenplanverteilung',
