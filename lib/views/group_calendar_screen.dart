@@ -8,6 +8,7 @@ import '../controllers/appointment_controller.dart';
 import '../controllers/calendar_controller.dart';
 import '../controllers/group_controller.dart';
 import '../controllers/user_controller.dart';
+import 'widgets/group_widgets/appbar.dart';
 
 GroupController groupController = GroupController();
 UserController userController = UserController();
@@ -28,15 +29,17 @@ class _GroupCalendarScreenState extends State<GroupCalendarScreen> {
   List<Meeting> _meetings = [];
   String groupId = '';
 
+  bool hasGroups = false;
+
   @override
   void initState() {
     super.initState();
+    checkGroupRequestEmpty();
     fetchUserGroups();
   }
 
   void fetchUserGroups() async {
-    var groupDocs =
-    await groupController.getUserGroups(currentUser!.uid);
+    var groupDocs = await groupController.getUserGroups(currentUser!.uid);
 
     setState(() {
       groupNames =
@@ -83,36 +86,66 @@ class _GroupCalendarScreenState extends State<GroupCalendarScreen> {
     }
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
+      body: Stack(children: [
+        AppColors.getFhwavePurpleGradientContainer(context),
+        ListView(
+          children: [
+            TransparentAppbar(heading: "Termin", route: "/home"),
+            Container(
+              alignment: Alignment.topRight,
+              child: Column(
+                children: [
+                  const SizedBox(
+                    height: 100,
+                  ),
+                  SizedBox(
+                    height: 400,
+                    child: SfCalendar(
+                      view: CalendarView.month,
+                      headerStyle: const CalendarHeaderStyle(
+                        textStyle: TextStyle(
+                          fontSize: 18,
+                          fontFamily: 'Helvetica-Bold',
+                        ),
+                      ),
+                      appointmentTextStyle: const TextStyle(
+                        fontSize: 14,
+                        fontFamily: 'Helvetica',
+                      ),
+                      dataSource: MeetingDataSource(_meetings),
+                      monthViewSettings: const MonthViewSettings(
+                        showAgenda: true,
+                        appointmentDisplayMode:
+                            MonthAppointmentDisplayMode.appointment,
+                      ),
+                    ),
+                  ),
+                  groupActions()
+                  // Text(currentUser!.uid),
+                ],
+              ),
+            )
+          ],
+        )
+      ]),
+    );
+  }
+
+  Future<void> checkGroupRequestEmpty() async {
+    var status = await groupController.userHasGroups();
+    setState(() {
+      hasGroups = status;
+    });
+  }
+
+  Widget groupActions() {
+    if (hasGroups) {
+      return Column(
         children: [
-          const SizedBox(
-            height: 50,
-          ),
-          Expanded(
-            child: SfCalendar(
-              view: CalendarView.month,
-              headerStyle: const CalendarHeaderStyle(
-                textStyle: TextStyle(
-                  fontSize: 18,
-                  fontFamily: 'Helvetica-Bold',
-                ),
-              ),
-              appointmentTextStyle: const TextStyle(
-                fontSize: 14,
-                fontFamily: 'Helvetica',
-              ),
-              dataSource: MeetingDataSource(_meetings),
-              monthViewSettings: const MonthViewSettings(
-                showAgenda: true,
-                appointmentDisplayMode: MonthAppointmentDisplayMode.appointment,
-              ),
-            ),
-          ),
-          DropdownButtonExample(groupNames: groupNames),
+          GroupNameDropdown(groupNames: groupNames),
           Align(
             alignment: Alignment.centerRight,
             child: Padding(
@@ -120,12 +153,12 @@ class _GroupCalendarScreenState extends State<GroupCalendarScreen> {
               child: MyPopup(groupId: groupId),
             ),
           ),
-          // Text(currentUser!.uid),
         ],
-      ),
-    );
+      );
+    } else {
+      return const Text("Bitte trete vorher einer Gruppe bei.");
+    }
   }
-
 }
 
 class MeetingDataSource extends CalendarDataSource {
@@ -171,14 +204,15 @@ class MeetingDataSource extends CalendarDataSource {
 
 class Meeting {
   Meeting(this.eventName, this.from, this.to, this.background, this.isAllDay);
-  static Meeting fromInputData(String name, String description,
-      String date, String time) {
+  static Meeting fromInputData(
+      String name, String description, String date, String time) {
     final startTime = DateTime.parse('$date $time');
     final endTime = startTime.add(const Duration(hours: 1));
     const Color color = Colors.blue;
 
     return Meeting(name, startTime, endTime, color, false);
   }
+
   String eventName;
   DateTime from;
   DateTime to;
@@ -186,23 +220,23 @@ class Meeting {
   bool isAllDay;
 }
 
-class DropdownButtonExample extends StatefulWidget {
+class GroupNameDropdown extends StatefulWidget {
   final List<String> groupNames;
 
-  const DropdownButtonExample({Key? key, required this.groupNames})
+  const GroupNameDropdown({Key? key, required this.groupNames})
       : super(key: key);
 
   @override
-  State<DropdownButtonExample> createState() => _DropdownButtonExampleState();
+  State<GroupNameDropdown> createState() => _GroupNameDropdownState();
 }
 
-class _DropdownButtonExampleState extends State<DropdownButtonExample> {
+class _GroupNameDropdownState extends State<GroupNameDropdown> {
   String dropdownValue = '';
   String groupId = '';
 
   Future<void> getGroupId(String selectedGroupName) async {
     final selectedGroupId =
-    await groupController.getGroupIdFromGroupName(selectedGroupName);
+        await groupController.getGroupIdFromGroupName(selectedGroupName);
     setState(() {
       groupId = selectedGroupId;
     });
@@ -212,7 +246,7 @@ class _DropdownButtonExampleState extends State<DropdownButtonExample> {
 
   void _fetchMeetings(String groupId) {
     var screenState =
-    context.findAncestorStateOfType<_GroupCalendarScreenState>()!;
+        context.findAncestorStateOfType<_GroupCalendarScreenState>()!;
     screenState._fetchMeetings(groupId);
   }
 
@@ -230,27 +264,36 @@ class _DropdownButtonExampleState extends State<DropdownButtonExample> {
 
     return Column(
       children: [
-        DropdownButton<String>(
-          value: dropdownValue,
-          icon: const Icon(Icons.arrow_downward),
-          elevation: 16,
-          style: const TextStyle(color: AppColors.fhwavePurple500),
-          underline: Container(
-            height: 2,
-            color: AppColors.fhwavePurple500,
+        Container(
+          width: 200,
+          child: DropdownButton<String>(
+            value: dropdownValue,
+            icon: const Icon(Icons.arrow_downward),
+            elevation: 16,
+            style: const TextStyle(color: AppColors.fhwavePurple500),
+            underline: Container(
+              height: 2,
+              color: AppColors.fhwavePurple500,
+            ),
+            alignment: Alignment.center,
+            onChanged: (value) {
+              setState(() {
+                dropdownValue = value!;
+              });
+              getGroupId(value!);
+            },
+            items: widget.groupNames.map<DropdownMenuItem<String>>((value) {
+              return DropdownMenuItem<String>(
+                value: value,
+                child: Align(
+                  alignment: Alignment.center,
+                  child: Text(
+                    value,
+                  ),
+                ),
+              );
+            }).toList(),
           ),
-          onChanged: (value) {
-            setState(() {
-              dropdownValue = value!;
-            });
-            getGroupId(value!);
-          },
-          items: widget.groupNames.map<DropdownMenuItem<String>>((value) {
-            return DropdownMenuItem<String>(
-              value: value,
-              child: Text(value),
-            );
-          }).toList(),
         ),
         const SizedBox(height: 20),
         //Text('Ausgewählter Name: $dropdownValue'),
@@ -259,7 +302,6 @@ class _DropdownButtonExampleState extends State<DropdownButtonExample> {
     );
   }
 }
-
 
 class MyPopup extends StatefulWidget {
   final String groupId;
@@ -321,8 +363,8 @@ class MyPopupState extends State<MyPopup> {
                   ),
                   TextField(
                     controller: descriptionTextController,
-                    decoration: const InputDecoration
-                      (labelText: 'Beschreibung'),
+                    decoration:
+                        const InputDecoration(labelText: 'Beschreibung'),
                   ),
                   ElevatedButton(
                     onPressed: () async {
@@ -370,6 +412,4 @@ class MyPopupState extends State<MyPopup> {
       },
     );
   }
-
 }
-
