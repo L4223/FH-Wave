@@ -7,7 +7,10 @@ class DarkModeButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var width = MediaQuery.of(context).size.width - 150;
+    var width = MediaQuery
+        .of(context)
+        .size
+        .width - 150;
     return Consumer<DarkModeController>(builder: (context, controller, _) {
       return OutlinedButton(
           style: ButtonStyle(
@@ -28,9 +31,11 @@ class DarkModeButton extends StatelessWidget {
           },
           child: Text(controller.isDarkMode ? 'LightMode' : 'DarkMode',
               textAlign: TextAlign.center,
-              style: const TextStyle(
+              style: TextStyle(
                 fontSize: 18,
-                fontWeight: FontWeight.w700, // Schriftgewicht des Buttons
+                fontWeight: FontWeight.w700,
+                color: controller.isDarkMode ?
+                Colors.white : Colors.black, // Schriftgewicht des Buttons
               )));
     });
   }
