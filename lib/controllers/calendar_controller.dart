@@ -48,7 +48,9 @@ class MyCalendarController {
     }
   }
 
-  Future<void> createNewAppointment(String groupId, String title, String desc, DateTime startTime, DateTime endTime, Color color, bool isAllDay) async {
+  Future<void> createNewAppointment(String groupId, String title,
+      String desc, DateTime startTime, DateTime endTime, Color color,
+      bool isAllDay) async {
     var firestore = FirebaseFirestore.instance;
     try {
       // Termin in der Gruppe erstellen

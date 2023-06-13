@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
 import '../app_colors.dart';
-import 'calendar_screen.dart';
 import 'group_calendar_screen.dart';
 import 'group_screens/group_screen.dart';
 import 'template_screen.dart';

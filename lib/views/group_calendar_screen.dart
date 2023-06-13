@@ -120,7 +120,7 @@ class _GroupCalendarScreenState extends State<GroupCalendarScreen> {
               child: MyPopup(groupId: groupId),
             ),
           ),
-         // Text(currentUser!.uid),
+          // Text(currentUser!.uid),
         ],
       ),
     );
@@ -206,6 +206,11 @@ class _DropdownButtonExampleState extends State<DropdownButtonExample> {
     setState(() {
       groupId = selectedGroupId;
     });
+    if (!mounted) return;
+    _fetchMeetings(groupId);
+  }
+
+  void _fetchMeetings(String groupId) {
     var screenState =
     context.findAncestorStateOfType<_GroupCalendarScreenState>()!;
     screenState._fetchMeetings(groupId);
@@ -220,6 +225,8 @@ class _DropdownButtonExampleState extends State<DropdownButtonExample> {
     if (!widget.groupNames.contains(dropdownValue)) {
       dropdownValue = widget.groupNames.first;
     }
+
+    getGroupId(dropdownValue);
 
     return Column(
       children: [
@@ -365,3 +372,4 @@ class MyPopupState extends State<MyPopup> {
   }
 
 }
+
