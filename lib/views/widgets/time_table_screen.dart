@@ -2,8 +2,10 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:pie_chart/pie_chart.dart';
+import 'package:provider/provider.dart';
 
 import '../../app_colors.dart';
+import '../../controllers/dark_mode_controller.dart';
 import 'group_widgets/appbar.dart';
 
 class TimeTableItem {
@@ -74,66 +76,74 @@ class TimeTablePage extends StatelessWidget {
     }).toList();
 
     final chartData = createChartData(timeTableItems);
-
-    return Scaffold(
-      // appBar: AppBar(
-      //   title: const Text("Stundenplan"),
-      //   backgroundColor: AppColors.fhwaveGreen500,
-      // ),
-      body: Stack(
-        children: [
-          AppColors.getFhwaveGreenGradientContainer(context),
-          Column(
-            children: [
-              const SizedBox(
-                height: 70,
-              ),
-              TransparentAppbar(
-                heading: "Studenplan",
-                route: "/home",
-              ),
-              AspectRatio(
-                aspectRatio: 1,
-                child: PieChart(
-                  dataMap: chartData,
-                  animationDuration: const Duration(milliseconds: 800),
-                  chartLegendSpacing: 32,
-                  chartRadius: MediaQuery.of(context).size.width / 2.7,
-                  initialAngleInDegree: 0,
-                  chartType: ChartType.disc,
-                  ringStrokeWidth: 32,
-                  legendOptions: const LegendOptions(
-                    showLegendsInRow: true,
-                    legendPosition: LegendPosition.bottom,
-                    showLegends: true,
-                    legendTextStyle:
-                        TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+    return Consumer<DarkModeController>(builder: (context, controller, _) {
+      return Scaffold(
+        // appBar: AppBar(
+        //   title: const Text("Stundenplan"),
+        //   backgroundColor: AppColors.fhwaveGreen500,
+        // ),
+        body: Stack(
+          children: [
+            AppColors.getFhwaveGreenGradientContainer(context),
+            Column(
+              children: [
+                const SizedBox(
+                  height: 70,
+                ),
+                TransparentAppbar(
+                  heading: "Studenplan",
+                  route: "/home",
+                ),
+                AspectRatio(
+                  aspectRatio: 1,
+                  child: PieChart(
+                    dataMap: chartData,
+                    animationDuration: const Duration(milliseconds: 800),
+                    chartLegendSpacing: 32,
+                    chartRadius: MediaQuery
+                        .of(context)
+                        .size
+                        .width / 2.7,
+                    initialAngleInDegree: 0,
+                    chartType: ChartType.disc,
+                    ringStrokeWidth: 32,
+                    legendOptions: const LegendOptions(
+                      showLegendsInRow: true,
+                      legendPosition: LegendPosition.bottom,
+                      showLegends: true,
+                      legendTextStyle:
+                      TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                    ),
                   ),
                 ),
-              ),
-              SizedBox(
-                  height: 100,
-                  width: MediaQuery.of(context).size.width - 50,
-                  child: const Center(
-                    child: Text(
-                      "Das ist der Frühaufsteherplan!",
-                      style: TextStyle(
-                          fontSize: 24,
-                          color: AppColors.black,
-                          fontWeight: FontWeight.bold),
-                    ),
-                  )),
-              Flexible(
-                child: SvgPicture.asset(
-                  'assets/fruehaufsteher.svg',
-                  width: 200,
-                ),
-              )
-            ],
-          ),
-        ],
-      ),
-    );
+                SizedBox(
+                    height: 100,
+                    width: MediaQuery
+                        .of(context)
+                        .size
+                        .width - 50,
+                    child: Center(
+                      child: Text(
+                        "Das ist der Frühaufsteherplan!",
+                        style: TextStyle(
+                            fontSize: 24,
+                            color: controller.isDarkMode ?
+                            AppColors.white : AppColors.black,
+                            fontWeight: FontWeight.bold),
+                      ),
+                    )),
+                Flexible(
+                  child: SvgPicture.asset(
+                    'assets/fruehaufsteher.svg',
+                    width: 200,
+                  ),
+                )
+              ],
+            ),
+          ],
+        ),
+      );
+    });
   }
 
   Map<String, double> createChartData(List<TimeTableItem> scheduleItems) {

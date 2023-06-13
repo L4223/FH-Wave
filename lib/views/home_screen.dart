@@ -2,8 +2,10 @@ import 'dart:math' as math;
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../app_colors.dart';
+import '../controllers/dark_mode_controller.dart';
 import '../controllers/home_screen_controller.dart';
 import 'meine_widgets_screen.dart';
 import 'profile_screen.dart';
@@ -34,119 +36,122 @@ class HomeScreenState extends State<HomeScreen> {
     var currentUser = FirebaseAuth.instance.currentUser;
     var username = currentUser?.displayName;
 
-    return Scaffold(
-      body: Stack(children: [
-        AppColors.getFhwaveBlueGradientContainer(context),
-        CustomScrollView(
-          slivers: <Widget>[
-            SliverAppBar(
-              automaticallyImplyLeading: false,
-              floating: false,
-              pinned: true,
-              snap: false,
-              expandedHeight: 250.0,
-              backgroundColor: AppColors.transparent,
-              shadowColor: Colors.transparent,
-              flexibleSpace: FlexibleSpaceBar(
-                background: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 28.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const SizedBox(height: 80),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          GestureDetector(
-                              onTap: () {
-                                showDialog(
-                                  context: context,
-                                  builder: (context) {
-                                    return const BlurredDialog();
-                                  },
-                                );
-                              },
-                              child: Image.asset(
-                                "assets/fhwave-loading-weiss-schwarz.gif",
-                                gaplessPlayback: true,
-                                width: 70.0,
-                              )),
-                          // SvgPicture.asset(
-                          //   'assets/fhwave_logo_weiss.svg',
-                          //   width: 70,
-                          // ),
+    return Consumer<DarkModeController>(builder: (context, controller, _) {
+      return Scaffold(
+        body: Stack(children: [
+          AppColors.getFhwaveBlueGradientContainer(context),
+          CustomScrollView(
+            slivers: <Widget>[
+              SliverAppBar(
+                automaticallyImplyLeading: false,
+                floating: false,
+                pinned: true,
+                snap: false,
+                expandedHeight: 250.0,
+                backgroundColor: AppColors.transparent,
+                shadowColor: Colors.transparent,
+                flexibleSpace: FlexibleSpaceBar(
+                  background: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 28.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const SizedBox(height: 80),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            GestureDetector(
+                                onTap: () {
+                                  showDialog(
+                                    context: context,
+                                    builder: (context) {
+                                      return const BlurredDialog();
+                                    },
+                                  );
+                                },
+                                child: Image.asset(
+                                  "assets/fhwave-loading-weiss-schwarz.gif",
+                                  gaplessPlayback: true,
+                                  width: 70.0,
+                                )),
+                            // SvgPicture.asset(
+                            //   'assets/fhwave_logo_weiss.svg',
+                            //   width: 70,
+                            // ),
 
-                          ClipOval(
-                            child: Container(
-                              width: 40.0,
-                              height: 40.0,
-                              color: Colors.white,
-                              child: IconButton(
-                                icon: const Icon(Icons.account_circle_outlined),
-                                color: Colors.black,
-                                onPressed: () => _showBottomSheet(context),
-                                highlightColor: Colors.transparent,
-                                splashColor: Colors.transparent,
+                            ClipOval(
+                              child: Container(
+                                width: 40.0,
+                                height: 40.0,
+                                color: Colors.white,
+                                child: IconButton(
+                                  icon:
+                                      const Icon(Icons.account_circle_outlined),
+                                  color: Colors.black,
+                                  onPressed: () => _showBottomSheet(context),
+                                  highlightColor: Colors.transparent,
+                                  splashColor: Colors.transparent,
+                                ),
                               ),
                             ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(
-                        height: 40,
-                      ),
-                      Text('${_controller.greeting}, \n$username!',
-                          style: TextStyle(
-                              fontSize: 36.0,
-                              fontWeight: FontWeight.w800,
-                              color: _controller.fontColor)),
-                      const SizedBox(
-                        height: 4,
-                      ),
-                      Text(_controller.motivatingWords,
-                          style: const TextStyle(
-                            fontSize: 20.0,
-                            fontWeight: FontWeight.w500,
-                          )),
-                    ],
+                          ],
+                        ),
+                        const SizedBox(
+                          height: 40,
+                        ),
+                        Text('${_controller.greeting}, \n$username!',
+                            style: TextStyle(
+                                fontSize: 36.0,
+                                fontWeight: FontWeight.w800,
+                                color: _controller.fontColor)),
+                        const SizedBox(
+                          height: 4,
+                        ),
+                        Text(_controller.motivatingWords,
+                            style: const TextStyle(
+                                fontSize: 20.0,
+                                fontWeight: FontWeight.w500,
+                                color: Colors.black)),
+                      ],
+                    ),
                   ),
                 ),
               ),
-            ),
-            SliverPersistentHeader(
-              delegate: _SliverAppBarDelegate(
-                minHeight: 55.0,
-                maxHeight: 0.0,
-                child: Center(child: ToggleButton(onToggle: onToggle)),
+              SliverPersistentHeader(
+                delegate: _SliverAppBarDelegate(
+                  minHeight: 55.0,
+                  maxHeight: 0.0,
+                  child: Center(child: ToggleButton(onToggle: onToggle)),
+                ),
+                pinned: true,
               ),
-              pinned: true,
-            ),
-            SliverList(
-              delegate: SliverChildListDelegate(
-                [
-                  const SizedBox(
-                    height: 25,
-                  ),
-                  Visibility(
-                    visible: isMeineWidgetsVisible,
-                    child: Column(children: [
-                      const SizedBox(
-                        height: 15,
-                      ),
-                      meineWidgetsScreen(context)
-                    ]),
-                  ),
-                  Visibility(
-                    visible: !isMeineWidgetsVisible,
-                    child: quickLinksScreen(context),
-                  ),
-                ],
+              SliverList(
+                delegate: SliverChildListDelegate(
+                  [
+                    const SizedBox(
+                      height: 25,
+                    ),
+                    Visibility(
+                      visible: isMeineWidgetsVisible,
+                      child: Column(children: [
+                        const SizedBox(
+                          height: 15,
+                        ),
+                        meineWidgetsScreen(context)
+                      ]),
+                    ),
+                    Visibility(
+                      visible: !isMeineWidgetsVisible,
+                      child: quickLinksScreen(context),
+                    ),
+                  ],
+                ),
               ),
-            ),
-          ],
-        )
-      ]),
-    );
+            ],
+          )
+        ]),
+      );
+    });
   }
 }
 
