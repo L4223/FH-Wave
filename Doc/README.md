@@ -60,11 +60,6 @@ Bitte beachten Sie, dass für die Schriftfarben nur black oder fhwaveNeutral[num
 
 ### Wie zu verwenden:
 
-<<<<<<< HEAD
-- Klassen importieren: `import '../app_colors.dart';`
-- `AppColors.[Farbbezeichnung]` z.B. `AppColors.fhwaveBlue500`
-
-=======
 - Klassen importieren: z.B. `import '../app_colors.dart';` 
 - `AppColors.[Farbbezeichnung]` z.B. `AppColors.fhwaveBlue500`
 
@@ -86,7 +81,6 @@ Wir nehmen Primary Button als Beispiel:
 - Übergib die entsprechende Funktion an das `onTap`-Attribut des PrimaryButton-Widgets.
 - Optinal können Sie selbe die Breite und Höhe des Buttons definieren, indem Sie `width`-Attribut und `height`-Attribut übergeben.
 - Platzieren Sie das PrimaryButton-Widget an der gewünschten Stelle in Ihrem Flutter-Layout, z. B. innerhalb einer `Column` oder `Row`.
->>>>>>> develop
 
 ## Schritte zur fertigen Installation der App
 
