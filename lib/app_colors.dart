@@ -90,7 +90,7 @@ class AppColors {
   static const LinearGradient fhwavePurpleGradient = LinearGradient(
       begin: Alignment.topCenter,
       end: Alignment.bottomCenter,
-      colors: [fhwavePurple700, Color.fromRGBO(250, 250, 250, 0)]);
+      colors: [fhwavePurple500, Color.fromRGBO(250, 250, 250, 0)]);
 
   /// ‘fhwaveGreenGradient’ ist ein grünner bis transparenter Farbverlauf
   static const LinearGradient fhwaveGreenGradient = LinearGradient(
@@ -103,6 +103,7 @@ class AppColors {
       begin: Alignment.topCenter,
       end: Alignment.bottomCenter,
       colors: [fhwaveYellow500, Color.fromRGBO(250, 250, 250, 0)]);
+
 
   /// Die unten definierten Container-Widgets werden
   /// für den Hintergrundfarbverlauf der Seite(Screen) verwendet.
