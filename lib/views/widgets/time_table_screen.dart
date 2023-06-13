@@ -4,7 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:pie_chart/pie_chart.dart';
 
 import '../../app_colors.dart';
-
+import 'group_widgets/appbar.dart';
 
 class TimeTableItem {
   final int id;
@@ -40,7 +40,6 @@ class TimeTableItem {
 
 // ignore: must_be_immutable
 class TimeTablePage extends StatelessWidget {
-
   String jsonText = '''
   [
     {
@@ -70,53 +69,68 @@ class TimeTablePage extends StatelessWidget {
   Widget build(BuildContext context) {
     List<dynamic> jsonData = jsonDecode(jsonText);
 
-    var timeTableItems = jsonData
-        .map((dynamic item) {
-          return TimeTableItem.fromJson(item);
-        })
-        .toList();
+    var timeTableItems = jsonData.map((dynamic item) {
+      return TimeTableItem.fromJson(item);
+    }).toList();
 
     final chartData = createChartData(timeTableItems);
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Stundenplan"),
-        backgroundColor: AppColors.fhwaveGreen500,
-      ),
-      body: Column(
+      // appBar: AppBar(
+      //   title: const Text("Stundenplan"),
+      //   backgroundColor: AppColors.fhwaveGreen500,
+      // ),
+      body: Stack(
         children: [
-          AspectRatio(
-            aspectRatio: 1,
-            child: PieChart(
-              dataMap: chartData,
-              animationDuration: const Duration(milliseconds: 800),
-              chartLegendSpacing: 32,
-              chartRadius: MediaQuery.of(context).size.width / 2.7,
-              initialAngleInDegree: 0,
-              chartType: ChartType.disc,
-              ringStrokeWidth: 32,
-              legendOptions: const LegendOptions(
-                showLegendsInRow: true,
-                legendPosition: LegendPosition.bottom,
-                showLegends: true,
-                legendTextStyle: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 16
+          AppColors.getFhwaveGreenGradientContainer(context),
+          Column(
+            children: [
+              const SizedBox(
+                height: 70,
+              ),
+              TransparentAppbar(
+                heading: "Studenplan",
+                route: "/home",
+              ),
+              AspectRatio(
+                aspectRatio: 1,
+                child: PieChart(
+                  dataMap: chartData,
+                  animationDuration: const Duration(milliseconds: 800),
+                  chartLegendSpacing: 32,
+                  chartRadius: MediaQuery.of(context).size.width / 2.7,
+                  initialAngleInDegree: 0,
+                  chartType: ChartType.disc,
+                  ringStrokeWidth: 32,
+                  legendOptions: const LegendOptions(
+                    showLegendsInRow: true,
+                    legendPosition: LegendPosition.bottom,
+                    showLegends: true,
+                    legendTextStyle:
+                        TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                  ),
                 ),
               ),
-            ),
+              SizedBox(
+                  height: 100,
+                  width: MediaQuery.of(context).size.width - 50,
+                  child: const Center(
+                    child: Text(
+                      "Das ist der Frühaufsteherplan!",
+                      style: TextStyle(
+                          fontSize: 24,
+                          color: AppColors.black,
+                          fontWeight: FontWeight.bold),
+                    ),
+                  )),
+              Flexible(
+                child: SvgPicture.asset(
+                  'assets/fruehaufsteher.svg',
+                  width: 200,
+                ),
+              )
+            ],
           ),
-           const SizedBox(height: 100, child: Center(
-            child: Text("Das ist der Frühaufsteherplan!", style:
-            TextStyle(fontSize: 28),),
-          )),
-
-          Flexible(child:  SvgPicture.asset(
-            'assets/fruehaufsteher.svg',
-            width: 200,
-          ),
-
-          )
         ],
       ),
     );
