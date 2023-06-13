@@ -42,7 +42,7 @@ class MyApp extends StatelessWidget {
               fontFamily: 'Roboto',
             ),
             debugShowCheckedModeBanner: false,
-            home: SplashScreen(), // Set SplashScreen as the home screen
+            home: SplashScreen(),
             routes: {
               '/login': (context) => const LoginScreen(),
               '/home': (context) => const HomeScreen(),
@@ -76,17 +76,12 @@ class _SplashScreenState extends State<SplashScreen> {
 
     _controller.addListener(() {
       if (_controller.value.position == _controller.value.duration) {
-        // Video playback complete, perform any necessary actions
-        // and navigate to the desired screen
         _handleVideoPlaybackComplete();
       }
     });
   }
 
   void _handleVideoPlaybackComplete() {
-    // Perform any necessary actions here
-
-    // Example: Delay for 2 seconds and then navigate to the signup screen
     Future.delayed(const Duration(seconds: 2), () {
       Navigator.pushReplacementNamed(context, '/login');
     });
