@@ -98,11 +98,11 @@ class _GroupCalendarScreenState extends State<GroupCalendarScreen> {
               alignment: Alignment.topRight,
               child: Column(
                 children: [
-                  const SizedBox(
-                    height: 100,
+                  SizedBox(
+                    height: 50,
                   ),
                   SizedBox(
-                    height: 400,
+                    height: 500,
                     child: SfCalendar(
                       view: CalendarView.month,
                       headerStyle: const CalendarHeaderStyle(
