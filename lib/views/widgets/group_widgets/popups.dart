@@ -184,6 +184,27 @@ void addMemberPopup(BuildContext context, String groupId) {
   //   print('Gruppenanfrage hinzugefügt für: $userName');
   // }
 
+  var duplicate = "";
+
+  void checkDuplicateName(String names) {
+    var nameList = names.split(", ");
+    var uniqueNames = <String>{};
+    var duplicateNames = <String>{};
+
+    for (var name in nameList) {
+      if (!uniqueNames.add(name)) {
+        duplicateNames.add(name);
+      }
+    }
+
+    if (duplicateNames.isEmpty) {
+      print("Keine doppelten Namen gefunden.");
+    } else {
+      duplicate = duplicateNames.first;
+      // print("Doppelter Name: ${duplicateNames.first}");
+    }
+  }
+
   showDialog(
     context: context,
     builder: (context) {
@@ -222,15 +243,25 @@ void addMemberPopup(BuildContext context, String groupId) {
                   PrimaryButton(
                     text: "Hinzufügen",
                     onTap: () {
-                      _groupController.addGroupRequestList(
-                          memberTextController.text, groupId);
-                      memberTextController.clear();
-                      Navigator.pop(context);
-                      feedbackPopup(
-                          context,
-                          Icons.check,
-                          "Mitglied/er erfolgreich hinzugefügt, diese",
-                          "Nutzer bekommen jetzt eine Beitritts-Anfrage.");
+                      var names = memberTextController.text;
+                      checkDuplicateName(names);
+
+                      if (duplicate == "") {
+                        _groupController.addGroupRequestList(names, groupId);
+                        memberTextController.clear();
+                        Navigator.pop(context);
+                        feedbackPopup(
+                            context,
+                            Icons.check,
+                            "Mitglied/er erfolgreich hinzugefügt, diese",
+                            "Nutzer bekommen jetzt eine Beitritts-Anfrage.");
+                      } else {
+                        feedbackPopup(
+                            context,
+                            Icons.dangerous,
+                            "Fehler beim Hinzufügen der Mitglieder",
+                            "Der / Die Namen $duplicate sind doppelt");
+                      }
                     },
                     width: 130,
                   ),

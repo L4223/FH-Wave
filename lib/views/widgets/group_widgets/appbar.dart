@@ -22,7 +22,7 @@ class TransparentAppbar extends StatelessWidget {
             GestureDetector(
               child: const Icon(Icons.arrow_back_ios_new_rounded),
               onTap: () {
-                Navigator.pop(context, route);
+                Navigator.pushNamed(context, route);
               },
             ),
             const SizedBox(width: 12),
