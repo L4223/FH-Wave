@@ -5,6 +5,7 @@ import '../../app_colors.dart';
 import '../../controllers/home_screen_controller.dart';
 import '../../controllers/user_controller.dart';
 import '../widgets/buttons/primary_button.dart';
+import 'login_screen.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({Key? key}) : super(key: key);
@@ -214,7 +215,10 @@ class SignUpScreenState extends State<SignUpScreen> {
 //Underline Navigieren ==> LoginScreen
                 GestureDetector(
                   onTap: () {
-                    Navigator.pop(context, '/login');
+                    Navigator.pushAndRemoveUntil(context,
+                        MaterialPageRoute(
+                            builder: (context) => const LoginScreen()),
+                        ModalRoute.withName('/login'));
                   },
                   child: const Row(
                     children: [
