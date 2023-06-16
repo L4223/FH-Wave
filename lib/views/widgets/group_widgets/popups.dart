@@ -375,7 +375,7 @@ class BlurredDialog extends StatelessWidget {
         ),
         child: SizedBox(
           width: 600.0,
-          height: 400.0,
+          height: 350.0,
           // decoration: BoxDecoration(
           //   borderRadius: BorderRadius.circular(20.0),
 
@@ -401,7 +401,7 @@ class BlurredDialog extends StatelessWidget {
                         color: AppColors.fhwaveNeutral900)),
               ),
               const SizedBox(
-                height: 70.0,
+                height: 50.0,
               ),
               PrimaryButton(
                 text: 'Alles klar',
@@ -413,7 +413,7 @@ class BlurredDialog extends StatelessWidget {
               const SizedBox(
                 height: 20.0,
               ),
-              const Text("Version 1.0.0 - Ein fhwave-rojekt",
+              const Text("Version 1.0.0 - fhwave",
                   style: TextStyle(
                       fontSize: 14.0,
                       fontWeight: FontWeight.w400,

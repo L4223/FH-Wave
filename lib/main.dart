@@ -9,6 +9,7 @@ import 'controllers/dark_mode_controller.dart';
 import 'controllers/user_controller.dart';
 import 'firebase_options.dart';
 import 'views/auth_screens/login_screen.dart';
+import 'views/auth_screens/password_reset_screen.dart';
 import 'views/auth_screens/signup_screen.dart';
 import 'views/auth_screens/welcome_screen.dart';
 import 'views/calendar_screen.dart';
@@ -68,6 +69,7 @@ class MyApp extends StatelessWidget {
                     '/group': (context) => const GroupsHome(),
                     '/request': (context) => const RequestScreen(),
                     '/calendar': (context) => const CalendarScreen(),
+                    '/resetps': (context) => const ResetPasswordScreen()
                   },
                 );
               }
