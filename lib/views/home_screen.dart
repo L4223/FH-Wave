@@ -74,25 +74,15 @@ class HomeScreenState extends State<HomeScreen> {
                                   gaplessPlayback: true,
                                   width: 70.0,
                                 )),
-                            // SvgPicture.asset(
-                            //   'assets/fhwave_logo_weiss.svg',
-                            //   width: 70,
-                            // ),
-
-                            ClipOval(
-                              child: Container(
-                                width: 40.0,
-                                height: 40.0,
-                                color: Colors.white,
-                                child: IconButton(
-                                  icon:
-                                      const Icon(Icons.account_circle_outlined),
-                                  color: Colors.black,
-                                  onPressed: () => _showBottomSheet(context),
-                                  highlightColor: Colors.transparent,
-                                  splashColor: Colors.transparent,
-                                ),
+                            IconButton(
+                              icon: const Icon(
+                                Icons.settings,
+                                size: 28,
                               ),
+                              color: AppColors.black,
+                              onPressed: () => _showBottomSheet(context),
+                              highlightColor: Colors.transparent,
+                              splashColor: Colors.transparent,
                             ),
                           ],
                         ),
