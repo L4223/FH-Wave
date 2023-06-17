@@ -105,14 +105,17 @@ class TimeTablePage extends StatelessWidget {
                         .size
                         .width / 2.7,
                     initialAngleInDegree: 0,
-                    chartType: ChartType.disc,
+                    chartType: ChartType.ring,
                     ringStrokeWidth: 32,
                     legendOptions: const LegendOptions(
                       showLegendsInRow: true,
                       legendPosition: LegendPosition.bottom,
                       showLegends: true,
                       legendTextStyle:
-                      TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                      TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
+                    ),
+                    chartValuesOptions: const ChartValuesOptions(
+                      showChartValues: false,
                     ),
                   ),
                 ),
@@ -152,19 +155,20 @@ class TimeTablePage extends StatelessWidget {
     // per item
 
     final blockCounts = <String, int>{
-      'Block 1': 0,
-      'Block 2': 0,
-      'Block 3': 0,
-      'Block 4': 0,
-      'Block 5': 0,
+      '08:30': 0,
+      '10:15': 0,
+      '12:45': 0,
+      '14:30': 0,
+      '16:15': 0,
     };
 
     for (final item in scheduleItems) {
-      blockCounts['Block 1'] = item.block1;
-      blockCounts['Block 2'] = item.block2;
-      blockCounts['Block 3'] = item.block3;
-      blockCounts['Block 4'] = item.block4;
-      blockCounts['Block 5'] = item.block5;
+
+      blockCounts['08:30'] = item.block1;
+      blockCounts['10:15'] = item.block2;
+      blockCounts['12:45'] = item.block3;
+      blockCounts['14:30'] = item.block4;
+      blockCounts['16:15'] = item.block5;
     }
 
     for (final block in blockCounts.keys) {
