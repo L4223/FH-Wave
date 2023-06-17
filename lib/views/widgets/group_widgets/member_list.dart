@@ -2,12 +2,20 @@ import 'package:flutter/material.dart';
 
 import '../../../app_colors.dart';
 import '../../../controllers/group_controller.dart';
+import '../../group_calendar_screen.dart';
+import 'popups.dart';
+
+final GroupController groupController = GroupController();
+
+Future<String> loadMemberId(String memberName) async {
+  var memberId = await groupController.getUserIdFromUsername(memberName);
+  return memberId;
+}
 
 class MemberList extends StatelessWidget {
   final String groupId;
-  final GroupController groupController = GroupController();
 
-  MemberList({super.key, required this.groupId});
+  const MemberList({super.key, required this.groupId});
 
   @override
   Widget build(BuildContext context) {
@@ -70,13 +78,20 @@ class MemberList extends StatelessWidget {
                     var memberName = snapshot.data![index];
                     return ListTile(
                       leading: const Icon(Icons.person),
-                      title: Text(
-                        memberName,
-                        style: const TextStyle(
-                          color: Colors.black,
-                          fontWeight: FontWeight.w700,
-                          fontSize: 16.0,
-                        ),
+                      title: Row(
+                        children: [
+                          Expanded(
+                            child: Text(
+                              memberName,
+                              style: const TextStyle(
+                                color: Colors.black,
+                                fontWeight: FontWeight.w700,
+                                fontSize: 16.0,
+                              ),
+                            ),
+                          ),
+                          removeButton(context, memberName)
+                        ],
                       ),
                       onTap: () {
                         // print(memberName);
@@ -90,5 +105,24 @@ class MemberList extends StatelessWidget {
         ),
       ],
     );
+  }
+
+  Widget removeButton(BuildContext context, String memberName) {
+    if (memberName != currentUser?.displayName) {
+      return IconButton(
+          onPressed: () {
+            //TODO Async Function draus machen
+            confirmPopup(
+                context,
+                Icons.group_remove,
+                "Willst du $memberName wirklich aus der Gruppe entfernen?",
+                "Du kannst diesen Schritt nicht rückgängig machen.", () {
+              groupController.leaveGroup(groupId, memberName);
+            });
+          },
+          icon: const Icon(Icons.remove));
+    } else {
+      return const Text("");
+    }
   }
 }

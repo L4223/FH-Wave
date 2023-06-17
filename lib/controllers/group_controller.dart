@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
+import '../views/group_calendar_screen.dart';
+
 FirebaseFirestore firestore = FirebaseFirestore.instance;
 
 class GroupController {
@@ -40,17 +42,16 @@ class GroupController {
   void popupFeedback(BuildContext context, String title, String content) {
     showDialog(
       context: context,
-      builder: (context) =>
-          AlertDialog(
-            title: Text(title),
-            content: Text(content),
-            actions: [
-              TextButton(
-                onPressed: () => Navigator.pop(context),
-                child: const Text('OK'),
-              ),
-            ],
+      builder: (context) => AlertDialog(
+        title: Text(title),
+        content: Text(content),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('OK'),
           ),
+        ],
+      ),
     );
   }
 
@@ -114,7 +115,7 @@ class GroupController {
     var groupSnapshot = await groupRef.get();
     //Daten aus Gruppe/Members speichern
     List<dynamic>? memberIDs =
-    (groupSnapshot.data() as Map<String, dynamic>)['members'];
+        (groupSnapshot.data() as Map<String, dynamic>)['members'];
 
     // UserNames suchen & speichern
     var memberNames = <String>[];
@@ -125,7 +126,7 @@ class GroupController {
         var userSnapshot = await userRef.get();
         //Gefundene Daten in Liste speichern
         String? userName =
-        (userSnapshot.data() as Map<String, dynamic>)['userName'];
+            (userSnapshot.data() as Map<String, dynamic>)['userName'];
         if (userName != null) {
           memberNames.add(userName);
         }
@@ -156,7 +157,7 @@ class GroupController {
         // Gruppennamen mit den vorhandenen group_requests vergleichen
         for (String groupId in groupRequests) {
           QueryDocumentSnapshot? groupDoc =
-          groupDocs.firstWhere((doc) => doc.id == groupId);
+              groupDocs.firstWhere((doc) => doc.id == groupId);
           String groupName = groupDoc.get('groupName');
           groupNames.add(groupName);
         }
@@ -253,18 +254,27 @@ class GroupController {
     ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 
-  Future<void> leaveGroup(String groupId, String uid) async {
+  Future<void> leaveGroup(String groupId, String name) async {
+    var uid = "";
+
+    //Gruppe verlassen
+    if (name == "currentUser") {
+      uid = currentUser!.uid;
+      //Member aus Gruppe entfernen
+    } else {
+      await getUserIdFromUsername(name).then((id) => uid = id);
+    }
+
     // Firestore-Instanz initialisieren
     try {
       // Gruppendokument in der Firestore-Sammlung "groups" abrufen
       DocumentSnapshot groupSnapshot =
-      await firestore.collection('groups').doc(groupId).get();
+          await firestore.collection('groups').doc(groupId).get();
 
       // Überprüfen, ob das Gruppendokument existiert
       if (groupSnapshot.exists) {
         // Gruppendaten abrufen
-        var groupData =
-        groupSnapshot.data() as Map<String, dynamic>;
+        var groupData = groupSnapshot.data() as Map<String, dynamic>;
 
         // Gruppenmitgliederliste abrufen
         var members = List<String>.from(groupData['members']);
@@ -281,13 +291,12 @@ class GroupController {
 
       // Benutzerdokument in der Firestore-Sammlung "users" abrufen
       DocumentSnapshot userSnapshot =
-      await firestore.collection('users').doc(uid).get();
+          await firestore.collection('users').doc(uid).get();
 
       // Überprüfen, ob das Benutzerdokument existiert
       if (userSnapshot.exists) {
         // Benutzerdaten abrufen
-        var userData =
-        userSnapshot.data() as Map<String, dynamic>;
+        var userData = userSnapshot.data() as Map<String, dynamic>;
 
         // Gruppenliste des Benutzers abrufen
         var groups = List<String>.from(userData['groups']);
@@ -376,13 +385,11 @@ class GroupController {
 
       // Überprüfen, ob der Benutzer existiert und das group_requests-Array hat
       if (userSnapshot.exists && userSnapshot.data() is Map<String, dynamic>) {
-        var userData =
-        userSnapshot.data() as Map<String, dynamic>;
+        var userData = userSnapshot.data() as Map<String, dynamic>;
 
         // Überprüfen, ob der group_requests-Array leer ist
         if (userData.containsKey('group_requests')) {
-          var groupRequests =
-          userData['group_requests'] as List<dynamic>?;
+          var groupRequests = userData['group_requests'] as List<dynamic>?;
           return groupRequests?.isEmpty ?? true;
         }
       }
@@ -393,5 +400,23 @@ class GroupController {
 
     return true; // Annahme: Wenn der Benutzer oder das group_requests-Array
     // nicht vorhanden ist, wird es als leer betrachtet
+  }
+
+  String checkDuplicateName(String names) {
+    var nameList = names.split(", ");
+    var uniqueNames = <String>{};
+    var duplicateNames = <String>{};
+
+    for (var name in nameList) {
+      if (!uniqueNames.add(name)) {
+        duplicateNames.add(name);
+      }
+    }
+
+    if (duplicateNames.isEmpty) {
+      return "";
+    } else {
+      return duplicateNames.first;
+    }
   }
 }

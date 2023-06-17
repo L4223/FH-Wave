@@ -92,7 +92,7 @@ class TimeTablePage extends StatelessWidget {
                 ),
                 TransparentAppbar(
                   heading: "Studenplan",
-                  route: "/home",
+                  routeName: "/home",
                 ),
                 AspectRatio(
                   aspectRatio: 1,
@@ -100,10 +100,7 @@ class TimeTablePage extends StatelessWidget {
                     dataMap: chartData,
                     animationDuration: const Duration(milliseconds: 800),
                     chartLegendSpacing: 32,
-                    chartRadius: MediaQuery
-                        .of(context)
-                        .size
-                        .width / 2.7,
+                    chartRadius: MediaQuery.of(context).size.width / 2.7,
                     initialAngleInDegree: 0,
                     chartType: ChartType.disc,
                     ringStrokeWidth: 32,
@@ -112,23 +109,21 @@ class TimeTablePage extends StatelessWidget {
                       legendPosition: LegendPosition.bottom,
                       showLegends: true,
                       legendTextStyle:
-                      TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
                     ),
                   ),
                 ),
                 SizedBox(
                     height: 100,
-                    width: MediaQuery
-                        .of(context)
-                        .size
-                        .width - 50,
+                    width: MediaQuery.of(context).size.width - 50,
                     child: Center(
                       child: Text(
                         "Das ist der Frühaufsteherplan!",
                         style: TextStyle(
                             fontSize: 24,
-                            color: controller.isDarkMode ?
-                            AppColors.white : AppColors.black,
+                            color: controller.isDarkMode
+                                ? AppColors.white
+                                : AppColors.black,
                             fontWeight: FontWeight.bold),
                       ),
                     )),

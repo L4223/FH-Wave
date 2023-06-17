@@ -13,15 +13,16 @@ void closeKeyboard(BuildContext context) {
   }
 }
 
+final GroupController _groupController = GroupController();
 final groupNameTextController = TextEditingController();
 final memberTextController = TextEditingController();
-final GroupController _groupController = GroupController();
+
 String groupName = "";
 
 Widget nameInputField() {
   return TextFormField(
     onChanged: (text) {
-      groupNameTextController.text = text;
+      memberTextController.text = text;
     },
     cursorColor: AppColors.fhwavePurple500,
     maxLength: 20,
@@ -41,99 +42,98 @@ Widget nameInputField() {
   );
 }
 
-Future<void> createGroup(BuildContext context, String memberNames) async {
-  var groupName = groupNameTextController.text.trim();
+Widget memberInputField() {
+  return Column(
+    children: [
+      TextFormField(
+        cursorColor: AppColors.fhwavePurple500,
+        controller: groupNameTextController,
+        decoration: const InputDecoration(
+          labelText: "Mitglieder",
+          labelStyle: TextStyle(
+            color: AppColors.fhwaveNeutral400,
+          ),
+          enabledBorder: UnderlineInputBorder(
+            borderSide: BorderSide(color: AppColors.black),
+          ),
+          focusedBorder: UnderlineInputBorder(
+            borderSide: BorderSide(color: AppColors.fhwavePurple500),
+          ),
+        ),
+      ),
+      const SizedBox(
+        height: 10,
+      ),
+      const Text(
+        "Trenne die Namen mit einem ' , ' ",
+        style: TextStyle(color: AppColors.fhwaveNeutral200),
+        textAlign: TextAlign.center,
+      ),
+      const Text(
+        "Beispiel: Max, Anna, Peter",
+        style: TextStyle(color: AppColors.fhwaveNeutral200),
+        textAlign: TextAlign.center,
+      ),
+      const SizedBox(
+        height: 50,
+      ),
+    ],
+  );
+}
+
+Future<void> createGroup(
+    BuildContext context,
+    TextEditingController nameController,
+    TextEditingController memberController) async {
+  var groupName = nameController.text.trim();
+  var memberNames = memberController.text;
   var creatorId = currentUser?.uid;
 
   _groupController.createGroup(groupName, creatorId!).then(
       (groupId) => _groupController.addGroupRequestList(memberNames, groupId));
 
-  // String groupId = await _groupController.getGroupIdFromGroupName(groupName);
-  memberTextController.clear();
   Navigator.of(context).pop();
   closeKeyboard(context);
+
   feedbackPopup(
       context,
       Icons.check,
       "Gruppe erfolgreich erstellt!",
       "Du kannst dir jetzt die Mitglieder anschauen "
-          "oder die Gruppe wieder auflösen.");
+          "oder die Gruppe wieder auflösen.",
+      "/group");
 }
 
 void createGroupPopup(BuildContext context) {
-  Widget memberInputField() {
-    return TextFormField(
-        controller: memberTextController,
-        cursorColor: AppColors.fhwavePurple500,
-        maxLength: 20,
-        decoration: const InputDecoration(
-            labelText: "Mitglieder",
-            labelStyle: TextStyle(
-              color: AppColors.fhwaveNeutral400,
-            ),
-            // helperText: 'Helper text',
-            enabledBorder: UnderlineInputBorder(
-              borderSide: BorderSide(color: AppColors.black),
-            ),
-            focusedBorder: UnderlineInputBorder(
-              borderSide: BorderSide(color: AppColors.fhwavePurple500),
-            )));
-  }
-
-  // void createNameList(String namesString) {
-  //   List<String> nameList = namesString.split(',').map((name) {
-  //     return name.trim();
-  //   }).toList();
-  //
-  //   nameList.forEach((userName) {
-  //     _groupController.addGroupRequest(userName);
-  //   });
-  // }
-
-  // void addGroupRequest(String userName) {
-  //   // Hier wird die Logik für die Verarbeitung der Gruppenanfrage für den jeweiligen Benutzernamen ausgeführt
-  //   print('Gruppenanfrage hinzugefügt für: $userName');
-  // }
-
   showDialog(
     context: context,
     builder: (context) {
       return AlertDialog(
         shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.all(Radius.circular(32.0))),
-        title: const Text('Gruppe erstellen'),
+        title: const Center(child: Text('Gruppe erstellen')),
         content: SizedBox(
           width: MediaQuery.of(context).size.width,
           height: MediaQuery.of(context).size.height * 0.4,
-          child: Column(
+          child: ListView(
             children: [
               nameInputField(),
               memberInputField(),
-              const Text(
-                "Trenne die Namen mit einem ' , ' ",
-                style: TextStyle(color: AppColors.fhwaveNeutral200),
-                textAlign: TextAlign.center,
-              ),
-              const Text(
-                "Beispiel: Max, Anna, Peter",
-                style: TextStyle(color: AppColors.fhwaveNeutral200),
-                textAlign: TextAlign.center,
-              ),
-              const SizedBox(
-                height: 50,
-              ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   SecondaryButton(
                     text: "Abbrechen",
-                    onTap: () => Navigator.of(context).pop(),
+                    onTap: () {
+                      Navigator.of(context).pop();
+                    },
                     width: 130,
                   ),
                   PrimaryButton(
                     text: "Erstellen",
                     onTap: () {
-                      createGroup(context, memberTextController.text);
+                      createGroup(context, memberTextController,
+                          groupNameTextController);
                     },
                     width: 130,
                   ),
@@ -144,99 +144,34 @@ void createGroupPopup(BuildContext context) {
         ),
       );
     },
-  );
+  ).then((value) {
+    memberTextController.clear();
+    groupNameTextController.clear();
+  });
 }
 
 void addMemberPopup(BuildContext context, String groupId) {
-  Widget memberInputField() {
-    return TextFormField(
-      cursorColor: AppColors.fhwavePurple500,
-      controller: memberTextController,
-      maxLength: 20,
-      decoration: const InputDecoration(
-        labelText: "Mitglieder",
-        labelStyle: TextStyle(
-          color: AppColors.fhwaveNeutral400,
-        ),
-        // helperText: 'Helper text',
-        enabledBorder: UnderlineInputBorder(
-          borderSide: BorderSide(color: AppColors.black),
-        ),
-        focusedBorder: UnderlineInputBorder(
-          borderSide: BorderSide(color: AppColors.fhwavePurple500),
-        ),
-      ),
-    );
-  }
-
-  // void createNameList(String namesString) {
-  //   List<String> nameList = namesString.split(',').map((name) {
-  //     return name.trim();
-  //   }).toList();
-  //
-  //   nameList.forEach((userName) {
-  //     _groupController.addGroupRequest(userName);
-  //   });
-  // }
-
-  // void addGroupRequest(String userName) {
-  //   // Hier wird die Logik für die Verarbeitung der Gruppenanfrage für den jeweiligen Benutzernamen ausgeführt
-  //   print('Gruppenanfrage hinzugefügt für: $userName');
-  // }
-
-  var duplicate = "";
-
-  void checkDuplicateName(String names) {
-    var nameList = names.split(", ");
-    var uniqueNames = <String>{};
-    var duplicateNames = <String>{};
-
-    for (var name in nameList) {
-      if (!uniqueNames.add(name)) {
-        duplicateNames.add(name);
-      }
-    }
-
-    if (duplicateNames.isEmpty) {
-      print("Keine doppelten Namen gefunden.");
-    } else {
-      duplicate = duplicateNames.first;
-      // print("Doppelter Name: ${duplicateNames.first}");
-    }
-  }
-
   showDialog(
     context: context,
     builder: (context) {
       return AlertDialog(
         shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.all(Radius.circular(32.0))),
-        title: const Text('Mitglieder hinzufügen'),
+        title: const Center(child: Text('Mitglieder hinzufügen')),
         content: SizedBox(
           width: MediaQuery.of(context).size.width,
-          height: MediaQuery.of(context).size.height * 0.35,
-          child: Column(
+          height: MediaQuery.of(context).size.height * 0.3,
+          child: ListView(
             children: [
               memberInputField(),
-              const Text(
-                "Trenne die Namen mit einem ' , ' ",
-                style: TextStyle(color: AppColors.fhwaveNeutral200),
-                textAlign: TextAlign.center,
-              ),
-              const Text(
-                "Beispiel: Max, Anna, Peter",
-                style: TextStyle(color: AppColors.fhwaveNeutral200),
-                textAlign: TextAlign.center,
-              ),
-              const SizedBox(
-                height: 50,
-              ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   SecondaryButton(
                     text: "Abbrechen",
-                    onTap: () => Navigator.of(context).pop(),
+                    onTap: () {
+                      Navigator.of(context).pop();
+                    },
                     width: 130,
                   ),
                   // SizedBox(width: 10,),
@@ -244,23 +179,26 @@ void addMemberPopup(BuildContext context, String groupId) {
                     text: "Hinzufügen",
                     onTap: () {
                       var names = memberTextController.text;
-                      checkDuplicateName(names);
+
+                      var duplicate =
+                          _groupController.checkDuplicateName(names);
 
                       if (duplicate == "") {
                         _groupController.addGroupRequestList(names, groupId);
-                        memberTextController.clear();
                         Navigator.pop(context);
                         feedbackPopup(
                             context,
                             Icons.check,
                             "Mitglied/er erfolgreich hinzugefügt, diese",
-                            "Nutzer bekommen jetzt eine Beitritts-Anfrage.");
+                            "Nutzer bekommen jetzt eine Beitritts-Anfrage.",
+                            "/group");
                       } else {
                         feedbackPopup(
                             context,
-                            Icons.dangerous,
+                            Icons.warning_amber,
                             "Fehler beim Hinzufügen der Mitglieder",
-                            "Der / Die Namen $duplicate sind doppelt");
+                            "Der Namen $duplicate sind doppelt",
+                            "pop");
                       }
                     },
                     width: 130,
@@ -272,58 +210,61 @@ void addMemberPopup(BuildContext context, String groupId) {
         ),
       );
     },
-  );
+  ).then((value) {
+    memberTextController.clear();
+  });
 }
 
-void feedbackPopup(
-    BuildContext context, IconData icon, String heading, String text) {
+void feedbackPopup(BuildContext context, IconData icon, String heading,
+    String text, String route) {
   showDialog(
       context: context,
       builder: (context) => AlertDialog(
             shape: const RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(Radius.circular(32.0))),
-            // title: const Text('Gruppe erstellen'),
             content: SizedBox(
-              width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.height * 0.3,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                // smallRoundButton(context, () {
-                //   Navigator.of(context).pop();
-                // }, "Abbrechen"),
-                children: [
-                  Icon(
-                    icon,
-                    size: 50,
-                  ),
-                  Text(
-                    heading,
-                    textAlign: TextAlign.center,
-                    style: const TextStyle(
-                        fontSize: 20, fontWeight: FontWeight.w400),
-                  ),
-                  const SizedBox(
-                    height: 30,
-                  ),
-                  Text(
-                    text,
-                    textAlign: TextAlign.center,
-                    style: const TextStyle(color: AppColors.fhwaveNeutral200),
-                  ),
-                  const SizedBox(
-                    height: 30,
-                  ),
-                  PrimaryButton(
-                      text: "Weiter",
-                      onTap: () {
-                        Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const GroupsHome()));
-                      }),
-                ],
-              ),
-            ),
+                width: MediaQuery.of(context).size.width,
+                height: MediaQuery.of(context).size.height * 0.3,
+                child: ListView(
+                  children: [
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          icon,
+                          size: 50,
+                        ),
+                        Text(
+                          heading,
+                          textAlign: TextAlign.center,
+                          style: const TextStyle(
+                              fontSize: 20, fontWeight: FontWeight.w400),
+                        ),
+                        const SizedBox(
+                          height: 30,
+                        ),
+                        Text(
+                          text,
+                          textAlign: TextAlign.center,
+                          style: const TextStyle(
+                              color: AppColors.fhwaveNeutral200),
+                        ),
+                        const SizedBox(
+                          height: 30,
+                        ),
+                        PrimaryButton(
+                            text: "Weiter",
+                            onTap: () {
+                              if (route == "pop") {
+                                Navigator.pop(context);
+                              } else {
+                                Navigator.pushNamed(context, route);
+                              }
+                            }),
+                      ],
+                    ),
+                  ],
+                )),
           ));
 }
 
@@ -334,64 +275,65 @@ void confirmPopup(BuildContext context, IconData icon, String heading,
       builder: (context) => AlertDialog(
             shape: const RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(Radius.circular(32.0))),
-            // title: const Text('Gruppe erstellen'),
             content: Container(
-              alignment: Alignment.center,
-              width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.height * 0.4,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                // smallRoundButton(context, () {
-                //   Navigator.of(context).pop();
-                // }, "Abbrechen"),
-                children: [
-                  Icon(
-                    icon,
-                    size: 50,
-                  ),
-                  Text(
-                    heading,
-                    style: const TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.w400,
+                alignment: Alignment.center,
+                width: MediaQuery.of(context).size.width,
+                height: MediaQuery.of(context).size.height * 0.3,
+                child: ListView(
+                  children: [
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Icon(
+                          icon,
+                          size: 50,
+                        ),
+                        Text(
+                          heading,
+                          style: const TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.w400,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                        const SizedBox(
+                          height: 30,
+                        ),
+                        Text(text,
+                            style: const TextStyle(
+                                color: AppColors.fhwaveNeutral200),
+                            textAlign: TextAlign.center),
+                        const SizedBox(
+                          height: 30,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            SecondaryButton(
+                              text: "Abbrechen",
+                              onTap: () => Navigator.pop(context),
+                              width: 130,
+                            ),
+                            PrimaryButton(
+                              text: "Bestätigen",
+                              onTap: () {
+                                func();
+                                Navigator.pop(context);
+                                Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            const GroupsHome()));
+                              },
+                              width: 130,
+                            )
+                          ],
+                        )
+                      ],
                     ),
-                    textAlign: TextAlign.center,
-                  ),
-                  const SizedBox(
-                    height: 30,
-                  ),
-                  Text(text,
-                      style: const TextStyle(color: AppColors.fhwaveNeutral200),
-                      textAlign: TextAlign.center),
-                  const SizedBox(
-                    height: 30,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      SecondaryButton(
-                        text: "Abbrechen",
-                        onTap: () => Navigator.pop(context),
-                        width: 130,
-                      ),
-                      PrimaryButton(
-                        text: "Bestätigen",
-                        onTap: () {
-                          func();
-                          Navigator.pop(context);
-                          Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => const GroupsHome()));
-                        },
-                        width: 130,
-                      )
-                    ],
-                  )
-                ],
-              ),
-            ),
+                  ],
+                )),
           ));
 }
 

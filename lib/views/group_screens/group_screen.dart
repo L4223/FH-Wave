@@ -65,7 +65,7 @@ class _GroupsHomeState extends State<GroupsHome> {
           children: [
             TransparentAppbar(
               heading: "Gruppen",
-              route: "/home",
+              routeName: "/home",
             ),
             Container(
                 alignment: Alignment.topRight,
@@ -81,7 +81,10 @@ class _GroupsHomeState extends State<GroupsHome> {
                             : const Icon(
                                 Icons.local_post_office,
                                 color: Colors.deepOrange,
-                              )),const SizedBox(width: 20,)
+                              )),
+                    const SizedBox(
+                      width: 20,
+                    )
                   ],
                 )),
             Padding(
@@ -128,7 +131,7 @@ class GroupInfoScreen extends StatelessWidget {
   }
 
   void leaveGroup() {
-    _groupController.leaveGroup(groupId, currentUser!.uid);
+    _groupController.leaveGroup(groupId, "currentUser");
     // .then((value) => Navigator.pop(context));
   }
 
@@ -145,7 +148,7 @@ class GroupInfoScreen extends StatelessWidget {
             children: [
               TransparentAppbar(
                 heading: groupName,
-                route: "/group",
+                routeName: "/group",
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 28.0),

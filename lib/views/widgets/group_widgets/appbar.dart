@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 
 //ignore: must_be_immutable
 class TransparentAppbar extends StatelessWidget {
-  TransparentAppbar({super.key, required this.heading, required this.route});
+  TransparentAppbar(
+      {super.key, required this.heading, required this.routeName});
 
-  String route;
+  String routeName;
   String heading;
 
   @override
@@ -22,7 +23,11 @@ class TransparentAppbar extends StatelessWidget {
             GestureDetector(
               child: const Icon(Icons.arrow_back_ios_new_rounded),
               onTap: () {
-                Navigator.pushNamed(context, route);
+                if (routeName == "/home" || routeName == "/group") {
+                  Navigator.pop(context);
+                } else {
+                  Navigator.pushNamed(context, routeName);
+                }
               },
             ),
             const SizedBox(width: 12),
