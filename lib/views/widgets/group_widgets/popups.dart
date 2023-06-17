@@ -101,7 +101,7 @@ Future<void> createGroup(
       "Gruppe erfolgreich erstellt!",
       "Du kannst dir jetzt die Mitglieder anschauen "
           "oder die Gruppe wieder auflösen.",
-      "/group");
+      "pop");
 }
 
 void createGroupPopup(BuildContext context) {
@@ -320,11 +320,12 @@ void confirmPopup(BuildContext context, IconData icon, String heading,
                               onTap: () {
                                 func();
                                 Navigator.pop(context);
-                                Navigator.pushReplacement(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            const GroupsHome()));
+                                Navigator.pop(context);
+                                // Navigator.pushReplacement(
+                                //     context,
+                                //     MaterialPageRoute(
+                                //         builder: (context) =>
+                                //         const GroupsHome()));
                               },
                               width: 130,
                             )

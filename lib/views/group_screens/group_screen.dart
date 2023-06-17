@@ -83,7 +83,7 @@ class _GroupsHomeState extends State<GroupsHome> {
                                 color: Colors.deepOrange,
                               )),
                     const SizedBox(
-                      width: 20,
+                      width: 28,
                     )
                   ],
                 )),
@@ -98,9 +98,7 @@ class _GroupsHomeState extends State<GroupsHome> {
                   PrimaryButtonWithIcon(
                       icon: Icons.group_add_rounded,
                       text: "Gruppe erstellen",
-                      onTap: () {
-                        createGroupPopup(context);
-                      }),
+                      onTap: () => createGroupPopup(context))
                 ],
               ),
             )
