@@ -9,7 +9,9 @@ import 'controllers/dark_mode_controller.dart';
 import 'controllers/user_controller.dart';
 import 'firebase_options.dart';
 import 'views/auth_screens/login_screen.dart';
+import 'views/auth_screens/password_reset_screen.dart';
 import 'views/auth_screens/signup_screen.dart';
+import 'views/auth_screens/welcome_screen.dart';
 import 'views/calendar_screen.dart';
 import 'views/group_screens/group_screen.dart';
 import 'views/group_screens/request_screen.dart';
@@ -41,7 +43,11 @@ class MyApp extends StatelessWidget {
             future: userController.checkAuth(),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
-                return const CircularProgressIndicator();
+                return Image.asset(
+                  "assets/fhwave-loading-schwarz.gif",
+                  gaplessPlayback: true,
+                  width: 70.0,
+                );
               } else {
                 final isAuthenticated = snapshot.data ?? false;
                 return MaterialApp(
@@ -54,14 +60,16 @@ class MyApp extends StatelessWidget {
                   debugShowCheckedModeBanner: false,
                   home: isAuthenticated
                       ? const HomeScreen()
-                      : const LoginScreen(),
+                      : const WelcomeScreen(),
                   routes: {
                     '/login': (context) => const LoginScreen(),
+                    '/welcome': (context) => const WelcomeScreen(),
                     '/home': (context) => const HomeScreen(),
                     '/signup': (context) => const SignUpScreen(),
                     '/group': (context) => const GroupsHome(),
                     '/request': (context) => const RequestScreen(),
                     '/calendar': (context) => const CalendarScreen(),
+                    '/resetps': (context) => const ResetPasswordScreen()
                   },
                 );
               }

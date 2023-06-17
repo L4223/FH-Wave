@@ -56,7 +56,7 @@ Widget quickLinksScreen(BuildContext context) {
       ),
       SizedBox(height: 10.0), //Spacing
       QuickLinkButton(
-        text: 'IDA',
+        text: 'IDW',
         icon: Icons.groups_outlined,
         url: 'https://ida.fh-kiel.de/',
       ),

@@ -91,8 +91,8 @@ class TimeTablePage extends StatelessWidget {
                   height: 70,
                 ),
                 TransparentAppbar(
-                  heading: "Studenplan",
-                  routeName: "/home",
+                  heading: "Stundenplan",
+                  route: "/home",
                 ),
                 AspectRatio(
                   aspectRatio: 1,
