@@ -1,0 +1,74 @@
+[
+    {
+        "id": 1,
+        "Block_1": 24,
+        "Block_2": 15,
+        "Block_3": 14,
+        "Block_4": 1,
+        "Block_5": 10,
+        "Block_start": [
+            1,
+            2,
+            3,
+            4,
+            24,
+            5,
+            9,
+            1
+        ],
+        "gaps_number": 10,
+        "ave_last_block": 0,
+        "no_class": "Freitag",
+        "change_room": "less",
+        "gaps": "middle",
+        "most_Block_1": "most"
+    },
+    {
+        "id": 2,
+        "Block_1": 23,
+        "Block_2": 15,
+        "Block_3": 14,
+        "Block_4": 1,
+        "Block_5": 10,
+        "Block_start": [
+            1,
+            2,
+            3,
+            4,
+            23,
+            5,
+            7,
+            1
+        ],
+        "gaps_number": 10,
+        "ave_last_block": 0,
+        "no_class": "Freitag",
+        "change_room": "middle",
+        "gaps": "middle",
+        "most_Block_1": "middle"
+    },
+    {
+        "id": 3,
+        "Block_1": 23,
+        "Block_2": 15,
+        "Block_3": 14,
+        "Block_4": 1,
+        "Block_5": 10,
+        "Block_start": [
+            1,
+            2,
+            3,
+            4,
+            23,
+            5,
+            9,
+            1
+        ],
+        "gaps_number": 10,
+        "ave_last_block": 0,
+        "no_class": "Samstag",
+        "change_room": "middle",
+        "gaps": "middle",
+        "most_Block_1": "middle"
+    }
+]
