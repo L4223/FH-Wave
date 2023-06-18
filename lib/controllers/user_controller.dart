@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -8,13 +9,12 @@ import '../views/widgets/buttons/primary_button.dart';
 
 class UserController {
   final FirebaseAuth _auth = FirebaseAuth.instance;
+  User? get currentUser => _auth.currentUser;
+  Timer? emailConfirmationTimer;
 
   //User existiert? ==>
   // Eingabefehler mithilfe von AlertDialogs überpruft.
   //Kein Eingabefehler ==> Anmelden
-
-  User? get currentUser => _auth.currentUser;
-
   Future<void> login(
       BuildContext context, String email, String password) async {
     try {
@@ -28,7 +28,6 @@ class UserController {
 // Regstriert und verifiziert?
 // Daten aus Firebase speichern/Id & e-mail & username
 // und Navigieren ==> HomeScreen
-
       if (user != null && user.emailVerified) {
         // _currentUser = UserModel(uid: user.uid, email: user.email!);
         // ignore: use_build_context_synchronously
@@ -154,11 +153,6 @@ class UserController {
       );
     }
   }
-
-  Future<void> logOut() async {
-    _auth.signOut();
-  }
-
   //Email und Password != Null? ==>
   // Eingabefehler mithilfe von AlertDialogs überpruft.
   //Kein Eingabefehler ==> Regstrieren
@@ -169,7 +163,6 @@ class UserController {
         email: email,
         password: password,
       );
-
       var user = userCredential.user;
       //die eingegebne Name beim Regstrieren als DisplayName speichern!
       await FirebaseAuth.instance.currentUser?.updateDisplayName(username);
@@ -177,7 +170,6 @@ class UserController {
       if (user != null) {
         await user.sendEmailVerification();
         setupUserDb(username, user.uid, email);
-
         // ignore: use_build_context_synchronously
         showDialog(
           context: context,
@@ -351,5 +343,21 @@ class UserController {
       // Fehler bei der Abmeldung
       //print('Fehler bei der Abmeldung: $e');
     }
+  }
+  //BestätigungslinkStatus wird nach der Regstrierung all 5 second kontroliert
+  void updateLinkStatus(BuildContext context) {
+    Timer.periodic(const Duration(seconds: 5), (timer) {
+      final user = FirebaseAuth.instance.currentUser;
+      if (user != null) {
+        //print('Linksstatus wird gecheckt');
+        user.reload().then((_) {
+          if (user.emailVerified) {
+            // print('User darf ohne einlogen zur App');
+            timer.cancel();
+            Navigator.pushReplacementNamed(context, '/home');
+          }
+        });
+      }
+    });
   }
 }
