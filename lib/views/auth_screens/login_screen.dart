@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../app_colors.dart';
 import '../../controllers/home_screen_controller.dart';
@@ -24,155 +23,178 @@ class LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      /*appBar: AppBar(
-        title: const Text('Log In'),
-      ),*/
       body: Stack(
         children: [
           AppColors.getFhwaveBlueGradientContainer(context),
-          Padding(
-            padding: const EdgeInsets.all(20.0),
-            child: Form(
-              key: _formKey,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const SizedBox(height: 130.0),
-                  SvgPicture.asset(
-                    'assets/fhwave_logo_weiss.svg',
-                    width: 70,
-                  ),
-                  const SizedBox(height: 50.0),
-                  Text('Anmelden',
+          SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const SizedBox(height: 130.0),
+                    Image.asset(
+                      "assets/fhwave-loading-weiss-schwarz.gif",
+                      gaplessPlayback: true,
+                      width: 70.0,
+                    ),
+                    const SizedBox(height: 50.0),
+                    Text(
+                      'Login',
                       style: TextStyle(
-                          fontSize: 36.0,
-                          fontWeight: FontWeight.w800,
-                          color: _controller.fontColor)),
-                  const SizedBox(height: 20.0),
-//Email
-                  SizedBox(
-                    width: MediaQuery.of(context).size.width - 50,
-                    height: 50,
-                    child: TextFormField(
-                      cursorColor: AppColors.black,
-                      decoration: InputDecoration(
-                        labelText: 'E-Mail',
-                        prefixIcon: const Padding(
-                          padding: EdgeInsets.only(left: 8.0),
-                          child: Icon(
-                            Icons.email,
-                            size: 22,
-                          ),
-                        ),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(30.0),
-                        ),
-
+                        fontSize: 36.0,
+                        fontWeight: FontWeight.w800,
+                        color: _controller.fontColor,
                       ),
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Bitte gib deine E-Mail ein!';
-                        }
-                        return null;
-                      },
-                      onSaved: (value) {
-                        emailController = value!.trim();
-                      },
                     ),
-                  ),
-
-                  const SizedBox(height: 20.0),
-                  SizedBox(
-                    width: MediaQuery.of(context).size.width - 50,
-                    height: 50,
-                    child: TextFormField(
-// Password
-                      decoration: InputDecoration(
-                        labelText: 'Passwort',
-                        prefixIcon: const Padding(
-                          padding: EdgeInsets.only(left: 8.0),
-                          child: Icon(
-                            Icons.lock,
-                            size: 24,
-                          ),
-                        ),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(30.0),
-                        ),
-                        suffixIcon: GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              isPasswordVisible = !isPasswordVisible;
-                            });
-                          },
-                          child: Icon(
-                            isPasswordVisible
-                                ? Icons.visibility
-                                : Icons.visibility_off,
-                          ),
-                        ),
-                      ),
-
-                      obscureText: !isPasswordVisible,
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Bitte geb dein Passwort ein!';
-                        }
-                        return null;
-                      },
-                      onSaved: (value) {
-                        passwordController = value!;
-                      },
-                    ),
-                  ),
-                  const SizedBox(height: 20.0),
-//Name, E-mail und Password an Anmeldesfunktion Übergeben
-                  Center(
-                    child: PrimaryButton(
-                      width: MediaQuery.of(context).size.width - 50,
-                      onTap: () {
-                        if (_formKey.currentState!.validate()) {
-                          _formKey.currentState!.save();
-                          _loginController.login(
-                              context, emailController, passwordController);
-                        }
-                      },
-                      text: 'Anmelden',
-                    ),
-                  ),
-                  const SizedBox(height: 20.0),
-//Underline Navigieren ==> LoginScreen
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.pushNamed(context, '/signup');
-                    },
-                    child: const Row(
+                    const SizedBox(height: 20.0),
+                    buildEmailFormField(),
+                    const SizedBox(height: 20.0),
+                    buildPasswordFormField(),
+                    const SizedBox(height: 10.0),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        SizedBox(
-                          width: 13,
+                        const SizedBox(
+                          width: 10,
                         ),
-                        Text(
-                          'Noch kein Konto?',
-                          style: TextStyle(color: Colors.black, fontSize: 16
-                              //decoration: TextDecoration.underline,
-                              ),
-                        ),
-                        Text(
-                          ' Registrieren ',
-                          style: TextStyle(
-                            color: AppColors.fhwaveBlue600,
-                            // decoration: TextDecoration.underline,
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
+                        GestureDetector(
+                          onTap: () => Navigator.pushNamed(context, '/resetps'),
+                          child: const Text(
+                            "Password vergessen?",
+                            style: TextStyle(
+                              color: AppColors.fhwaveBlue600,
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
                         ),
                       ],
                     ),
-                  )
-                ],
+                    const SizedBox(height: 20.0),
+                    buildLoginButton(),
+                    const SizedBox(height: 20.0),
+                    buildSignUpLink(),
+                  ],
+                ),
               ),
             ),
-          )
+          ),
+        ],
+      ),
+    );
+  }
+
+  TextFormField buildEmailFormField() {
+    return TextFormField(
+      cursorColor: AppColors.black,
+      decoration: InputDecoration(
+        labelText: 'E-Mail-Adresse',
+        prefixIcon: const Padding(
+          padding: EdgeInsets.only(left: 8.0),
+          child: Icon(
+            Icons.email,
+            size: 22,
+          ),
+        ),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(30.0),
+        ),
+      ),
+      validator: (value) {
+        if (value == null || value.isEmpty) {
+          return 'Bitte gib deine E-Mail ein!';
+        }
+        return null;
+      },
+      onSaved: (value) {
+        emailController = value!.trim();
+      },
+    );
+  }
+
+  TextFormField buildPasswordFormField() {
+    return TextFormField(
+      decoration: InputDecoration(
+        labelText: 'Passwort',
+        prefixIcon: const Padding(
+          padding: EdgeInsets.only(left: 8.0),
+          child: Icon(
+            Icons.lock,
+            size: 24,
+          ),
+        ),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(30.0),
+        ),
+        suffixIcon: GestureDetector(
+          onTap: () {
+            setState(() {
+              isPasswordVisible = !isPasswordVisible;
+            });
+          },
+          child: Icon(
+            isPasswordVisible ? Icons.visibility : Icons.visibility_off,
+          ),
+        ),
+      ),
+      obscureText: !isPasswordVisible,
+      validator: (value) {
+        if (value == null || value.isEmpty) {
+          return 'Bitte gib dein Passwort ein!';
+        }
+        return null;
+      },
+      onSaved: (value) {
+        passwordController = value!;
+      },
+    );
+  }
+
+  Center buildLoginButton() {
+    return Center(
+      child: PrimaryButton(
+        width: MediaQuery.of(context).size.width - 50,
+        onTap: () {
+          if (_formKey.currentState!.validate()) {
+            _formKey.currentState!.save();
+            _loginController.login(
+              context,
+              emailController,
+              passwordController,
+            );
+          }
+        },
+        text: 'Anmelden',
+      ),
+    );
+  }
+
+  GestureDetector buildSignUpLink() {
+    return GestureDetector(
+      onTap: () {
+        Navigator.pushNamed(context, '/signup');
+      },
+      child: const Row(
+        children: [
+          SizedBox(width: 13),
+          Text(
+            'Noch kein Konto?',
+            style: TextStyle(
+              color: Colors.black,
+              fontSize: 16,
+            ),
+          ),
+          Text(
+            ' Registrieren ',
+            style: TextStyle(
+              color: AppColors.fhwaveBlue600,
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
         ],
       ),
     );

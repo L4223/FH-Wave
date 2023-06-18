@@ -38,7 +38,7 @@ class SecondaryButton extends StatelessWidget {
         width: calculatedWidth,
         height: height,
         decoration: BoxDecoration(
-          color: AppColors.transparent,
+          color: AppColors.white,
           // Hintergrundfarbe des Buttons
           borderRadius: BorderRadius.circular(height / 2),
           // Randradius des Buttons
