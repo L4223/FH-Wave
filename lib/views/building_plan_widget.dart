@@ -5,6 +5,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../models/building_plan.dart';
+import 'widgets/auto_complete_widget.dart';
 
 class BuildingPlanWidget extends StatelessWidget {
   const BuildingPlanWidget({Key? key}) : super(key: key);
@@ -29,14 +30,18 @@ class HomePageState extends State<HomePage> {
   Building? selectedBuilding;
   List<Building> buildingList = [
     Building(name: 'C12', address: 'Grenzstraße 3, 24149 Kiel'),
-    Building(name: 'C13', address: 'Fachhochschule Kiel Informatik und'
-        ' Elektrotechnik'),
+    Building(
+        name: 'C13',
+        address: 'Fachhochschule Kiel Informatik und'
+            ' Elektrotechnik'),
     Building(name: 'C33', address: 'Heikendorfer Weg 37, 24149 Kiel'),
     Building(name: 'C34', address: 'Heikendorfer Weg 35, 24149 Kiel'),
     Building(name: 'C14', address: 'Grenzstrasse 17, 24149 Kiel'),
     Building(name: 'C15', address: 'Grenzstraße 14, 24149 Kiel'),
-    Building(name: 'C11', address: 'Hochspannungs- und Blitzlabor der FH Kiel,'
-        ' 24149 Kiel'),
+    Building(
+        name: 'C11',
+        address: 'Hochspannungs- und Blitzlabor der FH Kiel,'
+            ' 24149 Kiel'),
     Building(name: 'C32', address: 'Moorblöcken 1a , 24149 Kiel'),
     Building(name: 'C06', address: 'Schwentinestrasse 7, 24149 Kiel'),
     Building(name: 'C20', address: 'Schwentinestrasse 24, 24149 Kiel'),
@@ -66,6 +71,12 @@ class HomePageState extends State<HomePage> {
     loadMapStyle();
   }
 
+  void setSelectedBuilding(Building newSelectedBuilding) {
+    setState(() {
+      selectedBuilding = newSelectedBuilding;
+    });
+  }
+
   void requestLocationPermission() async {
     final permissionStatus = await Geolocator.requestPermission();
     if (permissionStatus == LocationPermission.denied ||
@@ -74,7 +85,6 @@ class HomePageState extends State<HomePage> {
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
         content: Text(''
             'Location services are disabled. Please enable the services.'),
-
       ));
     } else {
       getCurrentLocation();
@@ -109,7 +119,8 @@ class HomePageState extends State<HomePage> {
   void openMaps() async {
     if (selectedBuilding != null) {
       final destination = Uri.encodeComponent(selectedBuilding!.address);
-      final url = 'https://www.google.com/maps/dir/?api=1&origin=$_currentAddress&destination=$destination&dir_action=navigate';
+      final url =
+          'https://www.google.com/maps/dir/?api=1&origin=$_currentAddress&destination=$destination&dir_action=navigate';
       // ignore: deprecated_member_use
       if (await canLaunch(url)) {
         // ignore: deprecated_member_use
@@ -120,11 +131,10 @@ class HomePageState extends State<HomePage> {
     }
   }
 
-
   void loadMapStyle() async {
     try {
-      final style = await DefaultAssetBundle.of(context
-      ).loadString('assets/mapStyle.json');
+      final style = await DefaultAssetBundle.of(context)
+          .loadString('assets/mapStyle.json');
       setState(() {
         mapStyle = style;
       });
@@ -170,7 +180,6 @@ class HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-
         Container(
           width: 345,
           height: 50,
@@ -188,70 +197,42 @@ class HomePageState extends State<HomePage> {
           ),
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8),
-            child: TextField(
-              controller: searchController,
-              decoration: const InputDecoration(
-                hintText: 'Search...',
-                border: InputBorder.none,
-                prefixIcon: Icon(Icons.search),
-              ),
-              onChanged: filterBuildingList,
+            child: AutoCompleteInput(
+                buildingOptions: buildingList,
+                handleSelect: setSelectedBuilding),
+          ),
+        ),
+        if (selectedBuilding != null)
+          Padding(
+            padding: const EdgeInsets.all(12.0),
+            child: Text('Ausgewähltes Gebäude: ${selectedBuilding!.name}'),
+          ),
+        Center(
+          child: Container(
+            width: 345,
+            height: 352,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10),
+              boxShadow: const [],
+            ),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(10),
+              child: isDataLoading
+                  ? const Center(
+                      child: CircularProgressIndicator(),
+                    )
+                  : GoogleMap(
+                      initialCameraPosition: CameraPosition(
+                        target: LatLng(
+                          _currentPosition.latitude,
+                          _currentPosition.longitude,
+                        ),
+                        zoom: 11.0,
+                      ),
+                    ),
             ),
           ),
         ),
-
-        Container(
-    width: 345,
-    height: 352,
-    decoration: BoxDecoration(
-    borderRadius: BorderRadius.circular(10),
-    boxShadow: const [
-
-    ],
-    ),
-    child: ClipRRect(
-    borderRadius: BorderRadius.circular(10),
-    child: isDataLoading
-    ? const Center(
-    child: CircularProgressIndicator(),
-    )
-        : GoogleMap(
-    initialCameraPosition: CameraPosition(
-    target: LatLng(
-    _currentPosition.latitude,
-    _currentPosition.longitude,
-    ),
-    zoom: 11.0,
-    ),
-    ),
-    ),
-    ),
-        Flexible(
-          fit: FlexFit.tight,
-          child: isDataLoading
-              ? const Center(
-            child: CircularProgressIndicator(),
-          )
-              : ListView.builder(
-            itemCount: filteredBuildingList.length,
-            itemBuilder: (context, index) {
-              final building = filteredBuildingList[index];
-              return ListTile(
-                title: Text(building.name),
-                subtitle: Text(building.address),
-                onTap: () {
-                  setState(() {
-                    selectedBuilding = building;
-                    searchController.text = building.name;
-                    // Set the search text to the selected building name
-                  });
-                },
-              );
-            },
-          ),
-        ),
-
-
         Padding(
           padding: const EdgeInsets.all(16.0),
           child: Text('Address: $_currentAddress'),
