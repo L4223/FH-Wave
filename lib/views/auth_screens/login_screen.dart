@@ -17,8 +17,16 @@ class LoginScreenState extends State<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
   final UserController _loginController = UserController();
   String emailController = '';
+  String emailEnd = '@student.fh-kiel.de';
   String passwordController = '';
   bool isPasswordVisible = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _loginController.updateLinkStatus(context);
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +50,7 @@ class LoginScreenState extends State<LoginScreen> {
                     ),
                     const SizedBox(height: 50.0),
                     Text(
-                      'Login',
+                      'Einloggen',
                       style: TextStyle(
                         fontSize: 36.0,
                         fontWeight: FontWeight.w800,
@@ -102,6 +110,9 @@ class LoginScreenState extends State<LoginScreen> {
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(30.0),
         ),
+        suffixText: emailEnd,
+        suffixStyle: const TextStyle(
+            fontSize: 13, fontWeight: FontWeight.bold),
       ),
       validator: (value) {
         if (value == null || value.isEmpty) {
@@ -110,7 +121,7 @@ class LoginScreenState extends State<LoginScreen> {
         return null;
       },
       onSaved: (value) {
-        emailController = value!.trim();
+        emailController = value!.trim()+emailEnd;
       },
     );
   }
