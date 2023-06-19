@@ -5,8 +5,9 @@ import 'package:provider/provider.dart';
 import '../controllers/dark_mode_controller.dart';
 import '../controllers/home_screen_controller.dart';
 import '../controllers/user_controller.dart';
+import 'auth_screens/welcome_screen.dart';
 import 'widgets/buttons/primary_button.dart';
-import 'widgets/dark_mode_button.dart';
+import 'widgets/buttons/secondary_button.dart';
 
 //final ProfileScreenController _controller = ProfileScreenController();
 
@@ -26,8 +27,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     var user = FirebaseAuth.instance.currentUser;
     var username = user?.displayName;
     var userEmail = user?.email;
-    return Consumer<DarkModeController>(builder: (context, controller, _)
-    {
+    return Consumer<DarkModeController>(builder: (context, controller, _) {
       return Column(
         children: [
           const SizedBox(
@@ -60,8 +60,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 const SizedBox(
-                  height: 130, // Höhe des Platzhalters anpassen
-                  width: 130, // Breite des Platzhalters anpassen
+                  height: 20, // Höhe des Platzhalters anpassen
+                  // width: 100, // Breite des Platzhalters anpassen
                   // child: CircleAvatar(
                   //     backgroundImage: AssetImage('assets/felix.jpg'),
                   //     ),
@@ -72,8 +72,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     style: TextStyle(
                         fontSize: 25.0,
                         fontWeight: FontWeight.w800,
-                        color: controller.isDarkMode ?
-                        Colors.white : Colors.black)),
+                        color: controller.isDarkMode
+                            ? Colors.white
+                            : Colors.black)),
 //Benutzer E-Mail
                 const SizedBox(
                   height: 4,
@@ -82,19 +83,36 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     style: TextStyle(
                         fontSize: 15.0,
                         fontWeight: FontWeight.w400,
-                        color: controller.isDarkMode ?
-                        Colors.white : Colors.black)),
+                        color: controller.isDarkMode
+                            ? Colors.white
+                            : Colors.black)),
 //Abmelden Button
                 const SizedBox(
                   height: 40,
                 ),
-                const DarkModeButton(),
+                SecondaryButton(
+                    width: MediaQuery.of(context).size.width - 120,
+                    text: controller.isDarkMode ? 'LightMode' : 'DarkMode',
+                    onTap: () => controller.toggleDarkMode()),
+                const SizedBox(height: 20.0),
+                SecondaryButton(
+                    width: MediaQuery.of(context).size.width - 120,
+                    text: "Password zurücksetzen",
+                    onTap: () {
+                      Navigator.pushNamed(context, '/resetps');
+                    }),
+
                 const SizedBox(height: 20),
                 PrimaryButton(
+                  width: MediaQuery.of(context).size.width - 120,
                   text: 'Abmelden',
                   onTap: () {
                     currentUser.signOut();
-                    Navigator.pushNamed(context, '/login');
+                    Navigator.pushAndRemoveUntil(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const WelcomeScreen()),
+                        ModalRoute.withName('/welcome'));
                   },
                 ),
               ],

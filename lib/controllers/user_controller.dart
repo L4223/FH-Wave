@@ -1,16 +1,20 @@
+import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
+import '../app_colors.dart';
+import '../views/home_screen.dart';
+import '../views/widgets/buttons/primary_button.dart';
+
 class UserController {
   final FirebaseAuth _auth = FirebaseAuth.instance;
+  User? get currentUser => _auth.currentUser;
+  Timer? emailConfirmationTimer;
 
   //User existiert? ==>
   // Eingabefehler mithilfe von AlertDialogs überpruft.
   //Kein Eingabefehler ==> Anmelden
-
-  User? get currentUser => _auth.currentUser;
-
   Future<void> login(
       BuildContext context, String email, String password) async {
     try {
@@ -24,24 +28,39 @@ class UserController {
 // Regstriert und verifiziert?
 // Daten aus Firebase speichern/Id & e-mail & username
 // und Navigieren ==> HomeScreen
-
       if (user != null && user.emailVerified) {
         // _currentUser = UserModel(uid: user.uid, email: user.email!);
         // ignore: use_build_context_synchronously
-        Navigator.pushNamed(context, '/home');
+        Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(builder: (context) => const HomeScreen()),
+            ModalRoute.withName('/home'));
       } else {
         // ignore: use_build_context_synchronously
         showDialog(
           context: context,
           builder: (context) => AlertDialog(
-            title: const Text('E-Mail Überprüfung'),
+            shape: const RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(32.0))),
+            title: Container(
+                alignment: Alignment.center,
+                child: const Text('E-Mail Überprüfung')),
             content: const Text(
-                'Bitte verifiziere deine E-Mail, bevor du dich anmeldest.'),
+              'Bitte verifiziere deine E-Mail, bevor du dich anmeldest.',
+              style: TextStyle(color: AppColors.fhwaveNeutral300),
+            ),
             actions: [
-              TextButton(
-                onPressed: () => Navigator.pop(context),
-                child: const Text('OK'),
+              Center(
+                child: PrimaryButton(
+                  width: 120,
+                  height: 40,
+                  onTap: () => Navigator.pop(context),
+                  text: 'OK',
+                ),
               ),
+              const SizedBox(
+                height: 20,
+              )
             ],
           ),
         );
@@ -51,13 +70,27 @@ class UserController {
         showDialog(
           context: context,
           builder: (context) => AlertDialog(
-            title: const Text('Fehler bei der Anmeldung'),
-            content: const Text('Kein Konto für diese E-Mail gefunden.'),
+            shape: const RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(32.0))),
+            title: Container(
+                alignment: Alignment.center,
+                child: const Text('Fehler bei der Anmeldung')),
+            content: const Text(
+              'Kein Konto für diese E-Mail gefunden.',
+              style: TextStyle(color: AppColors.fhwaveNeutral300),
+            ),
             actions: [
-              TextButton(
-                onPressed: () => Navigator.pop(context),
-                child: const Text('OK'),
+              Center(
+                child: PrimaryButton(
+                  width: 120,
+                  height: 40,
+                  onTap: () => Navigator.pop(context),
+                  text: 'OK',
+                ),
               ),
+              const SizedBox(
+                height: 20,
+              )
             ],
           ),
         );
@@ -65,13 +98,27 @@ class UserController {
         showDialog(
           context: context,
           builder: (context) => AlertDialog(
-            title: const Text('Fehler bei der Anmeldung'),
-            content: const Text('Passwort ist gültig'),
+            shape: const RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(32.0))),
+            title: Container(
+                alignment: Alignment.center,
+                child: const Text('Fehler bei der Anmeldung')),
+            content: const Text(
+              'Passwort ist gültig',
+              style: TextStyle(color: AppColors.fhwaveNeutral300),
+            ),
             actions: [
-              TextButton(
-                onPressed: () => Navigator.pop(context),
-                child: const Text('OK'),
+              Center(
+                child: PrimaryButton(
+                  width: 120,
+                  height: 40,
+                  onTap: () => Navigator.pop(context),
+                  text: 'OK',
+                ),
               ),
+              const SizedBox(
+                height: 20,
+              )
             ],
           ),
         );
@@ -80,23 +127,32 @@ class UserController {
       showDialog(
         context: context,
         builder: (context) => AlertDialog(
-          title: const Text('Fehler bei der Anmeldung'),
-          content: Text('Fehler aufgetreten: $e'),
+          shape: const RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(32.0))),
+          title: Container(
+              alignment: Alignment.center,
+              child: const Text('Fehler bei der Anmeldung')),
+          content: Text(
+            'Fehler aufgetreten: $e',
+            style: const TextStyle(color: AppColors.fhwaveNeutral300),
+          ),
           actions: [
-            TextButton(
-              onPressed: () => Navigator.pop(context),
-              child: const Text('OK'),
+            Center(
+              child: PrimaryButton(
+                width: 120,
+                height: 40,
+                onTap: () => Navigator.pop(context),
+                text: 'OK',
+              ),
             ),
+            const SizedBox(
+              height: 20,
+            )
           ],
         ),
       );
     }
   }
-
-  Future<void> logOut() async {
-    _auth.signOut();
-  }
-
   //Email und Password != Null? ==>
   // Eingabefehler mithilfe von AlertDialogs überpruft.
   //Kein Eingabefehler ==> Regstrieren
@@ -107,7 +163,6 @@ class UserController {
         email: email,
         password: password,
       );
-
       var user = userCredential.user;
       //die eingegebne Name beim Regstrieren als DisplayName speichern!
       await FirebaseAuth.instance.currentUser?.updateDisplayName(username);
@@ -115,24 +170,35 @@ class UserController {
       if (user != null) {
         await user.sendEmailVerification();
         setupUserDb(username, user.uid, email);
-
         // ignore: use_build_context_synchronously
         showDialog(
           context: context,
           builder: (context) => AlertDialog(
-            title: const Text('Registrierung erfolgreich'),
-            content:
-                const Text(
-                    'Bitte überprüfe deine E-Mail,'
-                    'um dein Konto zu bestätigen.'),
+            shape: const RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(32.0))),
+            title: Container(
+                alignment: Alignment.center,
+                child: const Text('Registrierung erfolgreich')),
+            content: const Text(
+              'Bitte überprüfe deine E-Mail,'
+              'um dein Konto zu bestätigen.',
+              style: TextStyle(color: AppColors.fhwaveNeutral300),
+            ),
             actions: [
-              TextButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                  Navigator.pushNamed(context, '/login');
-                },
-                child: const Text('OK'),
+              Center(
+                child: PrimaryButton(
+                  width: 120,
+                  height: 40,
+                  onTap: () {
+                    Navigator.pop(context);
+                    Navigator.pushNamed(context, '/login');
+                  },
+                  text: 'OK',
+                ),
               ),
+              const SizedBox(
+                height: 20,
+              )
             ],
           ),
         );
@@ -142,13 +208,29 @@ class UserController {
         showDialog(
           context: context,
           builder: (context) => AlertDialog(
-            title: const Text('Fehler bei der Registrierung'),
-            content: const Text('Passwort ist zu schwach.'),
+            shape: const RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(32.0))),
+            title: Container(
+                alignment: Alignment.center,
+                child: const Text('Fehler bei der Registrierung')),
+            content: const Text(
+              'Passwort ist zu schwach.',
+              style: TextStyle(color: AppColors.fhwaveNeutral300),
+            ),
             actions: [
-              TextButton(
-                onPressed: () => Navigator.pop(context),
-                child: const Text('OK'),
+              Center(
+                child: PrimaryButton(
+                  width: 120,
+                  height: 40,
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
+                  text: 'OK',
+                ),
               ),
+              const SizedBox(
+                height: 20,
+              )
             ],
           ),
         );
@@ -156,14 +238,29 @@ class UserController {
         showDialog(
           context: context,
           builder: (context) => AlertDialog(
-            title: const Text('Fehler bei der Registrierung'),
+            shape: const RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(32.0))),
+            title: Container(
+                alignment: Alignment.center,
+                child: const Text('Fehler bei der Registrierung')),
             content: const Text(
-                'Ein Konto existiert bereits für diese E-Mail.'),
+              'Ein Konto existiert bereits für diese E-Mail.',
+              style: TextStyle(color: AppColors.fhwaveNeutral300),
+            ),
             actions: [
-              TextButton(
-                onPressed: () => Navigator.pop(context),
-                child: const Text('OK'),
+              Center(
+                child: PrimaryButton(
+                  width: 120,
+                  height: 40,
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
+                  text: 'OK',
+                ),
               ),
+              const SizedBox(
+                height: 20,
+              )
             ],
           ),
         );
@@ -172,18 +269,41 @@ class UserController {
       showDialog(
         context: context,
         builder: (context) => AlertDialog(
-          title: const Text('Fehler bei der Registrierung'),
-          content: Text('Fehler aufgetreten: $e'),
+          shape: const RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(32.0))),
+          title: Container(
+              alignment: Alignment.center,
+              child: const Text('Fehler bei der Registrierung')),
+          content: Text(
+            'Fehler aufgetreten: $e',
+            style: const TextStyle(color: AppColors.fhwaveNeutral300),
+          ),
           actions: [
-            TextButton(
-              onPressed: () => Navigator.pop(context),
-              child: const Text('OK'),
+            Center(
+              child: PrimaryButton(
+                width: 120,
+                height: 40,
+                onTap: () {
+                  Navigator.pop(context);
+                },
+                text: 'OK',
+              ),
             ),
+            const SizedBox(
+              height: 20,
+            )
           ],
         ),
       );
     }
   }
+
+  // Future<void> resetPassword(String email) async {
+  //   try {
+  //     await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
+  //   } catch (e) {
+  //   }
+  // }
 
   //Authentifizierungsüberprüfung
   Future<bool> checkAuth() async {
@@ -194,7 +314,6 @@ class UserController {
       return false;
     }
   }
-
 
   Future<void> setupUserDb(String userName, String uid, String userMail) async {
     var firestore = FirebaseFirestore.instance;
@@ -214,6 +333,7 @@ class UserController {
       // print('Fehler beim Erstellen der Gruppe: $e');
     }
   }
+
   void signOut() async {
     try {
       await _auth.signOut();
@@ -223,5 +343,21 @@ class UserController {
       // Fehler bei der Abmeldung
       //print('Fehler bei der Abmeldung: $e');
     }
+  }
+  //BestätigungslinkStatus wird nach der Regstrierung all 5 second kontroliert
+  void updateLinkStatus(BuildContext context) {
+    Timer.periodic(const Duration(seconds: 5), (timer) {
+      final user = FirebaseAuth.instance.currentUser;
+      if (user != null) {
+        //print('Linksstatus wird gecheckt');
+        user.reload().then((_) {
+          if (user.emailVerified) {
+            // print('User darf ohne einlogen zur App');
+            timer.cancel();
+            Navigator.pushReplacementNamed(context, '/home');
+          }
+        });
+      }
+    });
   }
 }
