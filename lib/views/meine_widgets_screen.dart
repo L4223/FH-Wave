@@ -8,7 +8,7 @@ import '../app_colors.dart';
 import '../controllers/dark_mode_controller.dart';
 import 'group_calendar_screen.dart';
 import 'group_screens/group_screen.dart';
-import 'template_screen.dart';
+import 'campus_navigation_screen.dart';
 
 // import 'widgets/buttons/primary_button.dart';
 // import 'widgets/buttons/primary_button_with_icon.dart';
@@ -41,7 +41,7 @@ Widget meineWidgetsScreen(BuildContext context) {
                 ? AppColors.fhwaveBlue500
                 : AppColors.black,
           ),
-          targetPage: TemplateScreen(),
+          targetPage: CampusNavagationScreen(),
         ),
         WidgetButton(
           title: 'Gruppen',
