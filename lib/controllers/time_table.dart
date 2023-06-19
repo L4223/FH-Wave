@@ -1,9 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/services.dart' show rootBundle;
 
-
-class Time_Table_Controller {
-
+class TimeTableController {
   //Statements die ausgegeben werden bei der Funktion getStatement
   List<List<String>> statements = [
     [
@@ -13,9 +11,11 @@ class Time_Table_Controller {
     ],
     ["am seltesten", "gelegentlich", "öfter"],
     [
-      "Das ist der Stundenplan für die FH-Besucher. Dieser Stundeplan hat am wenigsten Lücken.",
+      "Das ist der Stundenplan für die FH-Besucher. "
+          "Dieser Stundeplan hat am wenigsten Lücken.",
       "Dieser Stundenplan hat gelegentlich Lücken.",
-      "Das ist der Stundeplan für die FH-Bewohner. Dieser Stundeplan hat am meisten Lücken."
+      "Das ist der Stundeplan für die FH-Bewohner. "
+          "Dieser Stundeplan hat am meisten Lücken."
     ]
   ];
 
@@ -24,7 +24,7 @@ class Time_Table_Controller {
   final int middle = 1;
   final int most = 2;
 
-  Future<Post> fetchPost(group) async {
+  Future<Post> fetchPost(dynamic group) async {
     try {
       // Laden der JSON-Datei aus den Assets
       var jsonString = await rootBundle.loadString('assets/json/stats.json');
@@ -33,14 +33,13 @@ class Time_Table_Controller {
       var jsonData = jsonDecode(jsonString);
 
       // Zugriff auf die gewünschten Daten
-      var stats = jsonData[group-1];
+      var stats = jsonData[group - 1];
 
       return Post.fromJson(stats);
     } catch (e) {
       throw Exception('Fehler beim Laden der JSON-Datei: $e');
     }
   }
-
 
 // mit Webseite Laden
   // //Lade die API
@@ -70,15 +69,25 @@ class Time_Table_Controller {
     return statement;
   }
 
+  int getStatementNumber(String statement) {
+    var number = 0;
+    if (statement == "less") {
+      number = less;
+    } else if (statement == "most") {
+      number = most;
+    } else if (statement == "middle") {
+      number = middle;
+    }
+    return number;
+  }
+
   //Funktion um zu schauen ob die API einen Tag oder None übergeben hat
-  String isDay (String day) {
+  String isDay(String day) {
     if (day == "None") {
       day = "keinem Tag";
     }
     return day;
   }
-
-
 
   //index für die Uhrzeiten des Blöcke
   final String block1 = "8:30";
@@ -89,29 +98,34 @@ class Time_Table_Controller {
   final String block6 = "18:00";
 
   //Funktion um die Uhrzeiten des jeweiligen Blocks zu erfragen
-  String getBlock (int blockNr) {
+  String getBlock(int blockNr) {
     switch (blockNr) {
-      case 1: {
-        return block1;
-      } break;
-      case 2: {
-        return block2;
-      } break;
-      case 3: {
-        return block3;
-      } break;
-      case 4: {
-        return block4;
-      } break;
-      case 5: {
-        return block5;
-      } break;
-      default:{
-        return "Uhrzeit konnte nicht ermittelt werden.";
-      } break;
+      case 1:
+        {
+          return block1;
+        }
+      case 2:
+        {
+          return block2;
+        }
+      case 3:
+        {
+          return block3;
+        }
+      case 4:
+        {
+          return block4;
+        }
+      case 5:
+        {
+          return block5;
+        }
+      default:
+        {
+          return "Uhrzeit konnte nicht ermittelt werden.";
+        }
     }
   }
-
 }
 
 //Erstelle Klasse um die API-Daten in einer Liste abzubilden
@@ -131,17 +145,17 @@ class Post {
 
   Post(
       {required this.id,
-        required this.block1,
-        required this.block2,
-        required this.block3,
-        required this.block4,
-        required this.block5,
-        required this.blockStart,
-        required this.mostBlock1,
-        required this.changeRoom,
-        required this.gaps,
-        required this.aveLastBlock,
-        required this.noClass});
+      required this.block1,
+      required this.block2,
+      required this.block3,
+      required this.block4,
+      required this.block5,
+      required this.blockStart,
+      required this.mostBlock1,
+      required this.changeRoom,
+      required this.gaps,
+      required this.aveLastBlock,
+      required this.noClass});
 
   //Mappe und erstelle die Klasse Post
   factory Post.fromJson(Map<String, dynamic> json) {
