@@ -2,8 +2,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../app_colors.dart';
 import '../controllers/dark_mode_controller.dart';
-import '../controllers/home_screen_controller.dart';
 import '../controllers/user_controller.dart';
 import 'auth_screens/welcome_screen.dart';
 import 'widgets/buttons/primary_button.dart';
@@ -19,7 +19,6 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  final HomeScreenController _controller = HomeScreenController();
   final UserController currentUser = UserController();
 
   @override
@@ -41,7 +40,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 child: Icon(
                   Icons.close_rounded,
                   size: 30,
-                  color: _controller.fontColor,
+                  color:
+                      controller.isDarkMode ? AppColors.white : AppColors.black,
                 ),
 
                 // Schließt den ProfileScreen
