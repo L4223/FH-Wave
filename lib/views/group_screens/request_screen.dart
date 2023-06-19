@@ -28,7 +28,7 @@ class _RequestScreenState extends State<RequestScreen> {
           children: [
             TransparentAppbar(
               heading: "Einladungen",
-              route: "/group",
+              func: () => Navigator.pushNamed(context, "/group"),
             ),
             SizedBox(
               height: 400,

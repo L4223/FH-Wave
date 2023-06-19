@@ -29,9 +29,18 @@ class GroupListState extends State<GroupList> {
         Container(
           alignment: Alignment.topLeft,
           height: 70,
-          child: const Text(
-            "Meine Gruppen",
-            style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
+          child: Row(
+            children: [
+              const Expanded(
+                child: Text(
+                  "Meine Gruppen",
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
+                ),
+              ),
+              IconButton(
+                  onPressed: () => setState(() {}),
+                  icon: const Icon(Icons.refresh))
+            ],
           ),
         ),
         Container(
@@ -76,19 +85,8 @@ class GroupListState extends State<GroupList> {
                     fontSize: 16.0,
                   ),
                 );
-              } else {
+              } else if (snapshot.hasData && snapshot.data!.isNotEmpty) {
                 var groups = snapshot.data!;
-
-                if (groups.isEmpty) {
-                  return const Text(
-                    'Keine Gruppen vorhanden',
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontWeight: FontWeight.w700,
-                      fontSize: 16.0,
-                    ),
-                  );
-                }
 
                 return ListView.separated(
                   shrinkWrap: true,
@@ -115,8 +113,10 @@ class GroupListState extends State<GroupList> {
                               ),
                             ),
                           ),
-                          const Icon(Icons.arrow_forward_ios,
-                          size: 20,),
+                          const Icon(
+                            Icons.arrow_forward_ios,
+                            size: 20,
+                          ),
                         ],
                       ),
                       onTap: () {
@@ -133,6 +133,15 @@ class GroupListState extends State<GroupList> {
                       },
                     );
                   },
+                );
+              } else {
+                return const Text(
+                  'Keine Gruppen vorhanden',
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontWeight: FontWeight.w700,
+                    fontSize: 16.0,
+                  ),
                 );
               }
             },

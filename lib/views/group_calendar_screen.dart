@@ -94,7 +94,9 @@ class _GroupCalendarScreenState extends State<GroupCalendarScreen> {
         AppColors.getFhwaveYellowGradientContainer(context),
         ListView(
           children: [
-            TransparentAppbar(heading: "Termin", route: "/home"),
+            TransparentAppbar(
+                heading: "Termin",
+                func: () => Navigator.pushNamed(context, "/home")),
             Container(
               alignment: Alignment.topRight,
               child: Column(
@@ -120,10 +122,9 @@ class _GroupCalendarScreenState extends State<GroupCalendarScreen> {
                         view: CalendarView.month,
                         headerStyle: const CalendarHeaderStyle(
                           textStyle: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.w700
-                            // fontFamily: 'Roboto-bold',
-                          ),
+                              fontSize: 20, fontWeight: FontWeight.w700
+                              // fontFamily: 'Roboto-bold',
+                              ),
                         ),
                         appointmentTextStyle: const TextStyle(
                           fontSize: 14,

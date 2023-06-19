@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'package:flutter/material.dart';
 
+import '../views/group_calendar_screen.dart';
 
 import 'user_controller.dart';
 
@@ -29,14 +30,8 @@ class GroupController {
       //Creator zu Gruppe hinzufügen
       addMemberToGroup(groupId, creatorId).then((value) => {});
       return groupId;
-
-      // popupFeedback(
-      //     context,
-      //     "Gruppe erstellt",
-      //     'Du hast die Gruppe $groupName erfolgreich erstellt.')
       //
     } catch (e) {
-      // print('Fehler beim Erstellen der Gruppe: $e');
       return "Error";
     }
   }
@@ -69,11 +64,7 @@ class GroupController {
     }
   }
 
-  void addGroupRequestList(String namesString, String groupId) {
-    var nameList = namesString.split(',').map((name) {
-      return name.trim();
-    }).toList();
-
+  void addGroupRequestList(List<String> nameList, String groupId) {
     for (var userName in nameList) {
       addGroupRequest(groupId, userName);
     }
@@ -256,7 +247,17 @@ class GroupController {
     ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 
-  Future<void> leaveGroup(String groupId, String uid) async {
+  Future<void> leaveGroup(String groupId, String name) async {
+    var uid = "";
+
+    //Gruppe verlassen
+    if (name == "currentUser") {
+      uid = currentUser!.uid;
+      //Member aus Gruppe entfernen
+    } else {
+      await getUserIdFromUsername(name).then((id) => uid = id);
+    }
+
     // Firestore-Instanz initialisieren
     try {
       // Gruppendokument in der Firestore-Sammlung "groups" abrufen
@@ -392,6 +393,71 @@ class GroupController {
 
     return true; // Annahme: Wenn der Benutzer oder das group_requests-Array
     // nicht vorhanden ist, wird es als leer betrachtet
+  }
+
+  String checkDuplicateName(List<String> names) {
+    var uniqueNames = <String>{};
+    var duplicateNames = <String>{};
+
+    for (var name in names) {
+      if (!uniqueNames.add(name)) {
+        duplicateNames.add(name);
+      }
+    }
+
+    if (duplicateNames.isEmpty) {
+      return "";
+    } else {
+      return duplicateNames.first;
+    }
+  }
+
+  void closeKeyboard(BuildContext context) {
+    var currentFocus = FocusScope.of(context);
+    if (!currentFocus.hasPrimaryFocus) {
+      currentFocus.unfocus();
+    }
+  }
+
+  Future<String> checkMembersExist(List<String> addedMembers) async {
+    final CollectionReference usersCollection =
+        FirebaseFirestore.instance.collection('users');
+    var name = "";
+
+    for (var member in addedMembers) {
+      var snapshot =
+          await usersCollection.where('userName', isEqualTo: member).get();
+
+      if (snapshot.docs.isEmpty) {
+        name = member;
+        break;
+      }
+    }
+
+    return name;
+  }
+
+  Future<String> checkUserIsMemberOrHasRequest(
+      List<String> userNames, String groupId) async {
+    for (var userName in userNames) {
+      var uid = await getUserIdFromUsername(userName);
+
+      final DocumentSnapshot userSnapshot =
+          await FirebaseFirestore.instance.collection('users').doc(uid).get();
+
+      if (userSnapshot.exists) {
+        final List<dynamic> groupRequests = userSnapshot.get('group_requests');
+        if (groupRequests.contains(groupId)) {
+          return userName;
+        }
+
+        final List<dynamic> groups = userSnapshot.get('groups');
+        if (groups.contains(groupId)) {
+          return userName;
+        }
+      }
+    }
+    return "";
   }
 
   Future<bool> userHasGroups() async {
