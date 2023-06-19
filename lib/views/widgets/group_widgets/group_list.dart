@@ -48,35 +48,38 @@ class GroupListState extends State<GroupList> {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return Center(
                       child: Column(
-                        children: [
-                          const SizedBox(
-                            height: 100,
-                          ),
-                          Image.asset(controller.isDarkMode ?
-                          "assets/fhwave-loading-weiss.gif" :
-                          "assets/fhwave-loading-schwarz.gif",
-                            gaplessPlayback: true,
-                            width: 60.0,
-                          ),
-                          const SizedBox(
-                            height: 30,
-                          ),
-                          Text(
-                            "Lade Gruppen ...",
-                            style: TextStyle(
-                              color: controller.isDarkMode ?
-                              Colors.white : Colors.black,
-                              fontWeight: FontWeight.w700,
-                              fontSize: 16.0,
-                            ),
-                          ),
-                        ],
-                      ));
+                    children: [
+                      const SizedBox(
+                        height: 100,
+                      ),
+                      Image.asset(
+                        controller.isDarkMode
+                            ? "assets/fhwave-loading-weiss.gif"
+                            : "assets/fhwave-loading-schwarz.gif",
+                        gaplessPlayback: true,
+                        width: 60.0,
+                      ),
+                      const SizedBox(
+                        height: 30,
+                      ),
+                      Text(
+                        "Lade Gruppen ...",
+                        style: TextStyle(
+                          color: controller.isDarkMode
+                              ? Colors.white
+                              : Colors.black,
+                          fontWeight: FontWeight.w700,
+                          fontSize: 16.0,
+                        ),
+                      ),
+                    ],
+                  ));
                 } else if (snapshot.hasError) {
-                  return const Text(
+                  return Text(
                     'Fehler beim Laden der Gruppen',
                     style: TextStyle(
-                      color: Colors.black,
+                      color:
+                          controller.isDarkMode ? Colors.white : Colors.black,
                       fontWeight: FontWeight.w700,
                       fontSize: 16.0,
                     ),
@@ -85,10 +88,11 @@ class GroupListState extends State<GroupList> {
                   var groups = snapshot.data!;
 
                   if (groups.isEmpty) {
-                    return const Text(
+                    return Text(
                       'Keine Gruppen vorhanden',
                       style: TextStyle(
-                        color: Colors.black,
+                        color:
+                            controller.isDarkMode ? Colors.white : Colors.black,
                         fontWeight: FontWeight.w700,
                         fontSize: 16.0,
                       ),
@@ -98,8 +102,7 @@ class GroupListState extends State<GroupList> {
                   return ListView.separated(
                     shrinkWrap: true,
                     physics: const AlwaysScrollableScrollPhysics(),
-                    separatorBuilder: (context, index) =>
-                    const Divider(
+                    separatorBuilder: (context, index) => const Divider(
                       color: AppColors.fhwaveNeutral200, // Farbe des Strichs
                       thickness: 1, // Dicke des Strichs
                     ),
@@ -114,8 +117,10 @@ class GroupListState extends State<GroupList> {
                             Expanded(
                               child: Text(
                                 groupDoc['groupName'],
-                                style: const TextStyle(
-                                  color: Colors.black,
+                                style: TextStyle(
+                                  color: controller.isDarkMode
+                                      ? Colors.white
+                                      : Colors.black,
                                   fontWeight: FontWeight.w700,
                                   fontSize: 16.0,
                                 ),
@@ -132,8 +137,7 @@ class GroupListState extends State<GroupList> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) =>
-                                    GroupInfoScreen(
+                                builder: (context) => GroupInfoScreen(
                                       groupName: groupDoc["groupName"],
                                       groupId: groupDoc["groupId"],
                                       creatorId: groupDoc["creatorId"],
@@ -159,7 +163,7 @@ class GroupListState extends State<GroupList> {
         Text("Keine Gruppen gefunden"),
         Text(
           "Erstelle zuerst eine Gruppe oder "
-              "trete einer bestehenden Gruppe bei.",
+          "trete einer bestehenden Gruppe bei.",
           style: TextStyle(fontSize: 10, color: AppColors.fhwaveNeutral50),
         )
       ],

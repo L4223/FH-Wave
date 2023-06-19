@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:provider/provider.dart';
 
 // import 'package:url_launcher/url_launcher.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
 import '../app_colors.dart';
+import '../controllers/dark_mode_controller.dart';
 import '../models/building_plan.dart';
 import 'widgets/auto_complete_widget.dart';
 import 'widgets/buttons/primary_button_with_icon.dart';
@@ -181,90 +183,93 @@ class HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Column(
-        children: [
-          Container(
-            width: 345,
-            height: 50,
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(30),
-            ),
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8),
-              child: AutoCompleteInput(
-                buildingOptions: buildingList,
-                handleSelect: setSelectedBuilding,
-              ),
-            ),
-          ),
-
-          selectedBuilding != null
-              ? Padding(
-                  padding: const EdgeInsets.all(12.0),
-                  child:
-                      Text('Ausgewähltes Gebäude: ${selectedBuilding!.name}'),
-                )
-              : const Padding(
-                  padding: EdgeInsets.all(12.0),
-                  child: Text("Aktuell ist kein Gebäude ausgewählt."),
-                ),
-          Center(
-            child: Container(
+    return Consumer<DarkModeController>(builder: (context, controller, _) {
+      return SingleChildScrollView(
+        child: Column(
+          children: [
+            Container(
               width: 345,
-              height: 352,
+              height: 50,
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10),
-                boxShadow: const [],
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(30),
               ),
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(10),
-                child: isDataLoading
-                    ? Center(
-                        child: Image.asset(
-                          "assets/fhwave-loading-schwarz.gif",
-                          gaplessPlayback: true,
-                          width: 60.0,
-                        ),
-                      )
-                    : GoogleMap(
-                        initialCameraPosition: CameraPosition(
-                          target: LatLng(
-                            _currentPosition.latitude,
-                            _currentPosition.longitude,
-                          ),
-                          zoom: 11.0,
-                        ),
-                      ),
-              ),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              children: [
-                Row(
-                  children: [
-                    const Icon(Icons.location_pin),
-                    Text(_currentAddress,
-                        style: const TextStyle(
-                          fontSize: 15,
-                          color: AppColors.fhwaveNeutral400,
-                          fontWeight: FontWeight.bold,
-                        )),
-                  ],
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8),
+                child: AutoCompleteInput(
+                  buildingOptions: buildingList,
+                  handleSelect: setSelectedBuilding,
                 ),
-              ],
+              ),
             ),
-          ),
-          PrimaryButtonWithIcon(
-            icon: Icons.map,
-            text: "Navigiere mich",
-            onTap: openMaps,
-          ),
-        ],
-      ),
-    );
+            selectedBuilding != null
+                ? Padding(
+                    padding: const EdgeInsets.all(12.0),
+                    child:
+                        Text('Ausgewähltes Gebäude: ${selectedBuilding!.name}'),
+                  )
+                : const Padding(
+                    padding: EdgeInsets.all(12.0),
+                    child: Text("Aktuell ist kein Gebäude ausgewählt."),
+                  ),
+            Center(
+              child: Container(
+                width: 345,
+                height: 352,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  boxShadow: const [],
+                ),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(10),
+                  child: isDataLoading
+                      ? Center(
+                          child: Image.asset(
+                            controller.isDarkMode
+                                ? "assets/fhwave-loading-weiss.gif"
+                                : "assets/fhwave-loading-schwarz.gif",
+                            gaplessPlayback: true,
+                            width: 60.0,
+                          ),
+                        )
+                      : GoogleMap(
+                          initialCameraPosition: CameraPosition(
+                            target: LatLng(
+                              _currentPosition.latitude,
+                              _currentPosition.longitude,
+                            ),
+                            zoom: 11.0,
+                          ),
+                        ),
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                children: [
+                  Row(
+                    children: [
+                      const Icon(Icons.location_pin),
+                      Text(_currentAddress,
+                          style: const TextStyle(
+                            fontSize: 15,
+                            color: AppColors.fhwaveNeutral400,
+                            fontWeight: FontWeight.bold,
+                          )),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+            PrimaryButtonWithIcon(
+              icon: Icons.map,
+              text: "Navigiere mich",
+              onTap: openMaps,
+            ),
+          ],
+        ),
+      );
+    });
   }
 }
