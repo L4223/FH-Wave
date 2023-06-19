@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import '../../app_colors.dart';
 import '../../controllers/time_table.dart';
 import '../../models/time_table.dart';
+import 'group_widgets/appbar.dart';
 
 class TimeTablePage extends StatefulWidget {
   const TimeTablePage({Key? key}) : super(key: key);
@@ -46,35 +47,47 @@ class _TimeTablePageState extends State<TimeTablePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Stundenplan"),
-        backgroundColor: AppColors.fhwaveGreen500,
-      ),
-      body: PageView(
-        controller: controller,
-        onPageChanged: (index) {
-          setState(() {
-            _activePage = index;
-            if (kDebugMode) {
-              print("Aktuelle Seite: Gruppe ${_activePage + 1}");
-            }
-          });
-        },
-        // Erstelle die verschiedenen drei Seiten
-        children: [
-          Container(
-            padding: const EdgeInsets.all(20),
-            child: modelChart.getPie(groupOne),
-          ),
-          Container(
-            padding: const EdgeInsets.all(20),
-            child: modelChart.getPie(groupTwo),
-          ),
-          Container(
+        // appBar: AppBar(
+        //   title: const Text("Stundenplan"),
+        //   backgroundColor: AppColors.fhwaveGreen500,
+        // ),
+        body: Stack(children: [
+      AppColors.getFhwaveGreenGradientContainer(context),
+      Padding(
+        padding: const EdgeInsets.only(top: 220),
+        // 你需要自己决定这个值，这个值应该大于或等于 TransparentAppbar 的高度
+        child: PageView(
+          controller: controller,
+          onPageChanged: (index) {
+            setState(() {
+              _activePage = index;
+              if (kDebugMode) {
+                print("Aktuelle Seite: Gruppe ${_activePage + 1}");
+              }
+            });
+          },
+          children: [
+            Container(
               padding: const EdgeInsets.all(20),
-              child: modelChart.getPie(groupThree)),
-        ],
+              child: modelChart.getPie(groupOne),
+            ),
+            Container(
+              padding: const EdgeInsets.all(20),
+              child: modelChart.getPie(groupTwo),
+            ),
+            Container(
+                padding: const EdgeInsets.all(20),
+                child: modelChart.getPie(groupThree)),
+          ],
+        ),
       ),
-    );
+      Positioned(
+        top: 70,
+        child: TransparentAppbar(
+          heading: "Gruppen",
+          route: "/home",
+        ),
+      ),
+    ]));
   }
 }
