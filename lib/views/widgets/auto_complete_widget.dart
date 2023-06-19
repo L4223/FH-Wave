@@ -13,9 +13,7 @@ class AutoCompleteInput extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Autocomplete<Building>(
-        onSelected: (selection) {
-          handleSelect(selection);
-        },
+        onSelected: (selection) => handleSelect(selection),
         displayStringForOption: _displayStringForOption,
         optionsBuilder: (textEditingValue) {
           if (textEditingValue.text == '') {
