@@ -94,7 +94,7 @@ Widget meineWidgetsScreen(BuildContext context) {
                   ? AppColors.fhwaveGreen400
                   : AppColors.black,
             ),
-            targetPage: TimeTablePage(),
+            targetPage: const TimeTablePage(),
             isLarge: true),
         // PrimaryButtonWithIcon(
         //   icon: Icons.add,
