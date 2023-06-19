@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 
 import '../app_colors.dart';
@@ -98,7 +99,7 @@ class _GroupCalendarScreenState extends State<GroupCalendarScreen> {
               alignment: Alignment.topRight,
               child: Column(
                 children: [
-                  SizedBox(
+                  const SizedBox(
                     height: 50,
                   ),
                   SizedBox(
@@ -119,7 +120,7 @@ class _GroupCalendarScreenState extends State<GroupCalendarScreen> {
                       monthViewSettings: const MonthViewSettings(
                         showAgenda: true,
                         appointmentDisplayMode:
-                            MonthAppointmentDisplayMode.appointment,
+                        MonthAppointmentDisplayMode.appointment,
                       ),
                     ),
                   ),
@@ -236,7 +237,7 @@ class _GroupNameDropdownState extends State<GroupNameDropdown> {
 
   Future<void> getGroupId(String selectedGroupName) async {
     final selectedGroupId =
-        await groupController.getGroupIdFromGroupName(selectedGroupName);
+    await groupController.getGroupIdFromGroupName(selectedGroupName);
     setState(() {
       groupId = selectedGroupId;
     });
@@ -246,7 +247,7 @@ class _GroupNameDropdownState extends State<GroupNameDropdown> {
 
   void _fetchMeetings(String groupId) {
     var screenState =
-        context.findAncestorStateOfType<_GroupCalendarScreenState>()!;
+    context.findAncestorStateOfType<_GroupCalendarScreenState>()!;
     screenState._fetchMeetings(groupId);
   }
 
@@ -264,7 +265,7 @@ class _GroupNameDropdownState extends State<GroupNameDropdown> {
 
     return Column(
       children: [
-        Container(
+        SizedBox(
           width: 200,
           child: DropdownButton<String>(
             value: dropdownValue,
@@ -312,15 +313,26 @@ class MyPopup extends StatefulWidget {
   MyPopupState createState() => MyPopupState();
 }
 
+
+
+
 class MyPopupState extends State<MyPopup> {
   TextEditingController nameTextController = TextEditingController();
   TextEditingController descriptionTextController = TextEditingController();
   DateTime selectedDate = DateTime.now();
   TimeOfDay selectedTime = TimeOfDay.now();
+  int duration = 1; // Standarddauer des Termins in Stunden
+
+  void resetFields() {
+    nameTextController.text = '';
+    descriptionTextController.text = '';
+    selectedDate = DateTime.now();
+    selectedTime = TimeOfDay.now();
+    duration = 1;
+  }
 
   void createAppointment() {
     final name = nameTextController.text;
-    //final String description = descriptionTextController.text;
 
     final dateTime = DateTime(
       selectedDate.year,
@@ -329,8 +341,10 @@ class MyPopupState extends State<MyPopup> {
       selectedTime.hour,
       selectedTime.minute,
     );
+    final endTime = dateTime.add(Duration(hours: duration));
+    // Berechnen der Endzeit basierend auf der Dauer
 
-    final newMeeting = Meeting(name, dateTime, dateTime, Colors.blue, false);
+    final newMeeting = Meeting(name, dateTime, endTime, Colors.blue, false);
 
     appointmentController.createAppointment(widget.groupId, newMeeting);
 
@@ -349,63 +363,135 @@ class MyPopupState extends State<MyPopup> {
     return FloatingActionButton(
       child: const Icon(Icons.add),
       onPressed: () {
+        resetFields();
         showDialog(
           context: context,
           builder: (context) {
-            return AlertDialog(
-              title: const Text('Neuer Termin'),
-              content: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  TextField(
-                    controller: nameTextController,
-                    decoration: const InputDecoration(labelText: 'Name'),
-                  ),
-                  TextField(
-                    controller: descriptionTextController,
-                    decoration:
-                        const InputDecoration(labelText: 'Beschreibung'),
-                  ),
-                  ElevatedButton(
-                    onPressed: () async {
-                      final pickedDate = await showDatePicker(
-                        context: context,
-                        initialDate: selectedDate,
-                        firstDate: DateTime.now(),
-                        lastDate: DateTime.now().add(const Duration(days: 365)),
-                      );
+            return StatefulBuilder(
+              builder: (context, setState) {
+                return AlertDialog(
+                  title: const Text('Neuer Termin'),
+                  content: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      TextField(
+                        controller: nameTextController,
+                        decoration: const InputDecoration(labelText: 'Name'),
+                      ),
+                      TextField(
+                        controller: descriptionTextController,
+                        decoration: const InputDecoration(labelText:
+                        'Beschreibung'),
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Text('Datum'),
+                              Text(
+                                DateFormat('dd.MM.yyyy').format(selectedDate),
+                                style: const TextStyle(fontSize: 16),
+                              ),
+                            ],
+                          ),
+                          ElevatedButton(
+                            onPressed: () async {
+                              final pickedDate = await showDatePicker(
+                                context: context,
+                                initialDate: selectedDate,
+                                firstDate: DateTime.now(),
+                                lastDate: DateTime.now().add(const
+                                Duration(days: 365)),
+                              );
 
-                      if (pickedDate != null) {
-                        setState(() {
-                          selectedDate = pickedDate;
-                        });
-                      }
-                    },
-                    child: const Text('Datum auswählen'),
-                  ),
-                  ElevatedButton(
-                    onPressed: () async {
-                      final pickedTime = await showTimePicker(
-                        context: context,
-                        initialTime: selectedTime,
-                      );
+                              if (pickedDate != null) {
+                                setState(() {
+                                  selectedDate = pickedDate;
+                                });
+                              }
+                            },
+                            child: const Text('Ändern'),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 8),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Text('Uhrzeit'),
+                              Text(
+                                selectedTime.format(context),
+                                style: const TextStyle(fontSize: 16),
+                              ),
+                            ],
+                          ),
+                          ElevatedButton(
+                            onPressed: () async {
+                              final pickedTime = await showTimePicker(
+                                context: context,
+                                initialTime: selectedTime,
+                              );
 
-                      if (pickedTime != null) {
-                        setState(() {
-                          selectedTime = pickedTime;
-                        });
-                      }
-                    },
-                    child: const Text('Uhrzeit auswählen'),
+                              if (pickedTime != null) {
+                                setState(() {
+                                  selectedTime = pickedTime;
+                                });
+                              }
+                            },
+                            child: const Text('Ändern'),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 8),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Text('Dauer (Stunden)'),
+                              Text(
+                                '$duration Stunde${duration != 1 ? 'n' : ''}',
+                                // Anzeigen der ausgewählten Anzahl von Stunden
+                                style: const TextStyle(fontSize: 16),
+                              ),
+                            ],
+                          ),
+                          Expanded(
+                            child: Slider(
+                              min: 1,
+                              max: 8,
+                              value: duration.toDouble(),
+                              onChanged: (newValue) {
+                                setState(() {
+                                  duration = newValue.toInt();
+                                });
+                              },
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
                   ),
-                ],
-              ),
-              actions: [
-                ElevatedButton(
-                  onPressed: createAppointment,
-                  child: const Text('Termin erstellen'),
-                ),
-              ],
+                  actions: [
+                    ElevatedButton(
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                      child: const Text('Abbrechen'),
+                    ),
+                    ElevatedButton(
+                      onPressed: createAppointment,
+                      child: const Text('Erstellen'),
+                    ),
+                  ],
+                );
+              },
             );
           },
         );
