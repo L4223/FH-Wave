@@ -75,31 +75,16 @@ Widget memberInputField() {
 //Gruppe erstellen, Tastatur schließen, Feedback
 Future<void> createGroup(BuildContext context) async {
   var groupName = groupNameTextController.text.trim();
-  var memberNames = memberTextController.text.trim().split(", ");
+  // var memberNames = memberTextController.text.trim().split(", ");
   var creatorId = currentUser?.uid;
 
   _groupController.createGroup(groupName, creatorId!).then((groupId) {
-    _groupController.addGroupRequestList(memberNames, groupId);
+    // _groupController.addGroupRequestList(memberNames, groupId);
     Navigator.of(context).pop();
     _groupController.closeKeyboard(context);
 
-    feedbackPopup(context, Icons.check, "Gruppe erfolgreich erstellt!",
-        "Aktuallisiere die Seite falls deine Gruppe nicht sichtbar ist.", () {
-      // Navigator.pop(context);
-      // Navigator.of(context, rootNavigator: true).pop();
-    }
-        //     {
-        //
-        //   // Navigator.pushNamed(context, "/home");
-        //   // Navigator.pushReplacement(
-        //   //     context,
-        //   //     MaterialPageRoute(
-        //   //         builder: (context) => GroupInfoScreen(
-        //   //             groupName: groupName,
-        //   //             groupId: groupId,
-        //   //             creatorId: creatorId)));
-        // }
-        );
+
+    addMemberPopup(context, groupId);
   });
 }
 
@@ -112,12 +97,26 @@ void createGroupPopup(BuildContext context) {
             borderRadius: BorderRadius.all(Radius.circular(32.0))),
         title: const Center(child: Text('Gruppe erstellen')),
         content: SizedBox(
-          width: MediaQuery.of(context).size.width,
-          height: MediaQuery.of(context).size.height * 0.4,
+          width: MediaQuery
+              .of(context)
+              .size
+              .width,
+          height: MediaQuery
+              .of(context)
+              .size
+              .height * 0.3,
           child: ListView(
             children: [
               groupNameInputField(),
-              memberInputField(),
+              // memberInputField(),
+              const Text(
+                "Nachdem du die Gruppe erstellt hast, kannst du Mitglieder hinzufügen",
+                style: TextStyle(color: AppColors.fhwaveNeutral200),
+                textAlign: TextAlign.center,
+              ),
+              SizedBox(
+                height: 50,
+              ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
@@ -149,16 +148,25 @@ void createGroupPopup(BuildContext context) {
 }
 
 void addMemberPopup(BuildContext context, String groupId) {
+  final dialogKey = GlobalKey<State>();
+
   showDialog(
     context: context,
     builder: (context) {
       return AlertDialog(
+        key: dialogKey,
         shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.all(Radius.circular(32.0))),
         title: const Center(child: Text('Mitglieder hinzufügen')),
         content: SizedBox(
-          width: MediaQuery.of(context).size.width,
-          height: MediaQuery.of(context).size.height * 0.3,
+          width: MediaQuery
+              .of(context)
+              .size
+              .width,
+          height: MediaQuery
+              .of(context)
+              .size
+              .height * 0.3,
           child: ListView(
             children: [
               memberInputField(),
@@ -172,55 +180,63 @@ void addMemberPopup(BuildContext context, String groupId) {
                     },
                     width: 130,
                   ),
-                  // SizedBox(width: 10,),
                   PrimaryButton(
                     text: "Hinzufügen",
                     onTap: () async {
                       var names = memberTextController.text.split(", ");
 
                       var checkMembers =
-                          await _groupController.checkMembersExist(names);
+                      await _groupController.checkMembersExist(names);
 
-                      var checkIsAlreadyMember = await _groupController
+                      var checkIsAlreadyMember = "";
+                      checkIsAlreadyMember = await _groupController
                           .checkUserIsMemberOrHasRequest(names, groupId);
 
                       var duplicate =
-                          _groupController.checkDuplicateName(names);
+                      _groupController.checkDuplicateName(names);
 
                       if (duplicate == "" &&
                           checkMembers == "" &&
                           checkIsAlreadyMember == "") {
                         _groupController.addGroupRequestList(names, groupId);
-                        Navigator.of(context).pop();
+
+                        Navigator.of(dialogKey.currentContext!).pop();
+
                         feedbackPopup(
-                            context,
-                            Icons.check,
-                            "Mitglied/er erfolgreich hinzugefügt, diese",
-                            "Nutzer bekommen jetzt eine Beitritts-Anfrage.",
-                            () {});
+                          dialogKey.currentContext!,
+                          Icons.check,
+                          "Mitglied/er erfolgreich hinzugefügt.",
+                          "Diese Nutzer bekommen jetzt eine Beitritts-Anfrage.",
+                              () {
+                            // Callback-Funktion nach dem Feedback-Popup
+                          },
+                        );
                       } else if (checkMembers != "") {
                         feedbackPopup(
-                            context,
-                            Icons.warning_amber,
-                            "Fehler beim Hinzufügen der Mitglieder",
-                            "Der Nutzer $checkMembers existiert nicht",
-                            () => Navigator.pop(context));
+                          dialogKey.currentContext!,
+                          Icons.warning_amber,
+                          "Fehler beim Hinzufügen der Mitglieder",
+                          "Der Nutzer $checkMembers existiert nicht.",
+                              () => Navigator.pop(dialogKey.currentContext!),
+                        );
                       } else if (checkIsAlreadyMember != "") {
                         feedbackPopup(
-                            context,
-                            Icons.warning_amber,
-                            "Fehler beim Hinzufügen der Mitglieder",
-                            "Der Nutzer $checkIsAlreadyMember ist bereits Mitglied oder hat schon eine Anfrage",
-                            () => Navigator.pop(context));
+                          dialogKey.currentContext!,
+                          Icons.warning_amber,
+                          "Fehler beim Hinzufügen der Mitglieder",
+                          "Der Nutzer $checkIsAlreadyMember ist bereits "
+                              "Mitglied oder hat schon eine Anfrage.",
+                              () => Navigator.pop(dialogKey.currentContext!),
+                        );
                       } else {
                         feedbackPopup(
-                            context,
-                            Icons.warning_amber,
-                            "Fehler beim Hinzufügen der Mitglieder",
-                            "Der Name $duplicate ist doppelt",
-                            () => Navigator.pop(context));
+                          dialogKey.currentContext!,
+                          Icons.warning_amber,
+                          "Fehler beim Hinzufügen der Mitglieder",
+                          "Der Name $duplicate ist doppelt.",
+                              () => Navigator.pop(dialogKey.currentContext!),
+                        );
                       }
-                      ;
                     },
                     width: 130,
                   ),
@@ -240,12 +256,19 @@ void feedbackPopup(BuildContext context, IconData icon, String heading,
     String text, Function() func) {
   showDialog(
       context: context,
-      builder: (context) => AlertDialog(
+      builder: (context) =>
+          AlertDialog(
             shape: const RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(Radius.circular(32.0))),
             content: SizedBox(
-                width: MediaQuery.of(context).size.width,
-                height: MediaQuery.of(context).size.height * 0.3,
+                width: MediaQuery
+                    .of(context)
+                    .size
+                    .width,
+                height: MediaQuery
+                    .of(context)
+                    .size
+                    .height * 0.3,
                 child: ListView(
                   children: [
                     Column(
@@ -290,13 +313,20 @@ void confirmPopup(BuildContext context, IconData icon, String heading,
     String text, VoidCallback func) {
   showDialog(
       context: context,
-      builder: (context) => AlertDialog(
+      builder: (context) =>
+          AlertDialog(
             shape: const RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(Radius.circular(32.0))),
             content: Container(
                 alignment: Alignment.center,
-                width: MediaQuery.of(context).size.width,
-                height: MediaQuery.of(context).size.height * 0.3,
+                width: MediaQuery
+                    .of(context)
+                    .size
+                    .width,
+                height: MediaQuery
+                    .of(context)
+                    .size
+                    .height * 0.3,
                 child: ListView(
                   children: [
                     Column(
@@ -343,7 +373,7 @@ void confirmPopup(BuildContext context, IconData icon, String heading,
                                     context,
                                     MaterialPageRoute(
                                         builder: (context) =>
-                                            const GroupsHome()));
+                                        const GroupsHome()));
                               },
                               width: 130,
                             )
