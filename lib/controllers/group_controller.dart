@@ -42,16 +42,17 @@ class GroupController {
   void popupFeedback(BuildContext context, String title, String content) {
     showDialog(
       context: context,
-      builder: (context) => AlertDialog(
-        title: Text(title),
-        content: Text(content),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('OK'),
+      builder: (context) =>
+          AlertDialog(
+            title: Text(title),
+            content: Text(content),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(context),
+                child: const Text('OK'),
+              ),
+            ],
           ),
-        ],
-      ),
     );
   }
 
@@ -115,7 +116,7 @@ class GroupController {
     var groupSnapshot = await groupRef.get();
     //Daten aus Gruppe/Members speichern
     List<dynamic>? memberIDs =
-        (groupSnapshot.data() as Map<String, dynamic>)['members'];
+    (groupSnapshot.data() as Map<String, dynamic>)['members'];
 
     // UserNames suchen & speichern
     var memberNames = <String>[];
@@ -126,7 +127,7 @@ class GroupController {
         var userSnapshot = await userRef.get();
         //Gefundene Daten in Liste speichern
         String? userName =
-            (userSnapshot.data() as Map<String, dynamic>)['userName'];
+        (userSnapshot.data() as Map<String, dynamic>)['userName'];
         if (userName != null) {
           memberNames.add(userName);
         }
@@ -157,7 +158,7 @@ class GroupController {
         // Gruppennamen mit den vorhandenen group_requests vergleichen
         for (String groupId in groupRequests) {
           QueryDocumentSnapshot? groupDoc =
-              groupDocs.firstWhere((doc) => doc.id == groupId);
+          groupDocs.firstWhere((doc) => doc.id == groupId);
           String groupName = groupDoc.get('groupName');
           groupNames.add(groupName);
         }
@@ -269,7 +270,7 @@ class GroupController {
     try {
       // Gruppendokument in der Firestore-Sammlung "groups" abrufen
       DocumentSnapshot groupSnapshot =
-          await firestore.collection('groups').doc(groupId).get();
+      await firestore.collection('groups').doc(groupId).get();
 
       // Überprüfen, ob das Gruppendokument existiert
       if (groupSnapshot.exists) {
@@ -291,7 +292,7 @@ class GroupController {
 
       // Benutzerdokument in der Firestore-Sammlung "users" abrufen
       DocumentSnapshot userSnapshot =
-          await firestore.collection('users').doc(uid).get();
+      await firestore.collection('users').doc(uid).get();
 
       // Überprüfen, ob das Benutzerdokument existiert
       if (userSnapshot.exists) {
@@ -428,12 +429,12 @@ class GroupController {
 
   Future<String> checkMembersExist(List<String> addedMembers) async {
     final CollectionReference usersCollection =
-        FirebaseFirestore.instance.collection('users');
+    FirebaseFirestore.instance.collection('users');
     var name = "";
 
     for (var member in addedMembers) {
       var snapshot =
-          await usersCollection.where('userName', isEqualTo: member).get();
+      await usersCollection.where('userName', isEqualTo: member).get();
 
       if (snapshot.docs.isEmpty) {
         name = member;
@@ -442,5 +443,31 @@ class GroupController {
     }
 
     return name;
+  }
+
+  Future<String> checkUserIsMemberOrHasRequest(List<String> userNames,
+      String groupId) async {
+    for (String userName in userNames) {
+      String uid = await getUserIdFromUsername(userName);
+
+      final DocumentSnapshot userSnapshot = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(uid)
+          .get();
+
+      if (userSnapshot.exists) {
+        final List<dynamic> groupRequests = userSnapshot.get('group_requests');
+        if (groupRequests.contains(groupId)) {
+          return userName;
+        }
+
+        final List<dynamic> groups = userSnapshot.get('groups');
+        if (groups.contains(groupId)) {
+          return userName;
+        }
+      }
+    }
+
+    return "";
   }
 }

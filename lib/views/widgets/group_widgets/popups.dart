@@ -149,8 +149,6 @@ void createGroupPopup(BuildContext context) {
 }
 
 void addMemberPopup(BuildContext context, String groupId) {
-  var checkMembers = "";
-
   showDialog(
     context: context,
     builder: (context) {
@@ -179,13 +177,19 @@ void addMemberPopup(BuildContext context, String groupId) {
                     text: "Hinzufügen",
                     onTap: () async {
                       var names = memberTextController.text.split(", ");
-                      checkMembers =
+
+                      var checkMembers =
                           await _groupController.checkMembersExist(names);
+
+                      var checkIsAlreadyMember = await _groupController
+                          .checkUserIsMemberOrHasRequest(names, groupId);
 
                       var duplicate =
                           _groupController.checkDuplicateName(names);
 
-                      if (duplicate == "" && checkMembers == "") {
+                      if (duplicate == "" &&
+                          checkMembers == "" &&
+                          checkIsAlreadyMember == "") {
                         _groupController.addGroupRequestList(names, groupId);
                         Navigator.of(context).pop();
                         feedbackPopup(
@@ -200,6 +204,13 @@ void addMemberPopup(BuildContext context, String groupId) {
                             Icons.warning_amber,
                             "Fehler beim Hinzufügen der Mitglieder",
                             "Der Nutzer $checkMembers existiert nicht",
+                            () => Navigator.pop(context));
+                      } else if (checkIsAlreadyMember != "") {
+                        feedbackPopup(
+                            context,
+                            Icons.warning_amber,
+                            "Fehler beim Hinzufügen der Mitglieder",
+                            "Der Nutzer $checkIsAlreadyMember ist bereits Mitglied oder hat schon eine Anfrage",
                             () => Navigator.pop(context));
                       } else {
                         feedbackPopup(
