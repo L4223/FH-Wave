@@ -91,7 +91,7 @@ class _GroupCalendarScreenState extends State<GroupCalendarScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Stack(children: [
-        AppColors.getFhwavePurpleGradientContainer(context),
+        AppColors.getFhwaveYellowGradientContainer(context),
         ListView(
           children: [
             TransparentAppbar(heading: "Termin", route: "/home"),
@@ -100,27 +100,41 @@ class _GroupCalendarScreenState extends State<GroupCalendarScreen> {
               child: Column(
                 children: [
                   const SizedBox(
-                    height: 50,
+                    height: 40,
                   ),
                   SizedBox(
                     height: 500,
-                    child: SfCalendar(
-                      view: CalendarView.month,
-                      headerStyle: const CalendarHeaderStyle(
-                        textStyle: TextStyle(
-                          fontSize: 18,
-                          fontFamily: 'Helvetica-Bold',
+                    child: Padding(
+                      padding: const EdgeInsets.all(20.0),
+                      child: SfCalendar(
+                        todayHighlightColor: AppColors.black,
+                        cellBorderColor: AppColors.transparent,
+                        selectionDecoration: BoxDecoration(
+                          border: Border.all(
+                            color: AppColors.black,
+                            width: 1.0,
+                          ),
+                          shape: BoxShape.rectangle,
+                          borderRadius: BorderRadius.circular(8),
                         ),
-                      ),
-                      appointmentTextStyle: const TextStyle(
-                        fontSize: 14,
-                        fontFamily: 'Helvetica',
-                      ),
-                      dataSource: MeetingDataSource(_meetings),
-                      monthViewSettings: const MonthViewSettings(
-                        showAgenda: true,
-                        appointmentDisplayMode:
-                        MonthAppointmentDisplayMode.appointment,
+                        view: CalendarView.month,
+                        headerStyle: const CalendarHeaderStyle(
+                          textStyle: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.w700
+                            // fontFamily: 'Roboto-bold',
+                          ),
+                        ),
+                        appointmentTextStyle: const TextStyle(
+                          fontSize: 14,
+                          // fontFamily: 'Roboto',
+                        ),
+                        dataSource: MeetingDataSource(_meetings),
+                        monthViewSettings: const MonthViewSettings(
+                          showAgenda: true,
+                          appointmentDisplayMode:
+                              MonthAppointmentDisplayMode.appointment,
+                        ),
                       ),
                     ),
                   ),
@@ -150,7 +164,7 @@ class _GroupCalendarScreenState extends State<GroupCalendarScreen> {
           Align(
             alignment: Alignment.centerRight,
             child: Padding(
-              padding: const EdgeInsets.all(40.0),
+              padding: const EdgeInsets.all(20.0),
               child: MyPopup(groupId: groupId),
             ),
           ),
@@ -205,6 +219,7 @@ class MeetingDataSource extends CalendarDataSource {
 
 class Meeting {
   Meeting(this.eventName, this.from, this.to, this.background, this.isAllDay);
+
   static Meeting fromInputData(
       String name, String description, String date, String time) {
     final startTime = DateTime.parse('$date $time');
@@ -237,7 +252,7 @@ class _GroupNameDropdownState extends State<GroupNameDropdown> {
 
   Future<void> getGroupId(String selectedGroupName) async {
     final selectedGroupId =
-    await groupController.getGroupIdFromGroupName(selectedGroupName);
+        await groupController.getGroupIdFromGroupName(selectedGroupName);
     setState(() {
       groupId = selectedGroupId;
     });
@@ -247,7 +262,7 @@ class _GroupNameDropdownState extends State<GroupNameDropdown> {
 
   void _fetchMeetings(String groupId) {
     var screenState =
-    context.findAncestorStateOfType<_GroupCalendarScreenState>()!;
+        context.findAncestorStateOfType<_GroupCalendarScreenState>()!;
     screenState._fetchMeetings(groupId);
   }
 
@@ -271,10 +286,10 @@ class _GroupNameDropdownState extends State<GroupNameDropdown> {
             value: dropdownValue,
             icon: const Icon(Icons.arrow_downward),
             elevation: 16,
-            style: const TextStyle(color: AppColors.fhwavePurple500),
+            style: const TextStyle(color: AppColors.fhwaveYellow500),
             underline: Container(
               height: 2,
-              color: AppColors.fhwavePurple500,
+              color: AppColors.black,
             ),
             alignment: Alignment.center,
             onChanged: (value) {
@@ -312,9 +327,6 @@ class MyPopup extends StatefulWidget {
   @override
   MyPopupState createState() => MyPopupState();
 }
-
-
-
 
 class MyPopupState extends State<MyPopup> {
   TextEditingController nameTextController = TextEditingController();
@@ -361,6 +373,7 @@ class MyPopupState extends State<MyPopup> {
   @override
   Widget build(BuildContext context) {
     return FloatingActionButton(
+      backgroundColor: AppColors.black,
       child: const Icon(Icons.add),
       onPressed: () {
         resetFields();
@@ -380,8 +393,8 @@ class MyPopupState extends State<MyPopup> {
                       ),
                       TextField(
                         controller: descriptionTextController,
-                        decoration: const InputDecoration(labelText:
-                        'Beschreibung'),
+                        decoration:
+                            const InputDecoration(labelText: 'Beschreibung'),
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -402,8 +415,8 @@ class MyPopupState extends State<MyPopup> {
                                 context: context,
                                 initialDate: selectedDate,
                                 firstDate: DateTime.now(),
-                                lastDate: DateTime.now().add(const
-                                Duration(days: 365)),
+                                lastDate: DateTime.now()
+                                    .add(const Duration(days: 365)),
                               );
 
                               if (pickedDate != null) {
