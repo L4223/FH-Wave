@@ -6,13 +6,10 @@ import 'package:provider/provider.dart';
 
 import '../app_colors.dart';
 import '../controllers/dark_mode_controller.dart';
+import 'campus_navigation_screen.dart';
 import 'group_calendar_screen.dart';
 import 'group_screens/group_screen.dart';
-import 'campus_navigation_screen.dart';
 
-// import 'widgets/buttons/primary_button.dart';
-// import 'widgets/buttons/primary_button_with_icon.dart';
-// import 'widgets/buttons/secondary_button.dart';
 import 'widgets/buttons/widget_button.dart';
 import 'widgets/time_table_screen.dart';
 
@@ -41,7 +38,7 @@ Widget meineWidgetsScreen(BuildContext context) {
                 ? AppColors.fhwaveBlue500
                 : AppColors.black,
           ),
-          targetPage: CampusNavagationScreen(),
+          targetPage: const CampusNavagationScreen(),
         ),
         WidgetButton(
           title: 'Gruppen',
