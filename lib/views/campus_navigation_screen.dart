@@ -22,7 +22,7 @@ class CampusNavagationScreen extends StatelessWidget {
           ),
           TransparentAppbar(
             heading: "Campus Navigation",
-            route: "/home",
+            func: () => Navigator.pushNamed(context, "/home"),
           ),
           const SizedBox(
             height: 50,

@@ -457,8 +457,9 @@ class GroupController {
         }
       }
     }
-
     return "";
+  }
+
   Future<bool> userHasGroups() async {
     var userController = UserController();
     var groupController = GroupController();
