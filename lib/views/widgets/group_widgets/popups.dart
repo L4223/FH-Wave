@@ -6,24 +6,15 @@ import '../../group_screens/group_screen.dart';
 import '../buttons/primary_button.dart';
 import '../buttons/secondary_button.dart';
 
-void closeKeyboard(BuildContext context) {
-  var currentFocus = FocusScope.of(context);
-  if (!currentFocus.hasPrimaryFocus) {
-    currentFocus.unfocus();
-  }
-}
-
 final GroupController _groupController = GroupController();
 final groupNameTextController = TextEditingController();
 final memberTextController = TextEditingController();
 
 String groupName = "";
 
-Widget nameInputField() {
+Widget groupNameInputField() {
   return TextFormField(
-    onChanged: (text) {
-      memberTextController.text = text;
-    },
+    controller: groupNameTextController,
     cursorColor: AppColors.fhwavePurple500,
     maxLength: 20,
     decoration: const InputDecoration(
@@ -47,7 +38,7 @@ Widget memberInputField() {
     children: [
       TextFormField(
         cursorColor: AppColors.fhwavePurple500,
-        controller: groupNameTextController,
+        controller: memberTextController,
         decoration: const InputDecoration(
           labelText: "Mitglieder",
           labelStyle: TextStyle(
@@ -81,27 +72,35 @@ Widget memberInputField() {
   );
 }
 
-Future<void> createGroup(
-    BuildContext context,
-    TextEditingController nameController,
-    TextEditingController memberController) async {
-  var groupName = nameController.text.trim();
-  var memberNames = memberController.text;
+//Gruppe erstellen, Tastatur schließen, Feedback
+Future<void> createGroup(BuildContext context) async {
+  var groupName = groupNameTextController.text.trim();
+  var memberNames = memberTextController.text.trim().split(", ");
   var creatorId = currentUser?.uid;
 
-  _groupController.createGroup(groupName, creatorId!).then(
-      (groupId) => _groupController.addGroupRequestList(memberNames, groupId));
+  _groupController.createGroup(groupName, creatorId!).then((groupId) {
+    _groupController.addGroupRequestList(memberNames, groupId);
+    Navigator.of(context).pop();
+    _groupController.closeKeyboard(context);
 
-  Navigator.of(context).pop();
-  closeKeyboard(context);
-
-  feedbackPopup(
-      context,
-      Icons.check,
-      "Gruppe erfolgreich erstellt!",
-      "Du kannst dir jetzt die Mitglieder anschauen "
-          "oder die Gruppe wieder auflösen.",
-      "pop");
+    feedbackPopup(context, Icons.check, "Gruppe erfolgreich erstellt!",
+        "Aktuallisiere die Seite falls deine Gruppe nicht sichtbar ist.", () {
+      // Navigator.pop(context);
+      // Navigator.of(context, rootNavigator: true).pop();
+    }
+        //     {
+        //
+        //   // Navigator.pushNamed(context, "/home");
+        //   // Navigator.pushReplacement(
+        //   //     context,
+        //   //     MaterialPageRoute(
+        //   //         builder: (context) => GroupInfoScreen(
+        //   //             groupName: groupName,
+        //   //             groupId: groupId,
+        //   //             creatorId: creatorId)));
+        // }
+        );
+  });
 }
 
 void createGroupPopup(BuildContext context) {
@@ -117,7 +116,7 @@ void createGroupPopup(BuildContext context) {
           height: MediaQuery.of(context).size.height * 0.4,
           child: ListView(
             children: [
-              nameInputField(),
+              groupNameInputField(),
               memberInputField(),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -132,8 +131,7 @@ void createGroupPopup(BuildContext context) {
                   PrimaryButton(
                     text: "Erstellen",
                     onTap: () {
-                      createGroup(context, memberTextController,
-                          groupNameTextController);
+                      createGroup(context);
                     },
                     width: 130,
                   ),
@@ -151,6 +149,8 @@ void createGroupPopup(BuildContext context) {
 }
 
 void addMemberPopup(BuildContext context, String groupId) {
+  var checkMembers = "";
+
   showDialog(
     context: context,
     builder: (context) {
@@ -177,29 +177,39 @@ void addMemberPopup(BuildContext context, String groupId) {
                   // SizedBox(width: 10,),
                   PrimaryButton(
                     text: "Hinzufügen",
-                    onTap: () {
-                      var names = memberTextController.text;
+                    onTap: () async {
+                      var names = memberTextController.text.split(", ");
+                      checkMembers =
+                          await _groupController.checkMembersExist(names);
 
                       var duplicate =
                           _groupController.checkDuplicateName(names);
 
-                      if (duplicate == "") {
+                      if (duplicate == "" && checkMembers == "") {
                         _groupController.addGroupRequestList(names, groupId);
-                        Navigator.pop(context);
+                        Navigator.of(context).pop();
                         feedbackPopup(
                             context,
                             Icons.check,
                             "Mitglied/er erfolgreich hinzugefügt, diese",
                             "Nutzer bekommen jetzt eine Beitritts-Anfrage.",
-                            "/group");
+                            () {});
+                      } else if (checkMembers != "") {
+                        feedbackPopup(
+                            context,
+                            Icons.warning_amber,
+                            "Fehler beim Hinzufügen der Mitglieder",
+                            "Der Nutzer $checkMembers existiert nicht",
+                            () => Navigator.pop(context));
                       } else {
                         feedbackPopup(
                             context,
                             Icons.warning_amber,
                             "Fehler beim Hinzufügen der Mitglieder",
-                            "Der Namen $duplicate sind doppelt",
-                            "pop");
+                            "Der Name $duplicate ist doppelt",
+                            () => Navigator.pop(context));
                       }
+                      ;
                     },
                     width: 130,
                   ),
@@ -216,7 +226,7 @@ void addMemberPopup(BuildContext context, String groupId) {
 }
 
 void feedbackPopup(BuildContext context, IconData icon, String heading,
-    String text, String route) {
+    String text, Function() func) {
   showDialog(
       context: context,
       builder: (context) => AlertDialog(
@@ -255,11 +265,8 @@ void feedbackPopup(BuildContext context, IconData icon, String heading,
                         PrimaryButton(
                             text: "Weiter",
                             onTap: () {
-                              if (route == "pop") {
-                                Navigator.pop(context);
-                              } else {
-                                Navigator.pushNamed(context, route);
-                              }
+                              Navigator.pop(context);
+                              func();
                             }),
                       ],
                     ),
@@ -319,13 +326,13 @@ void confirmPopup(BuildContext context, IconData icon, String heading,
                               text: "Bestätigen",
                               onTap: () {
                                 func();
+                                // Navigator.pop(context);
                                 Navigator.pop(context);
-                                Navigator.pop(context);
-                                // Navigator.pushReplacement(
-                                //     context,
-                                //     MaterialPageRoute(
-                                //         builder: (context) =>
-                                //         const GroupsHome()));
+                                Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            const GroupsHome()));
                               },
                               width: 130,
                             )

@@ -18,13 +18,6 @@ final GroupController _groupController = GroupController();
 final UserController _userController = UserController();
 User? currentUser = _userController.currentUser;
 
-void closeKeyboard(BuildContext context) {
-  var currentFocus = FocusScope.of(context);
-  if (!currentFocus.hasPrimaryFocus) {
-    currentFocus.unfocus();
-  }
-}
-
 class GroupsHome extends StatefulWidget {
   const GroupsHome({Key? key}) : super(key: key);
 
@@ -65,7 +58,7 @@ class _GroupsHomeState extends State<GroupsHome> {
           children: [
             TransparentAppbar(
               heading: "Gruppen",
-              routeName: "/home",
+              func: () => Navigator.pushNamed(context, "/home"),
             ),
             Container(
                 alignment: Alignment.topRight,
@@ -121,18 +114,6 @@ class GroupInfoScreen extends StatelessWidget {
   String groupId;
   String creatorId;
 
-  void deleteGroup() {
-    _groupController.deleteGroup(groupId);
-    // .then((value) =>
-    // Navigator.pushReplacement(context,
-    //     MaterialPageRoute(builder: (context) => const GroupsHome())));
-  }
-
-  void leaveGroup() {
-    _groupController.leaveGroup(groupId, "currentUser");
-    // .then((value) => Navigator.pop(context));
-  }
-
   final memberNameController = TextEditingController();
 
   @override
@@ -146,7 +127,7 @@ class GroupInfoScreen extends StatelessWidget {
             children: [
               TransparentAppbar(
                 heading: groupName,
-                routeName: "/group",
+                func: () => Navigator.pushNamed(context, "/group"),
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 28.0),
@@ -158,7 +139,7 @@ class GroupInfoScreen extends StatelessWidget {
                     const SizedBox(
                       height: 150,
                     ),
-                    actionButtons(context)
+                    groupButtons(context)
                   ],
                 ),
               ),
@@ -169,7 +150,8 @@ class GroupInfoScreen extends StatelessWidget {
     ]));
   }
 
-  Widget actionButtons(BuildContext context) {
+  Widget groupButtons(BuildContext context) {
+    //Wenn Nnutzer der Ersteller der Gruppe ist
     if (currentUser!.uid == creatorId) {
       return Column(children: [
         PrimaryButton(
@@ -187,10 +169,12 @@ class GroupInfoScreen extends StatelessWidget {
                   context,
                   Icons.warning_amber,
                   "Willst du die Gruppe wirklich auflösen?",
-                  "Diese Aktion kann nicht Rückgängig gemacht werden.",
-                  deleteGroup);
+                  "Diese Aktion kann nicht Rückgängig gemacht werden.", () {
+                _groupController.deleteGroup(groupId);
+              });
             }),
       ]);
+      //Wenn Nnutzer nicht der Ersteller der Gruppe ist
     } else {
       return PrimaryButton(
           text: "Gruppe verlassen",
@@ -199,8 +183,9 @@ class GroupInfoScreen extends StatelessWidget {
                 context,
                 Icons.warning_amber,
                 "Willst du die Gruppe $groupName wirklich verlassen?",
-                "Du kannst diese Aktion nicht rückgängig machen.",
-                leaveGroup);
+                "Du kannst diese Aktion nicht rückgängig machen.", () {
+              _groupController.leaveGroup(groupId, "currentUser");
+            });
           });
     }
   }

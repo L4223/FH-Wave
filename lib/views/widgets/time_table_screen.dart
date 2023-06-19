@@ -92,7 +92,7 @@ class TimeTablePage extends StatelessWidget {
                 ),
                 TransparentAppbar(
                   heading: "Stundenplan",
-                  routeName: "/home",
+                  func: () => Navigator.pushNamed(context, "/home"),
                 ),
                 AspectRatio(
                   aspectRatio: 1,

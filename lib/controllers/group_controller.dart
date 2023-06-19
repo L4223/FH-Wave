@@ -67,10 +67,10 @@ class GroupController {
     }
   }
 
-  void addGroupRequestList(String namesString, String groupId) {
-    var nameList = namesString.split(',').map((name) {
-      return name.trim();
-    }).toList();
+  void addGroupRequestList(List<String> nameList, String groupId) {
+    // var nameList = namesString.split(',').map((name) {
+    //   return name.trim();
+    // }).toList();
 
     for (var userName in nameList) {
       addGroupRequest(groupId, userName);
@@ -402,12 +402,11 @@ class GroupController {
     // nicht vorhanden ist, wird es als leer betrachtet
   }
 
-  String checkDuplicateName(String names) {
-    var nameList = names.split(", ");
+  String checkDuplicateName(List<String> names) {
     var uniqueNames = <String>{};
     var duplicateNames = <String>{};
 
-    for (var name in nameList) {
+    for (var name in names) {
       if (!uniqueNames.add(name)) {
         duplicateNames.add(name);
       }
@@ -418,5 +417,30 @@ class GroupController {
     } else {
       return duplicateNames.first;
     }
+  }
+
+  void closeKeyboard(BuildContext context) {
+    var currentFocus = FocusScope.of(context);
+    if (!currentFocus.hasPrimaryFocus) {
+      currentFocus.unfocus();
+    }
+  }
+
+  Future<String> checkMembersExist(List<String> addedMembers) async {
+    final CollectionReference usersCollection =
+        FirebaseFirestore.instance.collection('users');
+    var name = "";
+
+    for (var member in addedMembers) {
+      var snapshot =
+          await usersCollection.where('userName', isEqualTo: member).get();
+
+      if (snapshot.docs.isEmpty) {
+        name = member;
+        break;
+      }
+    }
+
+    return name;
   }
 }
