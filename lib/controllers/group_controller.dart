@@ -1,7 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+
 import 'package:flutter/material.dart';
 
 import '../views/group_calendar_screen.dart';
+
+import 'user_controller.dart';
 
 FirebaseFirestore firestore = FirebaseFirestore.instance;
 
@@ -456,5 +459,16 @@ class GroupController {
     }
 
     return "";
+  Future<bool> userHasGroups() async {
+    var userController = UserController();
+    var groupController = GroupController();
+    var currentUser = userController.currentUser;
+
+    var status = await groupController.getUserGroups(currentUser!.uid);
+
+    if (status.isEmpty) {
+      return false;
+    }
+    return true;
   }
 }

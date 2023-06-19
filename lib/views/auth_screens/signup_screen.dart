@@ -17,6 +17,7 @@ class SignUpScreenState extends State<SignUpScreen> {
   final UserController _signUpController = UserController();
   final HomeScreenController _controller = HomeScreenController();
   String emailController = '';
+  String emailEnd = '@student.fh-kiel.de';
   String passwordController = '';
   String nameController = '';
   bool isPasswordVisible = false;
@@ -113,18 +114,21 @@ class SignUpScreenState extends State<SignUpScreen> {
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(30.0),
         ),
+        suffixText: emailEnd,
+        suffixStyle: const TextStyle(
+            fontSize: 13, fontWeight: FontWeight.bold),
       ),
       validator: (value) {
         if (value == null || value.isEmpty) {
           return 'Bitte gib deine E-Mail ein!';
         }
-        if (!value.trim().endsWith('fh-kiel.de')) {
-          return 'Nur FH-E-Mails sind erlaubt!';
-        }
+        // if (!value.trim().endsWith('fh-kiel.de')) {
+        //  return 'Nur FH-E-Mails sind erlaubt!';
+        //}
         return null;
       },
       onSaved: (value) {
-        emailController = value!.trim();
+        emailController = value!.trim()+emailEnd;
       },
     );
   }
