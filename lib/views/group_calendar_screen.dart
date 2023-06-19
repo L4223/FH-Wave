@@ -94,7 +94,9 @@ class _GroupCalendarScreenState extends State<GroupCalendarScreen> {
         AppColors.getFhwaveYellowGradientContainer(context),
         ListView(
           children: [
-            TransparentAppbar(heading: "Termin", route: "/home"),
+            TransparentAppbar(
+                heading: "Termin",
+                func: () => Navigator.pushNamed(context, "/home")),
             Container(
               alignment: Alignment.topRight,
               child: Column(
