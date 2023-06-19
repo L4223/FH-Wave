@@ -225,7 +225,7 @@ class Meeting {
       String name, String description, String date, String time) {
     final startTime = DateTime.parse('$date $time');
     final endTime = startTime.add(const Duration(hours: 1));
-    const Color color = Colors.blue;
+    const color = AppColors.black;
 
     return Meeting(name, startTime, endTime, color, false);
   }
@@ -281,16 +281,24 @@ class _GroupNameDropdownState extends State<GroupNameDropdown> {
 
     return Column(
       children: [
-        SizedBox(
-          width: 200,
+        const Text("Gruppe:"),
+        const SizedBox(height: 10,),
+        Container(
+          decoration: BoxDecoration(
+              border: Border.all(width: 2),
+              borderRadius: BorderRadius.circular(50)),
+          width: MediaQuery.of(context).size.width - 150,
           child: DropdownButton<String>(
             value: dropdownValue,
-            icon: const Icon(Icons.arrow_downward),
+            icon: const Icon(
+              Icons.keyboard_arrow_down_rounded,
+              // color: AppColors.transparent,
+            ),
             elevation: 16,
-            style: const TextStyle(color: AppColors.fhwaveYellow500),
+            style: const TextStyle(color: AppColors.black),
             underline: Container(
               height: 2,
-              color: AppColors.black,
+              color: AppColors.transparent,
             ),
             alignment: Alignment.center,
             onChanged: (value) {
@@ -312,7 +320,7 @@ class _GroupNameDropdownState extends State<GroupNameDropdown> {
             }).toList(),
           ),
         ),
-        const SizedBox(height: 20),
+        const SizedBox(height: 5),
         //Text('Ausgewählter Name: $dropdownValue'),
         //Text('groupId:$groupId')
       ],
@@ -357,7 +365,7 @@ class MyPopupState extends State<MyPopup> {
     final endTime = dateTime.add(Duration(hours: duration));
     // Berechnen der Endzeit basierend auf der Dauer
 
-    final newMeeting = Meeting(name, dateTime, endTime, Colors.blue, false);
+    final newMeeting = Meeting(name, dateTime, endTime, AppColors.black, false);
 
     appointmentController.createAppointment(widget.groupId, newMeeting);
 
@@ -385,122 +393,137 @@ class MyPopupState extends State<MyPopup> {
               builder: (context, setState) {
                 return AlertDialog(
                   title: const Text('Neuer Termin'),
-                  content: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      TextField(
-                        controller: nameTextController,
-                        decoration: const InputDecoration(labelText: 'Name'),
-                      ),
-                      TextField(
-                        controller: descriptionTextController,
-                        decoration:
-                            const InputDecoration(labelText: 'Beschreibung'),
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              const Text('Datum'),
-                              Text(
-                                DateFormat('dd.MM.yyyy').format(selectedDate),
-                                style: const TextStyle(fontSize: 16),
-                              ),
-                            ],
-                          ),
-                          ElevatedButton(
-                            onPressed: () async {
-                              final pickedDate = await showDatePicker(
-                                context: context,
-                                initialDate: selectedDate,
-                                firstDate: DateTime.now(),
-                                lastDate: DateTime.now()
-                                    .add(const Duration(days: 365)),
-                              );
-
-                              if (pickedDate != null) {
-                                setState(() {
-                                  selectedDate = pickedDate;
-                                });
-                              }
-                            },
-                            child: const Text('Ändern'),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 8),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              const Text('Uhrzeit'),
-                              Text(
-                                selectedTime.format(context),
-                                style: const TextStyle(fontSize: 16),
-                              ),
-                            ],
-                          ),
-                          ElevatedButton(
-                            onPressed: () async {
-                              final pickedTime = await showTimePicker(
-                                context: context,
-                                initialTime: selectedTime,
-                              );
-
-                              if (pickedTime != null) {
-                                setState(() {
-                                  selectedTime = pickedTime;
-                                });
-                              }
-                            },
-                            child: const Text('Ändern'),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 8),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              const Text('Dauer (Stunden)'),
-                              Text(
-                                '$duration Stunde${duration != 1 ? 'n' : ''}',
-                                // Anzeigen der ausgewählten Anzahl von Stunden
-                                style: const TextStyle(fontSize: 16),
-                              ),
-                            ],
-                          ),
-                          Expanded(
-                            child: Slider(
-                              min: 1,
-                              max: 8,
-                              value: duration.toDouble(),
-                              onChanged: (newValue) {
-                                setState(() {
-                                  duration = newValue.toInt();
-                                });
-                              },
+                  content: SingleChildScrollView(
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        TextField(
+                          controller: nameTextController,
+                          decoration: const InputDecoration(labelText: 'Name'),
+                        ),
+                        TextField(
+                          controller: descriptionTextController,
+                          decoration:
+                              const InputDecoration(labelText: 'Beschreibung'),
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const Text('Datum'),
+                                Text(
+                                  DateFormat('dd.MM.yyyy').format(selectedDate),
+                                  style: const TextStyle(fontSize: 16),
+                                ),
+                              ],
                             ),
-                          ),
-                        ],
-                      ),
-                    ],
+                            ElevatedButton(
+                              onPressed: () async {
+                                final pickedDate = await showDatePicker(
+                                  context: context,
+                                  initialDate: selectedDate,
+                                  firstDate: DateTime.now(),
+                                  lastDate: DateTime.now()
+                                      .add(const Duration(days: 365)),
+                                );
+
+                                if (pickedDate != null) {
+                                  setState(() {
+                                    selectedDate = pickedDate;
+                                  });
+                                }
+                              },
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: AppColors.black,
+                              ),
+                              child: const Text('Ändern'),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 8),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const Text('Uhrzeit'),
+                                Text(
+                                  selectedTime.format(context),
+                                  style: const TextStyle(fontSize: 16),
+                                ),
+                              ],
+                            ),
+                            ElevatedButton(
+                              onPressed: () async {
+                                final pickedTime = await showTimePicker(
+                                  context: context,
+                                  initialTime: selectedTime,
+                                );
+
+                                if (pickedTime != null) {
+                                  setState(() {
+                                    selectedTime = pickedTime;
+                                  });
+                                }
+                              },
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: AppColors.black,
+                              ),
+                              child: const Text('Ändern'),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 8),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const Text('Dauer (Stunden)'),
+                                Text(
+                                  '$duration Stunde${duration != 1 ? 'n' : ''}',
+                                  style: const TextStyle(fontSize: 16),
+                                ),
+                              ],
+                            ),
+                            Expanded(
+                              child: Slider(
+                                min: 1,
+                                max: 8,
+                                activeColor: AppColors.black,
+                                inactiveColor: AppColors.fhwaveNeutral200,
+                                value: duration.toDouble(),
+                                onChanged: (newValue) {
+                                  setState(() {
+                                    duration = newValue.toInt();
+                                  });
+                                },
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
                   actions: [
                     ElevatedButton(
                       onPressed: () {
                         Navigator.of(context).pop();
                       },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: AppColors.black,
+                      ),
                       child: const Text('Abbrechen'),
                     ),
                     ElevatedButton(
                       onPressed: createAppointment,
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: AppColors.black,
+                      ),
                       child: const Text('Erstellen'),
                     ),
                   ],
