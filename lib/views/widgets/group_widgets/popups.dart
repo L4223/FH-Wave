@@ -75,14 +75,17 @@ Widget memberInputField() {
 //Gruppe erstellen, Tastatur schließen, Feedback
 Future<void> createGroup(BuildContext context) async {
   var groupName = groupNameTextController.text.trim();
-  // var memberNames = memberTextController.text.trim().split(", ");
   var creatorId = currentUser?.uid;
 
   _groupController.createGroup(groupName, creatorId!).then((groupId) {
-    // _groupController.addGroupRequestList(memberNames, groupId);
     Navigator.of(context).pop();
     _groupController.closeKeyboard(context);
-
+    feedbackPopup(
+        context,
+        Icons.check,
+        "Gruppe erfolgreich erstellt!",
+        "Aktuallisiere die Seite falls deine Gruppe nicht sichtbar ist.",
+        () {});
 
     addMemberPopup(context, groupId);
   });
@@ -97,24 +100,19 @@ void createGroupPopup(BuildContext context) {
             borderRadius: BorderRadius.all(Radius.circular(32.0))),
         title: const Center(child: Text('Gruppe erstellen')),
         content: SizedBox(
-          width: MediaQuery
-              .of(context)
-              .size
-              .width,
-          height: MediaQuery
-              .of(context)
-              .size
-              .height * 0.3,
+          width: MediaQuery.of(context).size.width,
+          height: MediaQuery.of(context).size.height * 0.3,
           child: ListView(
             children: [
               groupNameInputField(),
               // memberInputField(),
               const Text(
-                "Nachdem du die Gruppe erstellt hast, kannst du Mitglieder hinzufügen",
+                "Nachdem du die Gruppe erstellt hast, "
+                "kannst du Mitglieder hinzufügen",
                 style: TextStyle(color: AppColors.fhwaveNeutral200),
                 textAlign: TextAlign.center,
               ),
-              SizedBox(
+              const SizedBox(
                 height: 50,
               ),
               Row(
@@ -159,14 +157,8 @@ void addMemberPopup(BuildContext context, String groupId) {
             borderRadius: BorderRadius.all(Radius.circular(32.0))),
         title: const Center(child: Text('Mitglieder hinzufügen')),
         content: SizedBox(
-          width: MediaQuery
-              .of(context)
-              .size
-              .width,
-          height: MediaQuery
-              .of(context)
-              .size
-              .height * 0.3,
+          width: MediaQuery.of(context).size.width,
+          height: MediaQuery.of(context).size.height * 0.3,
           child: ListView(
             children: [
               memberInputField(),
@@ -186,14 +178,14 @@ void addMemberPopup(BuildContext context, String groupId) {
                       var names = memberTextController.text.split(", ");
 
                       var checkMembers =
-                      await _groupController.checkMembersExist(names);
+                          await _groupController.checkMembersExist(names);
 
                       var checkIsAlreadyMember = "";
                       checkIsAlreadyMember = await _groupController
                           .checkUserIsMemberOrHasRequest(names, groupId);
 
                       var duplicate =
-                      _groupController.checkDuplicateName(names);
+                          _groupController.checkDuplicateName(names);
 
                       if (duplicate == "" &&
                           checkMembers == "" &&
@@ -207,7 +199,7 @@ void addMemberPopup(BuildContext context, String groupId) {
                           Icons.check,
                           "Mitglied/er erfolgreich hinzugefügt.",
                           "Diese Nutzer bekommen jetzt eine Beitritts-Anfrage.",
-                              () {
+                          () {
                             // Callback-Funktion nach dem Feedback-Popup
                           },
                         );
@@ -217,7 +209,7 @@ void addMemberPopup(BuildContext context, String groupId) {
                           Icons.warning_amber,
                           "Fehler beim Hinzufügen der Mitglieder",
                           "Der Nutzer $checkMembers existiert nicht.",
-                              () => Navigator.pop(dialogKey.currentContext!),
+                          () => Navigator.pop(dialogKey.currentContext!),
                         );
                       } else if (checkIsAlreadyMember != "") {
                         feedbackPopup(
@@ -226,7 +218,7 @@ void addMemberPopup(BuildContext context, String groupId) {
                           "Fehler beim Hinzufügen der Mitglieder",
                           "Der Nutzer $checkIsAlreadyMember ist bereits "
                               "Mitglied oder hat schon eine Anfrage.",
-                              () => Navigator.pop(dialogKey.currentContext!),
+                          () => Navigator.pop(dialogKey.currentContext!),
                         );
                       } else {
                         feedbackPopup(
@@ -234,7 +226,7 @@ void addMemberPopup(BuildContext context, String groupId) {
                           Icons.warning_amber,
                           "Fehler beim Hinzufügen der Mitglieder",
                           "Der Name $duplicate ist doppelt.",
-                              () => Navigator.pop(dialogKey.currentContext!),
+                          () => Navigator.pop(dialogKey.currentContext!),
                         );
                       }
                     },
@@ -256,19 +248,12 @@ void feedbackPopup(BuildContext context, IconData icon, String heading,
     String text, Function() func) {
   showDialog(
       context: context,
-      builder: (context) =>
-          AlertDialog(
+      builder: (context) => AlertDialog(
             shape: const RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(Radius.circular(32.0))),
             content: SizedBox(
-                width: MediaQuery
-                    .of(context)
-                    .size
-                    .width,
-                height: MediaQuery
-                    .of(context)
-                    .size
-                    .height * 0.3,
+                width: MediaQuery.of(context).size.width,
+                height: MediaQuery.of(context).size.height * 0.3,
                 child: ListView(
                   children: [
                     Column(
@@ -313,20 +298,13 @@ void confirmPopup(BuildContext context, IconData icon, String heading,
     String text, VoidCallback func) {
   showDialog(
       context: context,
-      builder: (context) =>
-          AlertDialog(
+      builder: (context) => AlertDialog(
             shape: const RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(Radius.circular(32.0))),
             content: Container(
                 alignment: Alignment.center,
-                width: MediaQuery
-                    .of(context)
-                    .size
-                    .width,
-                height: MediaQuery
-                    .of(context)
-                    .size
-                    .height * 0.3,
+                width: MediaQuery.of(context).size.width,
+                height: MediaQuery.of(context).size.height * 0.3,
                 child: ListView(
                   children: [
                     Column(
@@ -373,7 +351,7 @@ void confirmPopup(BuildContext context, IconData icon, String heading,
                                     context,
                                     MaterialPageRoute(
                                         builder: (context) =>
-                                        const GroupsHome()));
+                                            const GroupsHome()));
                               },
                               width: 130,
                             )
