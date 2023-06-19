@@ -5,7 +5,7 @@ import '../controllers/template_screen_controller.dart';
 import '../views/building_plan_widget.dart';
 
 /// Hier ist nur eine Template für Screens, die ohne ausgefallenen Dekorationen
-/// Biite kopierst du hier den Code, um neues Screen zu erstellen
+/// Bitte kopierst du hier den Code, um neues Screen zu erstellen
 /// Beahctet du die Erstellung von entsprechenden Model und Controller
 class TemplateScreen extends StatelessWidget {
   TemplateScreen({Key? key}) : super(key: key);
