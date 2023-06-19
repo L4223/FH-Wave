@@ -52,6 +52,7 @@ dependencies:
   table_calendar: ^3.0.9
   cloud_firestore: ^4.7.1
   firebase_dynamic_links: ^5.3.1
+  video_player: ^2.3.0
 
   syncfusion_flutter_calendar: ^21.2.8
   flutter_colorpicker: ^1.0.3
@@ -68,9 +69,13 @@ dev_dependencies:
   # rules and activating additional ones.
   flutter_lints: ^2.0.0
   flutter_sticky_header: ^0.6.5
+  flutter_native_splash: 2.3.1
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
+
+flutter_native_splash:
+  color: "#ffffff"
 
 # The following section is specific to Flutter packages.
 flutter:
@@ -89,6 +94,7 @@ flutter:
     - assets/fhwave_logo.svg
     - assets/fruehaufsteher.svg
     - assets/map.svg
+    - assets/intro.mp4
     - fonts/Roboto-Black.ttf
     - fonts/Roboto-BlackItalic.ttf
     - fonts/Roboto-Bold.ttf
