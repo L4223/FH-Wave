@@ -9,7 +9,15 @@
 - [Schritte zur fertigen Installation der App](#schritte-zur-fertigen-installation-der-app)
 - [Weitere Ressourcen](#weitere-ressourcen)
 
+
+
 ## Auschecken des Quellcodes
+
+## Login
+Zum testen der App gibt es einen beispiel Account:   
+E-Mail: ``Jana.Finke@student.fh-kiel.de``
+Passwort: ``passwort123``
+
 ### Voraussetzungen
 
 
@@ -60,7 +68,7 @@ Bitte beachten Sie, dass für die Schriftfarben nur black oder fhwaveNeutral[num
 
 ### Wie zu verwenden:
 
-- Klassen importieren: z.B. `import '../app_colors.dart';` 
+- Klassen importieren: z.B. `import '../app_colors.dart';`
 - `AppColors.[Farbbezeichnung]` z.B. `AppColors.fhwaveBlue500`
 
 ## Verwendung von Buttons
