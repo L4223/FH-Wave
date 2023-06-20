@@ -130,8 +130,8 @@ class _GroupCalendarScreenState extends State<GroupCalendarScreen> {
                           headerStyle: const CalendarHeaderStyle(
                             textStyle: TextStyle(
                                 fontSize: 20, fontWeight: FontWeight.w700
-                                // fontFamily: 'Roboto-bold',
-                                ),
+                              // fontFamily: 'Roboto-bold',
+                            ),
                           ),
                           appointmentTextStyle: const TextStyle(
                             fontSize: 14,
@@ -141,7 +141,7 @@ class _GroupCalendarScreenState extends State<GroupCalendarScreen> {
                           monthViewSettings: const MonthViewSettings(
                             showAgenda: true,
                             appointmentDisplayMode:
-                                MonthAppointmentDisplayMode.appointment,
+                            MonthAppointmentDisplayMode.appointment,
                           ),
                         ),
                       ),
@@ -229,8 +229,8 @@ class MeetingDataSource extends CalendarDataSource {
 class Meeting {
   Meeting(this.eventName, this.from, this.to, this.background, this.isAllDay);
 
-  static Meeting fromInputData(
-      String name, String description, String date, String time) {
+  static Meeting fromInputData(String name, String description, String date,
+      String time) {
     final startTime = DateTime.parse('$date $time');
     final endTime = startTime.add(const Duration(hours: 1));
     const color = AppColors.black;
@@ -261,7 +261,7 @@ class _GroupNameDropdownState extends State<GroupNameDropdown> {
 
   Future<void> getGroupId(String selectedGroupName) async {
     final selectedGroupId =
-        await groupController.getGroupIdFromGroupName(selectedGroupName);
+    await groupController.getGroupIdFromGroupName(selectedGroupName);
     setState(() {
       groupId = selectedGroupId;
     });
@@ -271,7 +271,7 @@ class _GroupNameDropdownState extends State<GroupNameDropdown> {
 
   void _fetchMeetings(String groupId) {
     var screenState =
-        context.findAncestorStateOfType<_GroupCalendarScreenState>()!;
+    context.findAncestorStateOfType<_GroupCalendarScreenState>()!;
     screenState._fetchMeetings(groupId);
   }
 
@@ -302,7 +302,10 @@ class _GroupNameDropdownState extends State<GroupNameDropdown> {
                         ? AppColors.white
                         : AppColors.black),
                 borderRadius: BorderRadius.circular(50)),
-            width: MediaQuery.of(context).size.width - 150,
+            width: MediaQuery
+                .of(context)
+                .size
+                .width - 150,
             child: DropdownButton<String>(
               value: dropdownValue,
               icon: const Icon(
@@ -312,7 +315,7 @@ class _GroupNameDropdownState extends State<GroupNameDropdown> {
               elevation: 16,
               style: TextStyle(
                 color:
-                    controller.isDarkMode ? AppColors.white : AppColors.black,
+                controller.isDarkMode ? AppColors.white : AppColors.black,
               ),
               underline: Container(
                 height: 2,
@@ -422,7 +425,7 @@ class MyPopupState extends State<MyPopup> {
                           TextField(
                             controller: nameTextController,
                             decoration:
-                                const InputDecoration(labelText: 'Name'),
+                            const InputDecoration(labelText: 'Name'),
                           ),
                           TextField(
                             controller: descriptionTextController,
@@ -509,7 +512,8 @@ class MyPopupState extends State<MyPopup> {
                                 children: [
                                   const Text('Dauer (Stunden)'),
                                   Text(
-                                    '$duration Stunde${duration != 1 ? 'n' : ''}',
+                                    '$duration Stunde${duration != 1 ?
+                                    'n' : ''}',
                                     style: const TextStyle(fontSize: 16),
                                   ),
                                 ],

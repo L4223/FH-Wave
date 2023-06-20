@@ -191,7 +191,8 @@ class HomePageState extends State<HomePage> {
               width: 345,
               height: 50,
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: controller.isDarkMode ?
+                AppColors.fhwaveNeutral500 : Colors.white,
                 borderRadius: BorderRadius.circular(30),
               ),
               child: Padding(
@@ -204,14 +205,14 @@ class HomePageState extends State<HomePage> {
             ),
             selectedBuilding != null
                 ? Padding(
-                    padding: const EdgeInsets.all(12.0),
-                    child:
-                        Text('Ausgewähltes Gebäude: ${selectedBuilding!.name}'),
-                  )
+              padding: const EdgeInsets.all(12.0),
+              child:
+              Text('Ausgewähltes Gebäude: ${selectedBuilding!.name}'),
+            )
                 : const Padding(
-                    padding: EdgeInsets.all(12.0),
-                    child: Text("Aktuell ist kein Gebäude ausgewählt."),
-                  ),
+              padding: EdgeInsets.all(12.0),
+              child: Text("Aktuell ist kein Gebäude ausgewählt."),
+            ),
             Center(
               child: Container(
                 width: 345,
@@ -224,23 +225,23 @@ class HomePageState extends State<HomePage> {
                   borderRadius: BorderRadius.circular(10),
                   child: isDataLoading
                       ? Center(
-                          child: Image.asset(
-                            controller.isDarkMode
-                                ? "assets/fhwave-loading-weiss.gif"
-                                : "assets/fhwave-loading-schwarz.gif",
-                            gaplessPlayback: true,
-                            width: 60.0,
-                          ),
-                        )
+                    child: Image.asset(
+                      controller.isDarkMode
+                          ? "assets/fhwave-loading-weiss.gif"
+                          : "assets/fhwave-loading-schwarz.gif",
+                      gaplessPlayback: true,
+                      width: 60.0,
+                    ),
+                  )
                       : GoogleMap(
-                          initialCameraPosition: CameraPosition(
-                            target: LatLng(
-                              _currentPosition.latitude,
-                              _currentPosition.longitude,
-                            ),
-                            zoom: 11.0,
-                          ),
-                        ),
+                    initialCameraPosition: CameraPosition(
+                      target: LatLng(
+                        _currentPosition.latitude,
+                        _currentPosition.longitude,
+                      ),
+                      zoom: 11.0,
+                    ),
+                  ),
                 ),
               ),
             ),
