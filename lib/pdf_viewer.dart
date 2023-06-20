@@ -3,6 +3,8 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_cached_pdfview/flutter_cached_pdfview.dart';
 
+import 'app_colors.dart';
+
 class PDFViewerFromUrl extends StatelessWidget {
   const PDFViewerFromUrl({Key? key, required this.url}) : super(key: key);
 
@@ -12,11 +14,23 @@ class PDFViewerFromUrl extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('PDF From Url'),
+        backgroundColor: Colors.transparent,
+        shadowColor: Colors.transparent,
+        toolbarHeight: 130,
+        title: const Align(
+          alignment: Alignment.centerLeft,
+          child: Text("Studenplan-PDF", // Use the title passed in
+              style: TextStyle(
+                color: AppColors.black,
+                fontSize: 24.0,
+                fontWeight: FontWeight.w700,
+              )),
+        ),
+        iconTheme: const IconThemeData(color: Colors.black),
       ),
       body: const PDF().fromUrl(
         url,
-        placeholder: (double progress) => Center(child: Text('$progress %')),
+        placeholder: (progress) => Center(child: Text('$progress %')),
         errorWidget: (dynamic error) => Center(child: Text(error.toString())),
       ),
     );
@@ -36,21 +50,20 @@ class PDFViewerCachedFromUrl extends StatelessWidget {
       ),
       body: const PDF().cachedFromUrl(
         url,
-        placeholder: (double progress) => Center(child: Text('$progress %')),
+        placeholder: (progress) => Center(child: Text('$progress %')),
         errorWidget: (dynamic error) => Center(child: Text(error.toString())),
       ),
     );
   }
 }
 
-
 class PDFViewerFromAsset extends StatelessWidget {
   PDFViewerFromAsset({Key? key, required this.pdfAssetPath}) : super(key: key);
   final String pdfAssetPath;
   final Completer<PDFViewController> _pdfViewController =
-  Completer<PDFViewController>();
+      Completer<PDFViewController>();
   final StreamController<String> _pageCountController =
-  StreamController<String>();
+      StreamController<String>();
 
   @override
   Widget build(BuildContext context) {
@@ -60,7 +73,7 @@ class PDFViewerFromAsset extends StatelessWidget {
         actions: <Widget>[
           StreamBuilder<String>(
               stream: _pageCountController.stream,
-              builder: (_, AsyncSnapshot<String> snapshot) {
+              builder: (_, snapshot) {
                 if (snapshot.hasData) {
                   return Center(
                     child: Container(
@@ -82,12 +95,12 @@ class PDFViewerFromAsset extends StatelessWidget {
         swipeHorizontal: true,
         autoSpacing: false,
         pageFling: false,
-        onPageChanged: (int? current, int? total) =>
+        onPageChanged: (current, total) =>
             _pageCountController.add('${current! + 1} - $total'),
-        onViewCreated: (PDFViewController pdfViewController) async {
+        onViewCreated: (pdfViewController) async {
           _pdfViewController.complete(pdfViewController);
-          final int currentPage = await pdfViewController.getCurrentPage() ?? 0;
-          final int? pageCount = await pdfViewController.getPageCount();
+          final currentPage = await pdfViewController.getCurrentPage() ?? 0;
+          final pageCount = await pdfViewController.getPageCount();
           _pageCountController.add('${currentPage + 1} - $pageCount');
         },
       ).fromAsset(
@@ -96,7 +109,7 @@ class PDFViewerFromAsset extends StatelessWidget {
       ),
       floatingActionButton: FutureBuilder<PDFViewController>(
         future: _pdfViewController.future,
-        builder: (_, AsyncSnapshot<PDFViewController> snapshot) {
+        builder: (_, snapshot) {
           if (snapshot.hasData && snapshot.data != null) {
             return Row(
               mainAxisSize: MainAxisSize.max,
@@ -106,8 +119,8 @@ class PDFViewerFromAsset extends StatelessWidget {
                   heroTag: '-',
                   child: const Text('-'),
                   onPressed: () async {
-                    final PDFViewController pdfController = snapshot.data!;
-                    final int currentPage =
+                    final pdfController = snapshot.data!;
+                    final currentPage =
                         (await pdfController.getCurrentPage())! - 1;
                     if (currentPage >= 0) {
                       await pdfController.setPage(currentPage);
@@ -118,11 +131,11 @@ class PDFViewerFromAsset extends StatelessWidget {
                   heroTag: '+',
                   child: const Text('+'),
                   onPressed: () async {
-                    final PDFViewController pdfController = snapshot.data!;
-                    final int currentPage =
+                    final pdfController = snapshot.data!;
+                    final currentPage =
                         (await pdfController.getCurrentPage())! + 1;
-                    final int numberOfPages = await pdfController
-                        .getPageCount() ?? 0;
+                    final numberOfPages =
+                        await pdfController.getPageCount() ?? 0;
                     if (numberOfPages > currentPage) {
                       await pdfController.setPage(currentPage);
                     }
