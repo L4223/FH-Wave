@@ -85,7 +85,7 @@ class _TimeTablePageState extends State<TimeTablePage> {
         top: 70,
         child: TransparentAppbar(
           heading: "Gruppen",
-          func: () => Navigator.pushNamed(context, "/home"),
+          func: () => Navigator.pop(context, "/home"),
         ),
       ),
     ]));
