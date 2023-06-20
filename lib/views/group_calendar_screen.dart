@@ -96,7 +96,7 @@ class _GroupCalendarScreenState extends State<GroupCalendarScreen> {
           children: [
             TransparentAppbar(
                 heading: "Termin",
-                func: () => Navigator.pushNamed(context, "/home")),
+                func: () => Navigator.pop(context, "/home")),
             Container(
               alignment: Alignment.topRight,
               child: Column(
