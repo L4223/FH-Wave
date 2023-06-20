@@ -32,9 +32,18 @@ class GroupListState extends State<GroupList> {
           Container(
             alignment: Alignment.topLeft,
             height: 70,
-            child: const Text(
-              "Meine Gruppen",
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
+            child: Row(
+              children: [
+                const Expanded(
+                  child: Text(
+                    "Meine Gruppen",
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
+                  ),
+                ),
+                IconButton(
+                    onPressed: () => setState(() {}),
+                    icon: const Icon(Icons.refresh))
+              ],
             ),
           ),
           Container(
