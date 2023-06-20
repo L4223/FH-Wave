@@ -58,6 +58,11 @@ dependencies:
   syncfusion_flutter_calendar: ^21.2.8
   flutter_colorpicker: ^1.0.3
 
+  pdf: ^3.10.4
+  flutter_cached_pdfview: ^0.4.1
+
+
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

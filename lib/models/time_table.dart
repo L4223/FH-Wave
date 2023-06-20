@@ -1,14 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_cached_pdfview/flutter_cached_pdfview.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:pie_chart/pie_chart.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../app_colors.dart';
 import '../controllers/dark_mode_controller.dart';
 import '../controllers/time_table.dart';
+import '../pdf_viewer.dart';
+import '../views/widgets/buttons/primary_button_with_icon.dart';
+
+
+
 
 class ModelChart {
   TimeTableController timeTableController = TimeTableController();
+
 
   //Farben des PieCharts
   final colorList = <Color>[
@@ -48,6 +56,9 @@ class ModelChart {
 
   late String asset;
   late String statement;
+
+
+
 
   Widget getPie(dynamic group) {
     //muss die Daten aus der API laden
@@ -135,6 +146,33 @@ class ModelChart {
                     asset,
                     width: 200,
                   ),
+                  const SizedBox(
+                    height: 30,
+                  ),
+                  PrimaryButtonWithIcon(
+                      icon: Icons.calendar_month,
+                      text: "Stundenplan Gruppe ${snapshot.data!.id}",
+                    onTap: ()
+
+                      => Navigator.push(
+                    context,
+                    MaterialPageRoute<dynamic>(
+
+                      builder: (_) => PDFViewerFromUrl(
+                        url: 'https://www.fh-kiel.de/fileadmin/data/iue/studium/stundenplan_sommersemester/4_ming_${snapshot.data!.id}.pdf',
+                      ),
+                    ),
+                  ),
+              ),
+
+
+
+
+
+
+
+
+
 
                   //Veranstaltungs-Anzahl in Block 1 und Statement
                 ]),
