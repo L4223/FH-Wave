@@ -2,8 +2,10 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_cached_pdfview/flutter_cached_pdfview.dart';
+import 'package:provider/provider.dart';
 
 import 'app_colors.dart';
+import 'controllers/dark_mode_controller.dart';
 
 class PDFViewerFromUrl extends StatelessWidget {
   const PDFViewerFromUrl({Key? key, required this.url}) : super(key: key);
@@ -12,28 +14,31 @@ class PDFViewerFromUrl extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        shadowColor: Colors.transparent,
-        toolbarHeight: 130,
-        title: const Align(
-          alignment: Alignment.centerLeft,
-          child: Text("Studenplan-PDF", // Use the title passed in
-              style: TextStyle(
-                color: AppColors.black,
-                fontSize: 24.0,
-                fontWeight: FontWeight.w700,
-              )),
+    return Consumer<DarkModeController>(builder: (context, controller, _) {
+      return Scaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.transparent,
+          shadowColor: Colors.transparent,
+          toolbarHeight: 130,
+          title: Align(
+            alignment: Alignment.centerLeft,
+            child: Text("Stundenplan-PDF", // Use the title passed in
+                style: TextStyle(
+                  color:
+                      controller.isDarkMode ? AppColors.white : AppColors.black,
+                  fontSize: 24.0,
+                  fontWeight: FontWeight.w700,
+                )),
+          ),
+          iconTheme: const IconThemeData(color: Colors.black),
         ),
-        iconTheme: const IconThemeData(color: Colors.black),
-      ),
-      body: const PDF().fromUrl(
-        url,
-        placeholder: (progress) => Center(child: Text('$progress %')),
-        errorWidget: (dynamic error) => Center(child: Text(error.toString())),
-      ),
-    );
+        body: const PDF().fromUrl(
+          url,
+          placeholder: (progress) => Center(child: Text('$progress %')),
+          errorWidget: (dynamic error) => Center(child: Text(error.toString())),
+        ),
+      );
+    });
   }
 }
 

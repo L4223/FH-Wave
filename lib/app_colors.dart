@@ -104,6 +104,10 @@ class AppColors {
       end: Alignment.bottomCenter,
       colors: [fhwaveYellow500, Color.fromRGBO(250, 250, 250, 0)]);
 
+  static const LinearGradient fhwaveDarkYellowGradient = LinearGradient(
+      begin: Alignment.topCenter,
+      end: Alignment.bottomCenter,
+      colors: [fhwaveYellow800, Color.fromRGBO(250, 250, 250, 0)]);
 
   /// Die unten definierten Container-Widgets werden
   /// für den Hintergrundfarbverlauf der Seite(Screen) verwendet.
@@ -132,6 +136,13 @@ class AppColors {
     return Container(
       height: MediaQuery.of(context).size.height * 3 / 5,
       decoration: const BoxDecoration(gradient: fhwaveYellowGradient),
+    );
+  }
+
+  static Container getFhwaveDarkYellowGradientContainer(BuildContext context) {
+    return Container(
+      height: MediaQuery.of(context).size.height * 3 / 5,
+      decoration: const BoxDecoration(gradient: fhwaveDarkYellowGradient),
     );
   }
 }

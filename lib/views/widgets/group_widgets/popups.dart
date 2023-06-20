@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../../../app_colors.dart';
+import '../../../controllers/dark_mode_controller.dart';
 import '../../../controllers/group_controller.dart';
 import '../../group_screens/group_screen.dart';
 import '../buttons/primary_button.dart';
@@ -370,60 +372,64 @@ class BlurredDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Dialog(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(35.0),
-        ),
-        child: SizedBox(
-          width: 600.0,
-          height: 350.0,
-          // decoration: BoxDecoration(
-          //   borderRadius: BorderRadius.circular(20.0),
-
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              const SizedBox(
-                height: 50.0,
-              ),
-              Image.asset(
-                "assets/fhwave-loading-standard.gif",
-                gaplessPlayback: true,
-                width: 80.0,
-              ),
-              const SizedBox(
-                height: 20.0,
-              ),
-              const Center(
-                child: Text("Ein Semesterprojekt\n    von AEM Team 9",
-                    style: TextStyle(
-                        fontSize: 20.0,
-                        fontWeight: FontWeight.w600,
-                        color: AppColors.fhwaveNeutral900)),
-              ),
-              const SizedBox(
-                height: 50.0,
-              ),
-              PrimaryButton(
-                text: 'Alles klar',
-                width: 140,
-                onTap: () {
-                  Navigator.pop(context);
-                },
-              ),
-              const SizedBox(
-                height: 20.0,
-              ),
-              const Text("Version 1.0.0 - fhwave",
-                  style: TextStyle(
-                      fontSize: 14.0,
-                      fontWeight: FontWeight.w400,
-                      color: AppColors.fhwaveNeutral400)),
-              const SizedBox(
-                height: 20.0,
-              ),
-            ],
+    return Consumer<DarkModeController>(builder: (context, controller, _) {
+      return Dialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(35.0),
           ),
-        ));
+          backgroundColor:
+              controller.isDarkMode ? AppColors.fhwaveNeutral400 : Colors.white,
+          child: SizedBox(
+            width: 600.0,
+            height: 350.0,
+            // decoration: BoxDecoration(
+            //   borderRadius: BorderRadius.circular(20.0),
+
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                const SizedBox(
+                  height: 50.0,
+                ),
+                Image.asset(
+                  "assets/fhwave-loading-standard.gif",
+                  gaplessPlayback: true,
+                  width: 80.0,
+                ),
+                const SizedBox(
+                  height: 20.0,
+                ),
+                const Center(
+                  child: Text("Ein Semesterprojekt\n    von AEM Team 9",
+                      style: TextStyle(
+                          fontSize: 20.0,
+                          fontWeight: FontWeight.w600,
+                          color: AppColors.fhwaveNeutral900)),
+                ),
+                const SizedBox(
+                  height: 50.0,
+                ),
+                PrimaryButton(
+                  text: 'Alles klar',
+                  width: 140,
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
+                ),
+                const SizedBox(
+                  height: 20.0,
+                ),
+                const Text("Version 1.0.0 - fhwave",
+                    style: TextStyle(
+                        fontSize: 14.0,
+                        fontWeight: FontWeight.w400,
+                        color: AppColors.fhwaveNeutral400)),
+                const SizedBox(
+                  height: 20.0,
+                ),
+              ],
+            ),
+          ));
+    });
   }
 }
