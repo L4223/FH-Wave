@@ -4,7 +4,6 @@ import 'package:provider/provider.dart';
 
 import '../../app_colors.dart';
 import '../../controllers/dark_mode_controller.dart';
-import '../../controllers/home_screen_controller.dart';
 
 import '../widgets/buttons/primary_button.dart';
 import '../widgets/buttons/secondary_button.dart';
@@ -17,7 +16,6 @@ class ResetPasswordScreen extends StatefulWidget {
 }
 
 class ResetPasswordScreenState extends State<ResetPasswordScreen> {
-  final HomeScreenController _controller = HomeScreenController();
   final _formKey = GlobalKey<FormState>();
 
   String emailController = '';
@@ -89,8 +87,9 @@ class ResetPasswordScreenState extends State<ResetPasswordScreen> {
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 10.0),
                         child: Text(
-                          "➌ Nach Bestätigung deines neuen Passwortes bleibst du "
-                          "eingeloggt und das Passwort wurde gespeichert!",
+                          "➌ Nach Bestätigung deines neuen Passwortes bleibst "
+                          "du eingeloggt und "
+                          "das Passwort wurde gespeichert!",
                           style: TextStyle(
                             fontSize: 16.0,
                             // fontWeight: FontWeight.w800,
