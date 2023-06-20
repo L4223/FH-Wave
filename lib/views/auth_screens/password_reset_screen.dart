@@ -25,50 +25,41 @@ class ResetPasswordScreenState extends State<ResetPasswordScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Stack(
-        children: [
-          AppColors.getFhwaveBlueGradientContainer(context),
-          SingleChildScrollView(
-            child: Padding(
-              padding: const EdgeInsets.all(20.0),
-              child: Form(
-                key: _formKey,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const SizedBox(height: 130.0),
-                    Image.asset(
-                      "assets/fhwave-loading-weiss-schwarz.gif",
-                      gaplessPlayback: true,
-                      width: 70.0,
-                    ),
-                    const SizedBox(height: 30.0),
-                    Text(
-                      'Passwort zurücksetzen',
-                      style: TextStyle(
-                        fontSize: 36.0,
-                        fontWeight: FontWeight.w800,
-                        color: _controller.fontColor,
+    return Consumer<DarkModeController>(builder: (context, controller, _) {
+      return Scaffold(
+        body: Stack(
+          children: [
+            AppColors.getFhwaveBlueGradientContainer(context),
+            SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: Form(
+                  key: _formKey,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const SizedBox(height: 130.0),
+                      Image.asset(
+                        "assets/fhwave-loading-weiss-schwarz.gif",
+                        gaplessPlayback: true,
+                        width: 70.0,
                       ),
-                    ),
-                    const SizedBox(height: 20.0),
-                    const Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 10.0),
-                      child: Text(
-                        "➊ Gib bitte die E-Mail-Adresse deines "
-                        "fhwave-Kontos ein.",
+                      const SizedBox(height: 30.0),
+                      Text(
+                        'Passwort zurücksetzen',
                         style: TextStyle(
                           fontSize: 36.0,
                           fontWeight: FontWeight.w800,
-                          color: _controller.fontColor,
+                          color: controller.isDarkMode
+                              ? AppColors.white
+                              : AppColors.black,
                         ),
                       ),
                       const SizedBox(height: 20.0),
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 10.0),
                         child: Text(
-                          "➊ Gibst du die E-Mail-Adresse deines "
+                          "➊ Gib bitte die E-Mail-Adresse deines "
                           "fhwave-Kontos ein.",
                           style: TextStyle(
                             fontSize: 16.0,
@@ -79,25 +70,27 @@ class ResetPasswordScreenState extends State<ResetPasswordScreen> {
                           ),
                         ),
                       ),
-                    ),
-                    const SizedBox(height: 20.0),
-                    const Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 10.0),
-                      child: Text(
-                        "➌ Nach Bestätigung deines neuen Passwortes bleibst du "
-                        "eingeloggt und das Passwort wurde gespeichert!",
-                        style: TextStyle(
-                          fontSize: 16.0,
-                          // fontWeight: FontWeight.w800,
-                          color: AppColors.fhwaveNeutral500,
+                      const SizedBox(height: 20.0),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                        child: Text(
+                          "➋ Wenn deine E-Mail-Adresse verifiziert ist, "
+                          "erhaltest du eine E-Mail mit Anweisungen.",
+                          style: TextStyle(
+                            fontSize: 16.0,
+                            // fontWeight: FontWeight.w800,
+                            color: controller.isDarkMode
+                                ? AppColors.white
+                                : AppColors.fhwaveNeutral500,
+                          ),
                         ),
                       ),
                       const SizedBox(height: 20.0),
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 10.0),
                         child: Text(
-                          "➌ Nach Bestätigung deines neuen Passwortes bist "
-                          "du mit deinem Konto verbunden!",
+                          "➌ Nach Bestätigung deines neuen Passwortes bleibst du "
+                          "eingeloggt und das Passwort wurde gespeichert!",
                           style: TextStyle(
                             fontSize: 16.0,
                             // fontWeight: FontWeight.w800,

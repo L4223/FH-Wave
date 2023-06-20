@@ -226,9 +226,7 @@ class HomePageState extends State<HomePage> {
                   child: isDataLoading
                       ? Center(
                     child: Image.asset(
-                      controller.isDarkMode
-                          ? "assets/fhwave-loading-weiss.gif"
-                          : "assets/fhwave-loading-schwarz.gif",
+                      "assets/fhwave-loading-schwarz.gif",
                       gaplessPlayback: true,
                       width: 60.0,
                     ),

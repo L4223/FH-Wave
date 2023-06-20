@@ -31,7 +31,7 @@ class _RequestScreenState extends State<RequestScreen> {
             children: [
               TransparentAppbar(
                 heading: "Einladungen",
-                func: () => Navigator.pushNamed(context, "/group"),
+                func: () => Navigator.pop(context, "/group"),
               ),
               SizedBox(
                 height: 400,
@@ -41,37 +41,40 @@ class _RequestScreenState extends State<RequestScreen> {
                     if (snapshot.connectionState == ConnectionState.waiting) {
                       return Center(
                           child: Column(
-                            children: [
-                              const SizedBox(
-                                height: 250,
-                              ),
-                              Image.asset(controller.isDarkMode ?
-                              "assets/fhwave-loading-weiss.gif" :
-                              "assets/fhwave-loading-schwarz.gif",
-                                gaplessPlayback: true,
-                                width: 60.0,
-                              ),
-                              const SizedBox(
-                                height: 30,
-                              ),
-                              Text(
-                                "Lade Info ...",
-                                style: TextStyle(
-                                  color: controller.isDarkMode ?
-                                  Colors.white : Colors.black,
-                                  fontWeight: FontWeight.w700,
-                                  fontSize: 16.0,
-                                ),
-                              ),
-                            ],
-                          ));
+                        children: [
+                          const SizedBox(
+                            height: 250,
+                          ),
+                          Image.asset(
+                            controller.isDarkMode
+                                ? "assets/fhwave-loading-weiss.gif"
+                                : "assets/fhwave-loading-schwarz.gif",
+                            gaplessPlayback: true,
+                            width: 60.0,
+                          ),
+                          const SizedBox(
+                            height: 30,
+                          ),
+                          Text(
+                            "Lade Info ...",
+                            style: TextStyle(
+                              color: controller.isDarkMode
+                                  ? Colors.white
+                                  : Colors.black,
+                              fontWeight: FontWeight.w700,
+                              fontSize: 16.0,
+                            ),
+                          ),
+                        ],
+                      ));
                     } else if (snapshot.hasError) {
                       return Center(
                         child: Text(
                           'Fehler beim Laden der Daten',
                           style: TextStyle(
-                            color: controller.isDarkMode ?
-                            Colors.white : Colors.black,
+                            color: controller.isDarkMode
+                                ? Colors.white
+                                : Colors.black,
                             fontWeight: FontWeight.w700,
                             fontSize: 16.0,
                           ),
@@ -98,8 +101,9 @@ class _RequestScreenState extends State<RequestScreen> {
                             Text(
                               "Du hast zurzeit keine Einladungen.",
                               style: TextStyle(
-                                color: controller.isDarkMode ?
-                                Colors.white : Colors.black,
+                                color: controller.isDarkMode
+                                    ? Colors.white
+                                    : Colors.black,
                                 fontWeight: FontWeight.w700,
                                 fontSize: 16.0,
                               ),
@@ -115,19 +119,20 @@ class _RequestScreenState extends State<RequestScreen> {
                               title: Row(
                                 children: [
                                   Expanded(
-                                      child: Text("Einladung von $groupName",
-                                        style: TextStyle(color:
-                                        controller.isDarkMode ?
-                                        Colors.white : Colors.black,
-                                        ),
-                                      )
-                                  ),
+                                      child: Text(
+                                    "Einladung von $groupName",
+                                    style: TextStyle(
+                                      color: controller.isDarkMode
+                                          ? Colors.white
+                                          : Colors.black,
+                                    ),
+                                  )),
                                   IconButton(
                                     icon: const Icon(Icons.clear),
                                     onPressed: () {
                                       _groupController
                                           .deleteGroupRequest(
-                                          currentUser!.uid, groupName)
+                                              currentUser!.uid, groupName)
                                           .then((value) => setState(() {}));
                                     },
                                   ),
@@ -136,7 +141,7 @@ class _RequestScreenState extends State<RequestScreen> {
                                     onPressed: () {
                                       _groupController
                                           .acceptInvite(
-                                          groupName, currentUser!.uid)
+                                              groupName, currentUser!.uid)
                                           .then((value) => setState(() {}));
                                     },
                                   ),
