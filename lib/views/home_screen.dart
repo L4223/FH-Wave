@@ -47,7 +47,7 @@ class HomeScreenState extends State<HomeScreen> {
                 floating: false,
                 pinned: true,
                 snap: false,
-                expandedHeight: 250.0,
+                expandedHeight: 255.0,
                 backgroundColor: AppColors.transparent,
                 shadowColor: Colors.transparent,
                 flexibleSpace: FlexibleSpaceBar(

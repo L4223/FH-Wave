@@ -67,7 +67,7 @@ class _GroupsHomeState extends State<GroupsHome> {
                   children: [
                     IconButton(
                         onPressed: () {
-                          Navigator.pop(context, "/request");
+                          Navigator.pushNamed(context, "/request");
                         },
                         icon: _isRequestsEmpty
                             ? const Icon(Icons.local_post_office)
