@@ -94,7 +94,7 @@ Widget meineWidgetsScreen(BuildContext context) {
             targetPage: const TimeTablePage(),
             isLarge: true),
         Container(
-          height: 350,
+          height: 150,
         ),
         // PrimaryButtonWithIcon(
         //   icon: Icons.add,
