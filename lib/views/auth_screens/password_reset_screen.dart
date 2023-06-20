@@ -19,6 +19,7 @@ class ResetPasswordScreenState extends State<ResetPasswordScreen> {
   final _formKey = GlobalKey<FormState>();
 
   String emailController = '';
+  String emailEnd = '@student.fh-kiel.de';
 
   @override
   Widget build(BuildContext context) {
@@ -133,6 +134,9 @@ class ResetPasswordScreenState extends State<ResetPasswordScreen> {
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(30.0),
         ),
+        suffixText: emailEnd,
+        suffixStyle: const TextStyle(
+            fontSize: 13, fontWeight: FontWeight.bold),
       ),
       validator: (value) {
         if (value == null || value.isEmpty) {
@@ -141,7 +145,7 @@ class ResetPasswordScreenState extends State<ResetPasswordScreen> {
         return null;
       },
       onSaved: (value) {
-        emailController = value!.trim();
+        emailController = value!.trim()+emailEnd;
       },
     );
   }
