@@ -2,22 +2,7 @@ import 'dart:convert';
 import 'package:flutter/services.dart' show rootBundle;
 
 class TimeTableController {
-  //Statements die ausgegeben werden bei der Funktion getStatement
-  List<List<String>> statements = [
-    [
-      "Das ist der Langschläfer Stundenplan.",
-      "Der Kalender ist für alle geeignet.",
-      "Das ist der Frühaufsteher Stundenplan."
-    ],
-    ["am seltesten", "gelegentlich", "öfter"],
-    [
-      "Das ist der Stundenplan für die FH-Besucher. "
-          "Dieser Stundeplan hat am wenigsten Lücken.",
-      "Dieser Stundenplan hat gelegentlich Lücken.",
-      "Das ist der Stundeplan für die FH-Bewohner. "
-          "Dieser Stundeplan hat am meisten Lücken."
-    ]
-  ];
+
 
   //Index für die Reihenfolge des Inputs
   final int less = 0;
@@ -54,20 +39,7 @@ class TimeTableController {
   //   }
   // }
 
-  //Funktion um ein Statement zurückzubekommen
-  String getStatement(String mostBlock1Str, int statementNr) {
-    String statement;
-    if (mostBlock1Str == "less") {
-      statement = statements[statementNr][less];
-    } else if (mostBlock1Str == "most") {
-      statement = statements[statementNr][most];
-    } else if (mostBlock1Str == "middle") {
-      statement = statements[statementNr][middle];
-    } else {
-      return "";
-    }
-    return statement;
-  }
+
 
   int getStatementNumber(String statement) {
     var number = 0;

@@ -54,8 +54,7 @@ class _TimeTablePageState extends State<TimeTablePage> {
         body: Stack(children: [
       AppColors.getFhwaveGreenGradientContainer(context),
       Padding(
-        padding: const EdgeInsets.only(top: 220),
-        // 你需要自己决定这个值，这个值应该大于或等于 TransparentAppbar 的高度
+        padding: const EdgeInsets.only(top: 160),
         child: PageView(
           controller: controller,
           onPageChanged: (index) {
