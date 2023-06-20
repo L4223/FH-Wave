@@ -136,7 +136,9 @@ class _MemberListState extends State<MemberList> {
                 Icons.group_remove,
                 "Willst du $memberName wirklich aus der Gruppe entfernen?",
                 "Du kannst diesen Schritt nicht rückgängig machen.", () {
-              groupController.leaveGroup(widget.groupId, memberName);
+              groupController
+                  .leaveGroup(widget.groupId, memberName)
+                  .then((_) => setState(() {}));
             });
           },
           icon: const Icon(Icons.remove));

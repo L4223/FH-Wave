@@ -345,13 +345,14 @@ void confirmPopup(BuildContext context, IconData icon, String heading,
                               text: "Bestätigen",
                               onTap: () {
                                 func();
-                                // Navigator.pop(context);
                                 Navigator.pop(context);
-                                Navigator.pushReplacement(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            const GroupsHome()));
+
+                                // Navigator.pop(context);
+                                // Navigator.pushReplacement(
+                                //     context,
+                                //     MaterialPageRoute(
+                                //         builder: (context) =>
+                                //             const GroupsHome()));
                               },
                               width: 130,
                             )
