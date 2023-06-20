@@ -43,7 +43,7 @@ class ResetPasswordScreenState extends State<ResetPasswordScreen> {
                     ),
                     const SizedBox(height: 30.0),
                     Text(
-                      'Password zurücksetzen',
+                      'Passwort zurücksetzen',
                       style: TextStyle(
                         fontSize: 36.0,
                         fontWeight: FontWeight.w800,
@@ -54,7 +54,7 @@ class ResetPasswordScreenState extends State<ResetPasswordScreen> {
                     const Padding(
                       padding: EdgeInsets.symmetric(horizontal: 10.0),
                       child: Text(
-                        "➊ Gibst du die E-Mail-Adresse deines "
+                        "➊ Gib bitte die E-Mail-Adresse deines "
                         "fhwave-Kontos ein.",
                         style: TextStyle(
                           fontSize: 16.0,
@@ -80,8 +80,8 @@ class ResetPasswordScreenState extends State<ResetPasswordScreen> {
                     const Padding(
                       padding: EdgeInsets.symmetric(horizontal: 10.0),
                       child: Text(
-                        "➌ Nach Bestätigung deines neuen Passwortes bist "
-                        "du mit deinem Konto verbunden!",
+                        "➌ Nach Bestätigung deines neuen Passwortes bleibst du "
+                        "eingeloggt und das Passwort wurde gespeichert!",
                         style: TextStyle(
                           fontSize: 16.0,
                           // fontWeight: FontWeight.w800,
@@ -135,8 +135,7 @@ class ResetPasswordScreenState extends State<ResetPasswordScreen> {
           borderRadius: BorderRadius.circular(30.0),
         ),
         suffixText: emailEnd,
-        suffixStyle: const TextStyle(
-            fontSize: 13, fontWeight: FontWeight.bold),
+        suffixStyle: const TextStyle(fontSize: 13, fontWeight: FontWeight.bold),
       ),
       validator: (value) {
         if (value == null || value.isEmpty) {
@@ -145,7 +144,7 @@ class ResetPasswordScreenState extends State<ResetPasswordScreen> {
         return null;
       },
       onSaved: (value) {
-        emailController = value!.trim()+emailEnd;
+        emailController = value!.trim() + emailEnd;
       },
     );
   }
