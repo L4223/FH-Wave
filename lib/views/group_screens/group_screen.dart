@@ -58,7 +58,7 @@ class _GroupsHomeState extends State<GroupsHome> {
           children: [
             TransparentAppbar(
               heading: "Gruppen",
-              func: () => Navigator.pushNamed(context, "/home"),
+              func: () => Navigator.pop(context, "/home"),
             ),
             Container(
                 alignment: Alignment.topRight,
@@ -67,7 +67,7 @@ class _GroupsHomeState extends State<GroupsHome> {
                   children: [
                     IconButton(
                         onPressed: () {
-                          Navigator.pushNamed(context, "/request");
+                          Navigator.pop(context, "/request");
                         },
                         icon: _isRequestsEmpty
                             ? const Icon(Icons.local_post_office)
@@ -127,7 +127,7 @@ class GroupInfoScreen extends StatelessWidget {
             children: [
               TransparentAppbar(
                 heading: groupName,
-                func: () => Navigator.pushNamed(context, "/group"),
+                func: () => Navigator.pop(context, "/group"),
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 28.0),
